@@ -1,11 +1,11 @@
-fastapi~=0.112.0
-sqlalchemy~=2.0.32
-uvicorn~=0.30.5
-alembic~=1.13.2
+fastapi==0.115.0
+SQLAlchemy==2.0.40
+uvicorn==0.34.0
+alembic==1.15.2
 starlette==0.37.2
 pydantic~=2.8.2
-asyncpg==0.29.0
+asyncpg==0.30.0
 hypercorn==0.17.3
 email-validator==2.2.0
-jinja2==3.1.4
+Jinja2==3.1.6
 asynclog==0.1.7
