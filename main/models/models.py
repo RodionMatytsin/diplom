@@ -1,5 +1,5 @@
-from sqlalchemy import Column, ForeignKey, BigInteger, SmallInteger, Float, String, DateTime, \
-    Text, Boolean, func, text, UUID, Integer, ARRAY, PrimaryKeyConstraint
+from sqlalchemy import Column, ForeignKey, BigInteger, SmallInteger, String, DateTime, Date, Text, Boolean, \
+    func, text, UUID, PrimaryKeyConstraint
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.ext.asyncio import AsyncAttrs, create_async_engine
 import main.config as config
@@ -9,7 +9,7 @@ class Base(AsyncAttrs, DeclarativeBase):
     pass
 
 
-# Таблица пользователей
+# Таблица пользователей (школьников и преподавателей)
 class Users(Base):
     __tablename__ = 'users'
     guid = Column(
@@ -21,6 +21,132 @@ class Users(Base):
         primary_key=True,
         autoincrement=False
     )
+    login = Column(String(length=125), nullable=False)
+    password = Column(String(length=125), nullable=False)
+    phone_number = Column(BigInteger, nullable=False)
+    fio = Column(String(length=255), nullable=False)
+    birthday = Column(Date, nullable=False)
+    gender = Column(String(length=20), nullable=False)
+    datetime_create = Column(
+        DateTime,
+        default=func.now(),
+        server_default=text('(now() AT TIME ZONE \'Asia/Novosibirsk\')'),
+        nullable=False,
+        index=True
+    )
+    is_teacher = Column(Boolean, default=False, nullable=False, server_default=text('False'))
+
+
+# Таблица достижений школьников
+class Achievements(Base):
+    __tablename__ = 'achievements'
+    guid = Column(
+        UUID(as_uuid=False),
+        unique=True,
+        nullable=False,
+        index=True,
+        server_default=text('uuid7()'),
+        primary_key=True,
+        autoincrement=False
+    )
+    user_guid = Column(UUID(as_uuid=False), ForeignKey(Users.guid), index=True, nullable=False)
+    description = Column(Text, nullable=False)
+    datetime_create = Column(
+        DateTime,
+        default=func.now(),
+        server_default=text('(now() AT TIME ZONE \'Asia/Novosibirsk\')'),
+        nullable=False,
+        index=True
+    )
+    is_accepted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
+    is_deleted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
+
+
+# Таблица классов
+class Classes(Base):
+    __tablename__ = 'classes'
+    guid = Column(
+        UUID(as_uuid=False),
+        unique=True,
+        nullable=False,
+        index=True,
+        server_default=text('uuid7()'),
+        primary_key=True,
+        autoincrement=False
+    )
+    name = Column(String(length=155), nullable=False)
+    datetime_create = Column(
+        DateTime,
+        default=func.now(),
+        server_default=text('(now() AT TIME ZONE \'Asia/Novosibirsk\')'),
+        nullable=False,
+        index=True
+    )
+    is_deleted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
+
+
+# Таблица в которой хранится инфа об школьниках, которые состоят в определенном классе
+class SchoolClasses(Base):
+    __tablename__ = 'school_classes'
+    guid = Column(
+        UUID(as_uuid=False),
+        unique=True,
+        nullable=False,
+        index=True,
+        server_default=text('uuid7()'),
+        primary_key=True,
+        autoincrement=False
+    )
+    class_guid = Column(UUID(as_uuid=False), ForeignKey(Classes.guid), index=True, nullable=False)
+    user_guid = Column(UUID(as_uuid=False), ForeignKey(Users.guid), index=True, nullable=False)
+    estimation = Column(SmallInteger, nullable=True)
+    datetime_estimation_update = Column(DateTime, nullable=True)
+    datetime_create = Column(
+        DateTime,
+        default=func.now(),
+        server_default=text('(now() AT TIME ZONE \'Asia/Novosibirsk\')'),
+        nullable=False,
+        index=True
+    )
+    is_deleted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
+
+
+# Таблица в которой хранится инфа об классах, в которых состоят преподаватели
+class TeacherClasses(Base):
+    __tablename__ = 'teacher_classes'
+    __table_args__ = (PrimaryKeyConstraint('class_guid', 'user_guid'),)
+    class_guid = Column(UUID(as_uuid=False), ForeignKey(Classes.guid), index=True, nullable=False)
+    user_guid = Column(UUID(as_uuid=False), ForeignKey(Users.guid), index=True, nullable=False)
+    datetime_create = Column(
+        DateTime,
+        default=func.now(),
+        server_default=text('(now() AT TIME ZONE \'Asia/Novosibirsk\')'),
+        nullable=False
+    )
+
+
+# Таблица в которой хранятся сформированные рекомендации для школьников
+class Recommendations(Base):
+    __tablename__ = 'recommendations'
+    guid = Column(
+        UUID(as_uuid=False),
+        unique=True,
+        nullable=False,
+        index=True,
+        server_default=text('uuid7()'),
+        primary_key=True,
+        autoincrement=False
+    )
+    user_guid = Column(UUID(as_uuid=False), ForeignKey(Users.guid), index=True, nullable=False)
+    description = Column(Text, nullable=False)
+    datetime_create = Column(
+        DateTime,
+        default=func.now(),
+        server_default=text('(now() AT TIME ZONE \'Asia/Novosibirsk\')'),
+        nullable=False,
+        index=True
+    )
+    is_deleted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
 
 
 # alembic init -t async main/alembic
