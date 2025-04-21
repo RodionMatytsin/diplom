@@ -153,6 +153,7 @@ class Tests(Base):
         nullable=False,
         index=True
     )
+    is_accepted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
 
 
 class AnswersTests(Base):
