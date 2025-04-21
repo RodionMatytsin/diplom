@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, BigInteger, SmallInteger, String, DateTime, Date, Text, Boolean, \
+from sqlalchemy import Column, ForeignKey, BigInteger, SmallInteger, Float, String, DateTime, Date, Text, Boolean, \
     func, text, UUID, PrimaryKeyConstraint
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.ext.asyncio import AsyncAttrs, create_async_engine
@@ -9,7 +9,7 @@ class Base(AsyncAttrs, DeclarativeBase):
     pass
 
 
-# Таблица пользователей (школьников и преподавателей)
+# Таблица пользователей в которой состоят школьники и преподаватели
 class Users(Base):
     __tablename__ = 'users'
     guid = Column(
@@ -62,7 +62,7 @@ class Achievements(Base):
     is_deleted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
 
 
-# Таблица классов
+# Таблица учебных классов
 class Classes(Base):
     __tablename__ = 'classes'
     guid = Column(
@@ -86,8 +86,8 @@ class Classes(Base):
 
 
 # Таблица в которой хранится инфа об школьниках, которые состоят в определенном классе
-class SchoolClasses(Base):
-    __tablename__ = 'school_classes'
+class SchoolchildrenClasses(Base):
+    __tablename__ = 'schoolchildren_classes'
     guid = Column(
         UUID(as_uuid=False),
         unique=True,
@@ -99,7 +99,7 @@ class SchoolClasses(Base):
     )
     class_guid = Column(UUID(as_uuid=False), ForeignKey(Classes.guid), index=True, nullable=False)
     user_guid = Column(UUID(as_uuid=False), ForeignKey(Users.guid), index=True, nullable=False)
-    estimation = Column(SmallInteger, nullable=True)
+    estimation = Column(Float, nullable=True)
     datetime_estimation_update = Column(DateTime, nullable=True)
     datetime_create = Column(
         DateTime,
@@ -125,6 +125,59 @@ class TeacherClasses(Base):
     )
 
 
+# Таблица в которой хранятся вопросы для теста
+class Questions(Base):
+    __tablename__ = 'questions'
+    id = Column(SmallInteger, primary_key=True)
+    name = Column(String(length=255), nullable=False)
+    amount_of_points = Column(SmallInteger, default=1, nullable=False, server_default=text('1'))
+
+
+# Таблица с пройденными тестами школьников
+class Tests(Base):
+    __tablename__ = 'tests'
+    guid = Column(
+        UUID(as_uuid=False),
+        unique=True,
+        nullable=False,
+        index=True,
+        server_default=text('uuid7()'),
+        primary_key=True,
+        autoincrement=False
+    )
+    user_guid = Column(UUID(as_uuid=False), ForeignKey(Users.guid), index=True, nullable=False)
+    datetime_create = Column(
+        DateTime,
+        default=func.now(),
+        server_default=text('(now() AT TIME ZONE \'Asia/Novosibirsk\')'),
+        nullable=False,
+        index=True
+    )
+
+
+class AnswersTests(Base):
+    __tablename__ = 'tests'
+    guid = Column(
+        UUID(as_uuid=False),
+        unique=True,
+        nullable=False,
+        index=True,
+        server_default=text('uuid7()'),
+        primary_key=True,
+        autoincrement=False
+    )
+    test_guid = Column(UUID(as_uuid=False), ForeignKey(Tests.guid), index=True, nullable=False)
+    question_id = Column(SmallInteger, ForeignKey(Questions.id), nullable=False)
+    score = Column(SmallInteger, default=1, nullable=False, server_default=text('1'))
+    comment = Column(Text, nullable=True)
+    datetime_create = Column(
+        DateTime,
+        default=func.now(),
+        server_default=text('(now() AT TIME ZONE \'Asia/Novosibirsk\')'),
+        nullable=False
+    )
+
+
 # Таблица в которой хранятся сформированные рекомендации для школьников
 class Recommendations(Base):
     __tablename__ = 'recommendations'
@@ -137,6 +190,7 @@ class Recommendations(Base):
         primary_key=True,
         autoincrement=False
     )
+    test_guid = Column(UUID(as_uuid=False), ForeignKey(Tests.guid), index=True, nullable=False)
     user_guid = Column(UUID(as_uuid=False), ForeignKey(Users.guid), index=True, nullable=False)
     description = Column(Text, nullable=False)
     datetime_create = Column(
@@ -146,7 +200,6 @@ class Recommendations(Base):
         nullable=False,
         index=True
     )
-    is_deleted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
 
 
 # alembic init -t async main/alembic
