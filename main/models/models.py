@@ -157,7 +157,7 @@ class Tests(Base):
 
 
 class AnswersTests(Base):
-    __tablename__ = 'tests'
+    __tablename__ = 'answers_tests'
     guid = Column(
         UUID(as_uuid=False),
         unique=True,
