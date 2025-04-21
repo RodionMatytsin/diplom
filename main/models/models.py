@@ -192,7 +192,6 @@ class Recommendations(Base):
         autoincrement=False
     )
     test_guid = Column(UUID(as_uuid=False), ForeignKey(Tests.guid), index=True, nullable=False)
-    user_guid = Column(UUID(as_uuid=False), ForeignKey(Users.guid), index=True, nullable=False)
     description = Column(Text, nullable=False)
     datetime_create = Column(
         DateTime,
