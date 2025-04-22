@@ -154,8 +154,12 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(['user_guid'], ['users.guid'], ),
         sa.PrimaryKeyConstraint('guid')
     )
-    op.create_index(op.f('ix_schoolchildren_classes_class_guid'), 'schoolchildren_classes', ['class_guid'], unique=False)
-    op.create_index(op.f('ix_schoolchildren_classes_datetime_create'), 'schoolchildren_classes', ['datetime_create'], unique=False)
+    op.create_index(
+        op.f('ix_schoolchildren_classes_class_guid'), 'schoolchildren_classes', ['class_guid'], unique=False
+    )
+    op.create_index(
+        op.f('ix_schoolchildren_classes_datetime_create'), 'schoolchildren_classes', ['datetime_create'], unique=False
+    )
     op.create_index(op.f('ix_schoolchildren_classes_guid'), 'schoolchildren_classes', ['guid'], unique=True)
     op.create_index(op.f('ix_schoolchildren_classes_user_guid'), 'schoolchildren_classes', ['user_guid'], unique=False)
 
