@@ -1,7 +1,8 @@
 from fastapi import HTTPException
 from pydantic import BaseModel, field_validator
 from main.schemas.responses import DefaultResponse
-from main.utils.validation import check_role, check_phone_number, check_fio, check_birthday, check_gender
+from main.utils.validation import check_role, check_phone_number, check_fio, check_birthday, \
+    check_gender, check_password
 from uuid import UUID
 from datetime import datetime, date
 
@@ -24,6 +25,16 @@ class UserSignUp(BaseModel):
                 detail={'result': False, 'message': 'Поле «Роль» введено некорректно!', 'data': {}}
             )
         return role_
+
+    @field_validator('password')
+    def check_password_(cls, password_):
+        password_ = check_password(password_=password_)
+        if not password_:
+            raise HTTPException(
+                status_code=400,
+                detail={'result': False, 'message': 'Поле «Пароль» введено некорректно!', 'data': {}}
+            )
+        return password_
 
     @field_validator('phone_number')
     def check_phone_number_(cls, phone_number_):

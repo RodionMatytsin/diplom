@@ -41,3 +41,9 @@ def check_birthday(birthday_: str) -> bool | str:
     if re.search(r'^[0-9]{4}-[0-9]{2}-[0-9]{2}$', birthday_) is None:
         return False
     return birthday_
+
+
+def check_password(password_: str) -> bool | str:
+    if re.match('^([a-zA-Z0-9_]|\W){8,64}$', password_) is None:
+        return False
+    return password_
