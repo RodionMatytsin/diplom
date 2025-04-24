@@ -81,6 +81,16 @@ class UserLogin(BaseModel):
     login: str
     password: str
 
+    @field_validator('password')
+    def check_password_(cls, password_):
+        password_ = check_password(password_=password_)
+        if not password_:
+            raise HTTPException(
+                status_code=400,
+                detail={'result': False, 'message': 'Поле «Пароль» введено некорректно!', 'data': {}}
+            )
+        return password_
+
 
 class UserRegular(BaseModel):
     guid: UUID | str
