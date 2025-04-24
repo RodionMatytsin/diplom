@@ -1,19 +1,23 @@
 from main import main
 from fastapi import Depends
 from main.schemas.responses import DefaultResponse
-from main.schemas.users import UserSignUp, UserDefault
-from main.utils.users import get_current_user
+from main.schemas.users import UserDefault
+from main.utils.users import get_signup_user, get_login_user, get_logout_user, get_current_user
 
 
-# @main.post('/api/signup', status_code=200, tags=["Auth"], response_model=DefaultResponse)
-# async def api_signup_user(user: UserSignUp):
-#     signup_user = await get_signup_user(user=user)
-#     return DefaultResponse(message=signup_user['message'], data=signup_user['data'])
-#
-#
-# @main.post('/api/login', status_code=200, tags=["Auth"], response_model=DefaultResponse)
-# async def api_login_user(login_user=Depends(get_login_user)):
-#     return DefaultResponse(message=login_user['message'], data=login_user['data'])
+@main.post('/api/signup', status_code=200, tags=["Auth"], response_model=DefaultResponse)
+async def api_signup_user(signup_user=Depends(get_signup_user)):
+    return DefaultResponse(message=signup_user['message'], data=signup_user['data'])
+
+
+@main.post('/api/login', status_code=200, tags=["Auth"], response_model=DefaultResponse)
+async def api_login_user(login_user=Depends(get_login_user)):
+    return DefaultResponse(message=login_user['message'], data=login_user['data'])
+
+
+@main.get('/api/logout', status_code=200, tags=["Auth"])
+async def api_logout_user(response=Depends(get_logout_user)):
+    return DefaultResponse(message=response)
 
 
 @main.get('/api/users/me', status_code=200, tags=["Auth"], response_model=UserDefault)

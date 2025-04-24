@@ -1,12 +1,26 @@
 from main.models import engine, Users, CRUD, SessionHandler
-from fastapi import HTTPException, Header
+from fastapi import HTTPException, Response, Cookie
 from main.schemas.users import UserSignUp, UserLogin, UserRegular
 from uuid import UUID
+
+
+def serialize_user(user: Users) -> UserRegular:
+    return UserRegular(
+        guid=user.guid,
+        login=user.login,
+        phone_number=user.phone_number,
+        fio=user.fio,
+        birthday=user.birthday.strftime('%d.%m.%Y'),
+        gender=user.gender,
+        datetime_create=f"{user.datetime_create.strftime('%d.%m.%Y')} в {user.datetime_create.strftime('%H:%M')}",
+        is_teacher=user.is_teacher
+    )
 
 
 async def get_user(
         user_guid: UUID | str | None = None,
         login: str | None = None,
+        password: str | None = None,
         phone_number: int | None = None,
         is_teacher: bool | None = None,
         with_exception: bool = False,
@@ -18,6 +32,8 @@ async def get_user(
         where_.append(Users.guid == user_guid)
     if login is not None:
         where_.append(Users.login == login)
+    if password is not None:
+        where_.append(Users.password == password)
     if phone_number is not None:
         where_.append(Users.phone_number == phone_number)
     if is_teacher is not None:
@@ -39,40 +55,65 @@ async def get_user(
     return users
 
 
-# async def create_new_user(user: UserSignUp) -> Users:
-#     if await get_user(phone_number=user.phone_number, with_exception=False):
-#         raise HTTPException(
-#             status_code=409,
-#             detail={"result": False, "message": "Пользователь с таким номером телефона уже зарегистрирован!", "data": {}}
-#         )
-#
-#     await CRUD(
-#         session=SessionHandler.create(engine=engine), model=Users
-#     ).create(
-#         _values=user.model_dump()
-#     )
-#
-#     return await get_user(phone_number=user.phone_number, with_exception=False)
-#
-#
-# async def get_signup_user(user: UserSignUp) -> dict:
-#     new_user = await create_new_user(user=user)
-#     await create_user_gift(user_id=str(new_user.id))
-#     return {'message': 'Вы успешно зарегистрировались!', 'data': {'token': str(new_user.id)}}
-#
-#
-# async def get_login_user(user: UserLogin) -> dict:
-#     user = await get_user(phone_number=user.phone_number, with_exception=False)
-#     if not user:
-#         raise HTTPException(
-#             status_code=409,
-#             detail={"result": False, "message": "Пользователь с таким номером телефона не найден!", "data": {}}
-#         )
-#
-#     return {'message': 'Вы успешно авторизовались!', 'data': {'token': str(user.id)}}
+async def get_users_with_serialize(
+        user_guid: UUID | str | None = None
+) -> tuple[UserRegular] | UserRegular:
+    users = await get_user(user_guid=user_guid, with_exception=True)
+    if user_guid is None:
+        return tuple(serialize_user(user=user) for user in users)
+    return serialize_user(user=users)
 
 
-async def get_current_user(user_token: str = Header(default=None)) -> UserRegular:
+async def create_new_user(user: UserSignUp) -> Users:
+    if await get_user(login=user.login, with_exception=False):
+        raise HTTPException(
+            status_code=409,
+            detail={"result": False, "message": "Пользователь с таким логином уже существует!", "data": {}}
+        )
+
+    if await get_user(phone_number=user.phone_number, with_exception=False):
+        raise HTTPException(
+            status_code=409,
+            detail={"result": False, "message": "Пользователь с таким номером телефона уже существует!", "data": {}}
+        )
+
+    new_user: Users | object = await CRUD(
+        session=SessionHandler.create(engine=engine), model=Users
+    ).create(_values=dict(
+        login=user.login,
+        password=user.password,
+        phone_number=user.phone_number,
+        fio=user.fio,
+        birthday=user.birthday,
+        gender=user.gender,
+        is_teacher=True if user.role == 'Преподаватель' else False
+    ))
+    return new_user
+
+
+async def get_signup_user(user: UserSignUp, response: Response) -> dict:
+    new_user = await create_new_user(user=user)
+    response.set_cookie(key="user_token", value=new_user.guid, httponly=True, samesite="strict", max_age=4838400)
+    return {'message': 'Вы успешно зарегистрировались!', 'data': serialize_user(user=new_user)}
+
+
+async def get_login_user(user: UserLogin, response: Response) -> dict:
+    user = await get_user(login=user.login, password=user.password, with_exception=False)
+    if not user:
+        raise HTTPException(
+            status_code=409,
+            detail={"result": False, "message": "Пользователь с таким логином и паролем не найден!", "data": {}}
+        )
+    response.set_cookie(key="user_token", value=user.guid, httponly=True, samesite="strict", max_age=604800)
+    return {'message': 'Вы успешно авторизовались!', 'data': serialize_user(user=user)}
+
+
+async def get_logout_user(response: Response) -> str:
+    response.delete_cookie(key="user_token")
+    return "Выход выполнен успешно!"
+
+
+async def get_current_user(user_token=Cookie(default=None)) -> UserRegular:
     if user_token is None or user_token == 'null' or user_token == '':
         raise HTTPException(
             status_code=401,
@@ -81,16 +122,7 @@ async def get_current_user(user_token: str = Header(default=None)) -> UserRegula
 
     user = await get_user(user_guid=user_token, with_exception=False)
     if user:
-        return UserRegular(
-            guid=user.guid,
-            login=user.login,
-            phone_number=user.phone_number,
-            fio=user.fio,
-            birthday=user.birthday.strftime('%d.%m.%Y'),
-            gender=user.gender,
-            datetime_create=f"{user.datetime_create.strftime('%d.%m.%Y')} в {user.datetime_create.strftime('%H:%M')}",
-            is_teacher=user.is_teacher
-        )
+        return serialize_user(user=user)
     else:
         raise HTTPException(
             status_code=401,
