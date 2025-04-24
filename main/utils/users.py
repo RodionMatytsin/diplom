@@ -104,7 +104,7 @@ async def get_login_user(user: UserLogin, response: Response) -> dict:
             status_code=409,
             detail={"result": False, "message": "Пользователь с таким логином и паролем не найден!", "data": {}}
         )
-    response.set_cookie(key="user_token", value=user.guid, httponly=True, samesite="strict", max_age=604800)
+    response.set_cookie(key="user_token", value=user.guid, httponly=True, samesite="strict", max_age=4838400)
     return {'message': 'Вы успешно авторизовались!', 'data': serialize_user(user=user)}
 
 
