@@ -74,3 +74,4 @@ async def before_request(request: Request, call_next):
 from main.views import views
 from main.api import api_auth
 from main.api import api_achievements
+from main.api import api_tests

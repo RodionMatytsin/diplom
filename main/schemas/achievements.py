@@ -14,4 +14,4 @@ class AchievementRegular(BaseModel):
 
 
 class AchievementDefault(DefaultResponse):
-    data: AchievementRegular | tuple[AchievementRegular] | tuple | None
+    data: AchievementRegular | tuple[AchievementRegular] | tuple

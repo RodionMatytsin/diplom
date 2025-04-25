@@ -131,6 +131,12 @@ class Questions(Base):
     id = Column(SmallInteger, primary_key=True)
     name = Column(String(length=255), nullable=False)
     amount_of_points = Column(SmallInteger, default=1, nullable=False, server_default=text('1'))
+    datetime_create = Column(
+        DateTime,
+        default=func.now(),
+        server_default=text('(now() AT TIME ZONE \'Asia/Novosibirsk\')'),
+        nullable=False
+    )
 
 
 # Таблица с пройденными тестами школьников

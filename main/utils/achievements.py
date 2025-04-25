@@ -1,6 +1,5 @@
 from main.models import engine, Achievements, CRUD, SessionHandler
 from main.schemas.achievements import AchievementRegular
-from fastapi import HTTPException
 from uuid import UUID
 
 

@@ -122,4 +122,4 @@ class UserRegular(BaseModel):
 
 
 class UserDefault(DefaultResponse):
-    data: UserRegular | tuple[UserRegular] | tuple | None
+    data: UserRegular | tuple[UserRegular] | tuple
