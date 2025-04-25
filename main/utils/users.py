@@ -1,6 +1,6 @@
 from main.models import engine, Users, CRUD, SessionHandler
 from fastapi import HTTPException, Response, Cookie
-from main.schemas.users import UserSignUp, UserLogin, UserRegular
+from main.schemas.users import UserSignUp, UserLogin, UserRegular, BirthdayUser
 from uuid import UUID
 
 
@@ -10,7 +10,11 @@ def serialize_user(user: Users) -> UserRegular:
         login=user.login,
         phone_number=user.phone_number,
         fio=user.fio,
-        birthday=user.birthday.strftime('%d.%m.%Y'),
+        birthday=BirthdayUser(
+            day=f"0{user.birthday.day}" if user.birthday.day < 10 else f"{user.birthday.day}",
+            month=f"0{user.birthday.month}" if user.birthday.month < 10 else f"{user.birthday.month}",
+            year=f"{user.birthday.year}"
+        ),
         gender=user.gender,
         datetime_create=f"{user.datetime_create.strftime('%d.%m.%Y')} в {user.datetime_create.strftime('%H:%M')}",
         is_teacher=user.is_teacher

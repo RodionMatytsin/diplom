@@ -92,12 +92,18 @@ class UserLogin(BaseModel):
         return password_
 
 
+class BirthdayUser(BaseModel):
+    day: str
+    month: str
+    year: str
+
+
 class UserRegular(BaseModel):
     guid: UUID | str
     login: str
     phone_number: str | int
     fio: str
-    birthday: date | str
+    birthday: BirthdayUser
     gender: str
     datetime_create: str
     is_teacher: bool
