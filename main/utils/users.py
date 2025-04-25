@@ -1,6 +1,6 @@
 from main.models import engine, Users, CRUD, SessionHandler
 from fastapi import HTTPException, Response, Cookie
-from main.schemas.users import UserSignUp, UserLogin, UserRegular, BirthdayUser
+from main.schemas.users import UserSignUp, UserLogin, UserRegular, BirthdayUser, UserUpdate
 from uuid import UUID
 
 
@@ -69,6 +69,7 @@ async def get_users_with_serialize(
 
 
 async def create_new_user(user: UserSignUp) -> Users:
+
     if await get_user(login=user.login, with_exception=False):
         raise HTTPException(
             status_code=409,
@@ -102,12 +103,14 @@ async def get_signup_user(user: UserSignUp, response: Response) -> dict:
 
 
 async def get_login_user(user: UserLogin, response: Response) -> dict:
+
     user = await get_user(login=user.login, password=user.password, with_exception=False)
     if not user:
         raise HTTPException(
             status_code=409,
             detail={"result": False, "message": "Пользователь с таким логином и паролем не найден!", "data": {}}
         )
+
     response.set_cookie(key="user_token", value=user.guid, httponly=True, samesite="strict", max_age=4838400)
     return {'message': 'Вы успешно авторизовались!', 'data': serialize_user(user=user)}
 
@@ -117,7 +120,28 @@ async def get_logout_user(response: Response) -> str:
     return "Выход выполнен успешно!"
 
 
+async def update_user(user_update: UserUpdate, current_user: UserRegular) -> str:
+
+    from main.utils.validation import check_phone_number
+    if check_phone_number(phone_number_=current_user.phone_number) != user_update.phone_number:
+        if await get_user(phone_number=user_update.phone_number, with_exception=False):
+            raise HTTPException(
+                status_code=409,
+                detail={'result': False, 'message': 'Ошибка, данный телефон уже занят!', 'data': {}}
+            )
+
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=Users
+    ).update(
+        _where=[Users.guid == current_user.guid],
+        _values=user_update.model_dump()
+    )
+
+    return 'Вы успешно отредактировали свои личные данные!'
+
+
 async def get_current_user(user_token=Cookie(default=None)) -> UserRegular:
+
     if user_token is None or user_token == 'null' or user_token == '':
         raise HTTPException(
             status_code=401,

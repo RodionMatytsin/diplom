@@ -7,34 +7,11 @@ from uuid import UUID
 from datetime import datetime, date
 
 
-class UserSignUp(BaseModel):
-    role: str
-    login: str
-    password: str
+class User(BaseModel):
     phone_number: str | int
     fio: str
     birthday: date | str
     gender: str
-
-    @field_validator('role')
-    def check_role_(cls, role_):
-        role_ = check_role(role_=role_)
-        if not role_:
-            raise HTTPException(
-                status_code=400,
-                detail={'result': False, 'message': 'Поле «Роль» введено некорректно!', 'data': {}}
-            )
-        return role_
-
-    @field_validator('password')
-    def check_password_(cls, password_):
-        password_ = check_password(password_=password_)
-        if not password_:
-            raise HTTPException(
-                status_code=400,
-                detail={'result': False, 'message': 'Поле «Пароль» введено некорректно!', 'data': {}}
-            )
-        return password_
 
     @field_validator('phone_number')
     def check_phone_number_(cls, phone_number_):
@@ -77,6 +54,32 @@ class UserSignUp(BaseModel):
         return gender_
 
 
+class UserSignUp(User):
+    role: str
+    login: str
+    password: str
+
+    @field_validator('role')
+    def check_role_(cls, role_):
+        role_ = check_role(role_=role_)
+        if not role_:
+            raise HTTPException(
+                status_code=400,
+                detail={'result': False, 'message': 'Поле «Роль» введено некорректно!', 'data': {}}
+            )
+        return role_
+
+    @field_validator('password')
+    def check_password_(cls, password_):
+        password_ = check_password(password_=password_)
+        if not password_:
+            raise HTTPException(
+                status_code=400,
+                detail={'result': False, 'message': 'Поле «Пароль» введено некорректно!', 'data': {}}
+            )
+        return password_
+
+
 class UserLogin(BaseModel):
     login: str
     password: str
@@ -90,6 +93,10 @@ class UserLogin(BaseModel):
                 detail={'result': False, 'message': 'Поле «Пароль» введено некорректно!', 'data': {}}
             )
         return password_
+
+
+class UserUpdate(User):
+    pass
 
 
 class BirthdayUser(BaseModel):

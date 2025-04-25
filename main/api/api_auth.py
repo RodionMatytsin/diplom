@@ -1,8 +1,8 @@
 from main import main
 from fastapi import Depends
 from main.schemas.responses import DefaultResponse
-from main.schemas.users import UserDefault
-from main.utils.users import get_signup_user, get_login_user, get_logout_user, get_current_user
+from main.schemas.users import UserDefault, UserUpdate
+from main.utils.users import get_signup_user, get_login_user, get_logout_user, get_current_user, update_user
 
 
 @main.post('/api/signup', status_code=200, tags=["Auth"], response_model=DefaultResponse)
@@ -21,5 +21,11 @@ async def api_logout_user(response=Depends(get_logout_user)):
 
 
 @main.get('/api/users/me', status_code=200, tags=["Auth"], response_model=UserDefault)
-async def api_get_current_user(user=Depends(get_current_user)):
-    return UserDefault(data=user)
+async def api_get_current_user(current_user=Depends(get_current_user)):
+    return UserDefault(data=current_user)
+
+
+@main.patch('/api/users', status_code=200, tags=['Auth'], response_model=DefaultResponse)
+async def api_update_user(user_update: UserUpdate, current_user=Depends(get_current_user)):
+    return DefaultResponse(message=await update_user(user_update=user_update, current_user=current_user))
+
