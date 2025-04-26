@@ -1,4 +1,9 @@
 import re
+import hashlib
+
+
+def hash_password(password_: str) -> str:
+    return hashlib.sha512(password_.encode()).hexdigest()
 
 
 def check_fio(fio_: str) -> bool | str:

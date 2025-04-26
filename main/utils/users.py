@@ -8,6 +8,7 @@ def serialize_user(user: Users) -> UserRegular:
     return UserRegular(
         guid=user.guid,
         login=user.login,
+        hash_password=user.hash_password,
         phone_number=user.phone_number,
         fio=user.fio,
         birthday=BirthdayUser(
@@ -24,7 +25,7 @@ def serialize_user(user: Users) -> UserRegular:
 async def get_user(
         user_guid: UUID | str | None = None,
         login: str | None = None,
-        password: str | None = None,
+        hash_password: str | None = None,
         phone_number: int | None = None,
         is_teacher: bool | None = None,
         with_exception: bool = False,
@@ -36,8 +37,8 @@ async def get_user(
         where_.append(Users.guid == user_guid)
     if login is not None:
         where_.append(Users.login == login)
-    if password is not None:
-        where_.append(Users.password == password)
+    if hash_password is not None:
+        where_.append(Users.hash_password == hash_password)
     if phone_number is not None:
         where_.append(Users.phone_number == phone_number)
     if is_teacher is not None:
@@ -82,11 +83,13 @@ async def create_new_user(user: UserSignUp) -> Users:
             detail={"result": False, "message": "Пользователь с таким номером телефона уже существует!", "data": {}}
         )
 
+    from main.utils.validation import hash_password
     new_user: Users | object = await CRUD(
         session=SessionHandler.create(engine=engine), model=Users
     ).create(_values=dict(
         login=user.login,
         password=user.password,
+        hash_password=hash_password(password_=user.password),
         phone_number=user.phone_number,
         fio=user.fio,
         birthday=user.birthday,
@@ -103,16 +106,16 @@ async def get_signup_user(user: UserSignUp, response: Response) -> dict:
 
 
 async def get_login_user(user: UserLogin, response: Response) -> dict:
-
-    user = await get_user(login=user.login, password=user.password, with_exception=False)
-    if not user:
+    from main.utils.validation import hash_password
+    current_user = await get_user(login=user.login, hash_password=hash_password(user.password), with_exception=False)
+    if not current_user:
         raise HTTPException(
             status_code=409,
             detail={"result": False, "message": "Пользователь с таким логином и паролем не найден!", "data": {}}
         )
 
-    response.set_cookie(key="user_token", value=user.guid, httponly=True, samesite="strict", max_age=4838400)
-    return {'message': 'Вы успешно авторизовались!', 'data': serialize_user(user=user)}
+    response.set_cookie(key="user_token", value=current_user.guid, httponly=True, samesite="strict", max_age=4838400)
+    return {'message': 'Вы успешно авторизовались!', 'data': serialize_user(user=current_user)}
 
 
 async def get_logout_user(response: Response) -> str:
@@ -148,9 +151,9 @@ async def get_current_user(user_token=Cookie(default=None)) -> UserRegular:
             detail={"result": False, "message": "Пожалуйста, авторизуйтесь на сайте!", "data": {}}
         )
 
-    user = await get_user(user_guid=user_token, with_exception=False)
-    if user:
-        return serialize_user(user=user)
+    current_user = await get_user(user_guid=user_token, with_exception=False)
+    if current_user:
+        return serialize_user(user=current_user)
     else:
         raise HTTPException(
             status_code=401,

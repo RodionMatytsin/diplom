@@ -23,6 +23,7 @@ class Users(Base):
     )
     login = Column(String(length=125), nullable=False)
     password = Column(String(length=125), nullable=False)
+    hash_password = Column(String(length=255), nullable=False)
     phone_number = Column(BigInteger, nullable=False)
     fio = Column(String(length=255), nullable=False)
     birthday = Column(Date, nullable=False)
