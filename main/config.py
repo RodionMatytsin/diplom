@@ -13,3 +13,5 @@ DATABASE_IP = os.getenv('DATABASE_IP', 'localhost')
 DATABASE_PORT = os.getenv('DATABASE_PORT', 5432)
 DATABASE_USER = os.getenv('DATABASE_USER', 'postgres')
 DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD', 'root')
+
+SECRET_KEY = 'kAlu7NqZwoWx7MaRwoXv9Qc4woZnAp=='

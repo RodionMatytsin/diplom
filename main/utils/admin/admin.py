@@ -1,6 +1,16 @@
 from main.models import engine, Classes, SchoolchildrenClasses, TeacherClasses, CRUD, SessionHandler
 from main.schemas.admin.admin import ClassRegular
+from fastapi import HTTPException
 from uuid import UUID
+
+
+async def need_key(key: str):
+    from main.config import SECRET_KEY
+    if key != SECRET_KEY:
+        raise HTTPException(
+            status_code=403,
+            detail={"result": False, "message": "Нет прав", "data": {}}
+        )
 
 
 def serialize_class(class_: Classes) -> ClassRegular:
