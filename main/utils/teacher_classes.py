@@ -15,7 +15,16 @@ def serialize_teacher_class(teacher_class: TeacherClass) -> TeacherClassRegular:
     )
 
 
-async def get_teacher_classes(user_guid: UUID | str) -> tuple[TeacherClassRegular] | tuple:
+async def get_teacher_classes(
+        user_guid: UUID | str | None = None,
+        class_guid: UUID | str | None = None
+) -> tuple[TeacherClassRegular] | tuple:
+
+    where_ = [Classes.is_deleted == False]
+    if user_guid is not None:
+        where_.append(TeacherClasses.user_guid == user_guid)
+    if class_guid is not None:
+        where_.append(TeacherClasses.class_guid == class_guid)
 
     teacher_classes: tuple[TeacherClass] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=TeacherClasses
@@ -27,10 +36,7 @@ async def get_teacher_classes(user_guid: UUID | str) -> tuple[TeacherClassRegula
         _join=[
             [Classes, Classes.guid == TeacherClasses.class_guid]
         ],
-        _where=[
-            Classes.is_deleted == False,
-            TeacherClasses.user_guid == user_guid
-        ],
+        _where=where_,
         _group_by=[],
         _order_by=[],
         _all=True

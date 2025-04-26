@@ -17,7 +17,19 @@ def serialize_schoolchildren_class(schoolchildren_class: SchoolchildrenClass) ->
     )
 
 
-async def get_schoolchildren_classes(user_guid: UUID | str) -> tuple[SchoolchildrenClassRegular] | tuple:
+async def get_schoolchildren_classes(
+        user_guid: UUID | str | None = None,
+        class_guid: UUID | str | None = None
+) -> tuple[SchoolchildrenClassRegular] | tuple:
+
+    where_ = [
+        Classes.is_deleted == False,
+        SchoolchildrenClasses.is_deleted == False,
+    ]
+    if user_guid is not None:
+        where_.append(SchoolchildrenClasses.user_guid == user_guid)
+    if class_guid is not None:
+        where_.append(SchoolchildrenClasses.class_guid == class_guid)
 
     schoolchildren_classes: tuple[SchoolchildrenClass] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
@@ -30,11 +42,7 @@ async def get_schoolchildren_classes(user_guid: UUID | str) -> tuple[Schoolchild
         _join=[
             [Classes, Classes.guid == SchoolchildrenClasses.class_guid]
         ],
-        _where=[
-            Classes.is_deleted == False,
-            SchoolchildrenClasses.is_deleted == False,
-            SchoolchildrenClasses.user_guid == user_guid
-        ],
+        _where=where_,
         _group_by=[],
         _order_by=[],
         _all=True

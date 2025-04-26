@@ -49,21 +49,3 @@ async def add_achievement(description: str, user_guid: UUID | str) -> str:
     )
 
     return "Вы успешно отправили свое новое достижение на модерацию!"
-
-
-async def accept_achievement(achievement_guid: UUID | str):
-    await CRUD(
-        session=SessionHandler.create(engine=engine), model=Achievements
-    ).update(
-        _where=[Achievements.guid == achievement_guid],
-        _values=dict(is_accepted=True)
-    )
-
-
-async def reject_achievement(achievement_guid: UUID | str):
-    await CRUD(
-        session=SessionHandler.create(engine=engine), model=Achievements
-    ).update(
-        _where=[Achievements.guid == achievement_guid],
-        _values=dict(is_deleted=True)
-    )

@@ -1,6 +1,8 @@
 from fastapi import HTTPException
 from pydantic import BaseModel, field_validator
+from main.schemas.responses import DefaultResponse
 from main.utils.validation import check_class
+from uuid import UUID
 
 
 class ClassAdd(BaseModel):
@@ -15,3 +17,12 @@ class ClassAdd(BaseModel):
                 detail={'result': False, 'message': 'Поле «Название класса» введено некорректно!', 'data': {}}
             )
         return name_class_
+
+
+class ClassRegular(BaseModel):
+    guid: UUID | str
+    name: str
+
+
+class ClassDefault(DefaultResponse):
+    data: ClassRegular | tuple[ClassRegular] | tuple
