@@ -1,5 +1,6 @@
 import re
 import hashlib
+from fastapi import HTTPException
 
 
 def hash_password(password_: str) -> str:
@@ -48,7 +49,37 @@ def check_birthday(birthday_: str) -> bool | str:
     return birthday_
 
 
+def check_login(login_: str) -> bool | str:
+    if not (8 <= len(login_) <= 24):
+        raise HTTPException(
+            status_code=400,
+            detail={'result': False, 'message': 'Поле «Логин» должно содержать от 8 до 24 символов!', 'data': {}}
+        )
+    if re.match(r'^[a-zA-Z0-9_\-]+$', login_) is None:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                'result': False,
+                'message': 'Поле «Логин» может содержать только английские буквы, цифры и символы _ и -!',
+                'data': {}
+            }
+        )
+    return login_
+
+
 def check_password(password_: str) -> bool | str:
-    if re.match('^([a-zA-Z0-9_]|\W){8,64}$', password_) is None:
-        return False
+    if not (8 <= len(password_) <= 32):
+        raise HTTPException(
+            status_code=400,
+            detail={'result': False, 'message': 'Поле «Пароль» должно содержать от 8 до 32 символов!', 'data': {}}
+        )
+    if re.match(r'^[a-zA-Z0-9_.\-!]+$', password_) is None:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                'result': False,
+                'message': 'Поле «Пароль» может содержать только английские буквы, цифры и символы _, -, ., !',
+                'data': {}
+            }
+        )
     return password_
