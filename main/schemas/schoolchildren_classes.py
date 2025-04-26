@@ -4,7 +4,7 @@ from main.schemas.responses import DefaultResponse
 
 
 class SchoolchildrenClassRegular(BaseModel):
-    guid: UUID | str
+    class_guid: UUID | str
     name_class: str
     estimation: float | None
 

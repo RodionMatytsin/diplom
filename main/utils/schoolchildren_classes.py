@@ -4,14 +4,14 @@ from uuid import UUID
 
 
 class SchoolchildrenClass:
-    guid: UUID | str
+    class_guid: UUID | str
     name_class: str
     estimation: float | None
 
 
 def serialize_schoolchildren_class(schoolchildren_class: SchoolchildrenClass) -> SchoolchildrenClassRegular:
     return SchoolchildrenClassRegular(
-        guid=schoolchildren_class.guid,
+        class_guid=schoolchildren_class.class_guid,
         name_class=schoolchildren_class.name_class,
         estimation=schoolchildren_class.estimation
     )
@@ -23,7 +23,7 @@ async def get_schoolchildren_classes(user_guid: UUID | str) -> tuple[Schoolchild
         session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
     ).extended_query(
         _select=[
-            SchoolchildrenClasses.guid,
+            SchoolchildrenClasses.class_guid,
             Classes.name.label('name_class'),
             SchoolchildrenClasses.estimation
         ],
