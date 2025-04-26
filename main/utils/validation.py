@@ -49,7 +49,7 @@ def check_birthday(birthday_: str) -> bool | str:
     return birthday_
 
 
-def check_login(login_: str) -> bool | str:
+def check_login(login_: str) -> str:
     if not (8 <= len(login_) <= 24):
         raise HTTPException(
             status_code=400,
@@ -67,7 +67,7 @@ def check_login(login_: str) -> bool | str:
     return login_
 
 
-def check_password(password_: str) -> bool | str:
+def check_password(password_: str) -> str:
     if not (8 <= len(password_) <= 32):
         raise HTTPException(
             status_code=400,
@@ -83,3 +83,9 @@ def check_password(password_: str) -> bool | str:
             }
         )
     return password_
+
+
+def check_class(name_class_: str) -> bool | str:
+    if re.match(r'^[a-zA-ZА-Яа-я0-9_\-+=\s]+$', name_class_) is None:
+        return False
+    return name_class_
