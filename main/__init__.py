@@ -21,14 +21,14 @@ main.add_middleware(
     allow_headers=["*"]
 )
 
-# main.middleware('http')(
-#     ConfigureLogger(
-#         debug=DEBUG,
-#         service_version=SERVICE_VERSION,
-#         service_name=SERVICE_NAME,
-#         service_id=SERVICE_ID
-#     ).get_logger_middleware()
-# )
+main.middleware('http')(
+    ConfigureLogger(
+        debug=DEBUG,
+        service_version=SERVICE_VERSION,
+        service_name=SERVICE_NAME,
+        service_id=SERVICE_ID
+    ).get_logger_middleware()
+)
 
 
 @main.exception_handler(ValidationException)
