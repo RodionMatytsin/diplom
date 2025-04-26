@@ -1,6 +1,7 @@
 from main import main
 from fastapi import Depends
-from main.schemas.teacher_classes import TeacherClassDefault, TeacherClassWithSchoolchildrenDefault
+from main.schemas.teacher_classes import TeacherClassDefault, TeacherClassWithSchoolchildrenDefault, EstimationUpdate
+from main.schemas.responses import DefaultResponse
 from main.utils.users import get_current_user
 from uuid import UUID
 
@@ -31,3 +32,18 @@ async def api_get_teacher_class_with_schoolchildren(class_guid: UUID | str, curr
             class_guid=class_guid
         )
     )
+
+
+@main.patch(
+    '/api/teacher_classes/estimation',
+    status_code=200,
+    tags=["TeacherClasses"],
+    response_model=DefaultResponse
+)
+async def api_update_estimation_to_schoolchildren(
+        estimation_update: EstimationUpdate,
+        current_user=Depends(get_current_user)
+):
+    from main.utils.teacher_classes import required_teacher_access, update_estimation_to_schoolchildren
+    await required_teacher_access(current_user=current_user)
+    return DefaultResponse(message=await update_estimation_to_schoolchildren(estimation_update=estimation_update))

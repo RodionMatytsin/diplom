@@ -22,3 +22,8 @@ class TeacherClassWithSchoolchildrenRegular(BaseModel):
 
 class TeacherClassWithSchoolchildrenDefault(DefaultResponse):
     data: TeacherClassWithSchoolchildrenRegular | tuple[TeacherClassWithSchoolchildrenRegular] | tuple
+
+
+class EstimationUpdate(BaseModel):
+    schoolchildren_class_guid: UUID | str
+    estimation: float | None

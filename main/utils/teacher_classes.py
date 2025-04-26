@@ -1,5 +1,5 @@
 from main.models import engine, TeacherClasses, Classes, SchoolchildrenClasses, Users, CRUD, SessionHandler
-from main.schemas.teacher_classes import TeacherClassRegular, TeacherClassWithSchoolchildrenRegular
+from main.schemas.teacher_classes import TeacherClassRegular, TeacherClassWithSchoolchildrenRegular, EstimationUpdate
 from main.schemas.users import UserRegular
 from fastapi import HTTPException
 from uuid import UUID
@@ -102,3 +102,17 @@ async def get_teacher_class_with_schoolchildren(
             if i.datetime_estimation_update else None
         ) for i in teacher_class_with_schoolchildren
     )
+
+
+async def update_estimation_to_schoolchildren(estimation_update: EstimationUpdate) -> str:
+    from datetime import datetime
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
+    ).update(
+        _where=[SchoolchildrenClasses.guid == estimation_update.schoolchildren_class_guid],
+        _values=dict(
+            estimation=estimation_update.estimation,
+            datetime_estimation_update=datetime.now()
+        )
+    )
+    return "Вы успешно обновили оценку у школьника!"
