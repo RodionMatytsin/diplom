@@ -76,3 +76,4 @@ from main.api.admin import api_admin
 from main.api import api_auth
 from main.api import api_achievements
 from main.api import api_tests
+from main.api import api_schoolchildren_classes

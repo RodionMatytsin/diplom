@@ -16,7 +16,7 @@ async def get_achievement(
         achievement_guid: UUID | str | None = None,
         user_guid: UUID | str | None = None,
         is_accepted: bool | None = None
-) -> tuple[AchievementRegular] | AchievementRegular | tuple | None:
+) -> tuple[AchievementRegular] | AchievementRegular | tuple:
 
     where_ = [Achievements.is_deleted == False]
     if achievement_guid is not None:
