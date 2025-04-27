@@ -5,14 +5,14 @@ from uuid import UUID
 
 def serialize_achievement(achievement: Achievements) -> AchievementRegular:
     return AchievementRegular(
-        guid=achievement.guid,
+        achievement_guid=achievement.guid,
         description=achievement.description,
         datetime_create=f"{achievement.datetime_create.strftime('%d.%m.%Y')} в "
                         f"{achievement.datetime_create.strftime('%H:%M')}"
     )
 
 
-async def get_achievement(
+async def get_achievements(
         achievement_guid: UUID | str | None = None,
         user_guid: UUID | str | None = None,
         is_accepted: bool | None = None

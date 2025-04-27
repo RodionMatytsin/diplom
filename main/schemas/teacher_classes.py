@@ -1,6 +1,10 @@
 from uuid import UUID
 from pydantic import BaseModel, field_validator
 from main.schemas.responses import DefaultResponse
+from main.schemas.users import UserRegular
+from main.schemas.achievements import AchievementRegular
+from main.schemas.recommendations import RecommendationRegular
+from main.schemas.tests import TestRegular
 
 
 class TeacherClassRegular(BaseModel):
@@ -38,3 +42,14 @@ class EstimationUpdate(BaseModel):
         if estimation_ is None or estimation_ == '':
             return None
         return estimation_
+
+
+class SchoolchildrenDetails(BaseModel):
+    user: UserRegular
+    achievements: tuple[AchievementRegular] | tuple
+    recommendations: tuple[RecommendationRegular] | tuple
+    tests: tuple[TestRegular] | tuple
+
+
+class SchoolchildrenDetailsDefault(DefaultResponse):
+    data: SchoolchildrenDetails

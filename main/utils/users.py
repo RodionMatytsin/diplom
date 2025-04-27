@@ -61,9 +61,10 @@ async def get_user(
 
 
 async def get_users_with_serialize(
-        user_guid: UUID | str | None = None
+        user_guid: UUID | str | None = None,
+        is_teacher: bool = False
 ) -> tuple[UserRegular] | UserRegular:
-    users = await get_user(user_guid=user_guid, with_exception=True)
+    users = await get_user(user_guid=user_guid, is_teacher=is_teacher, with_exception=True)
     if user_guid is None:
         return tuple(serialize_user(user=user) for user in users)
     return serialize_user(user=users)

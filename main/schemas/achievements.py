@@ -18,7 +18,7 @@ class AchievementAdd(BaseModel):
 
 
 class AchievementRegular(BaseModel):
-    guid: UUID | str
+    achievement_guid: UUID | str
     description: str
     datetime_create: str
 

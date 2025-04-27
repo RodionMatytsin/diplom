@@ -1,6 +1,6 @@
 from main.models import engine, TeacherClasses, Classes, SchoolchildrenClasses, Users, CRUD, SessionHandler
 from main.schemas.teacher_classes import TeacherClassRegular, TeacherClassWithSchoolchildrenRegular, \
-    EstimationUpdate, Schoolchildren
+    EstimationUpdate, Schoolchildren, SchoolchildrenDetails
 from main.schemas.users import UserRegular
 from fastapi import HTTPException
 from uuid import UUID
@@ -185,3 +185,20 @@ async def update_estimation_to_schoolchildren(estimation_update: EstimationUpdat
     )
 
     return "Вы успешно обновили оценку у школьника!"
+
+
+async def get_schoolchildren_by_user_guid(user_guid: UUID | str) -> SchoolchildrenDetails:
+
+    from main.utils.users import get_users_with_serialize
+    from main.utils.achievements import get_achievements
+    from main.utils.recommendations import get_recommendations
+    from main.utils.tests import get_tests
+
+    current_user = await get_users_with_serialize(user_guid=user_guid)
+
+    return SchoolchildrenDetails(
+        user=current_user,
+        achievements=await get_achievements(user_guid=current_user.guid, is_accepted=True),
+        recommendations=await get_recommendations(user_guid=current_user.guid),
+        tests=await get_tests(user_guid=current_user.guid)
+    )

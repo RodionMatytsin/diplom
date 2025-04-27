@@ -1,10 +1,11 @@
 from main import main
 from fastapi import Depends
 from main.schemas.responses import DefaultResponse
-from main.schemas.admin.admin import ClassAdd, ClassDefault
+from main.schemas.admin.admin import ClassAdd, ClassDefault, SchoolchildrenDetailsAdminDefault
 from main.schemas.teacher_classes import TeacherClassWithSchoolchildrenDefault
 from main.utils.admin.admin import get_classes_for_admin, admin_add_new_class, admin_del_schoolchildren_from_class, \
-    admin_del_class, admin_accept_achievement, admin_reject_achievement, get_teacher_class_with_schoolchildren_for_admin
+    admin_accept_achievement, admin_reject_achievement, get_teacher_class_with_schoolchildren_for_admin, \
+    admin_del_class, get_schoolchildren_by_user_guid_for_admin
 from main.utils.admin.admin import need_key
 from uuid import UUID
 
@@ -111,3 +112,19 @@ async def api_admin_reject_achievement(
         отклонить добавленное достижение школьника.
     """
     return DefaultResponse(message=await admin_reject_achievement(achievement_guid=achievement_guid))
+
+
+@main.get(
+    '/api/admin/schoolchildren/{user_guid}',
+    status_code=200,
+    tags=["Admin"],
+    response_model=SchoolchildrenDetailsAdminDefault
+)
+async def api_get_schoolchildren_by_user_guid_for_admin(
+        user_guid: UUID | str,
+        key: str = Depends(need_key)
+):
+    """
+        Этот метод предназначен для админа, с помощью которого он получает подробную инфу об школьнике.
+    """
+    return SchoolchildrenDetailsAdminDefault(data=await get_schoolchildren_by_user_guid_for_admin(user_guid=user_guid))

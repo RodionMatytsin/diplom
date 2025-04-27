@@ -1,7 +1,6 @@
-from main.models import engine, Classes, SchoolchildrenClasses, TeacherClasses, Achievements, \
-    Users, CRUD, SessionHandler
-from main.schemas.teacher_classes import TeacherClassWithSchoolchildrenRegular, Schoolchildren
-from main.schemas.admin.admin import ClassRegular
+from main.models import engine, Classes, SchoolchildrenClasses, TeacherClasses, Achievements, CRUD, SessionHandler
+from main.schemas.teacher_classes import TeacherClassWithSchoolchildrenRegular
+from main.schemas.admin.admin import ClassRegular, SchoolchildrenDetailsAdmin
 from fastapi import HTTPException
 from uuid import UUID
 
@@ -131,3 +130,21 @@ async def admin_reject_achievement(achievement_guid: UUID | str) -> str:
         _values=dict(is_deleted=True)
     )
     return "Вы успешно отклонили достижение школьника!"
+
+
+async def get_schoolchildren_by_user_guid_for_admin(user_guid: UUID | str) -> SchoolchildrenDetailsAdmin:
+
+    from main.utils.users import get_users_with_serialize
+    from main.utils.achievements import get_achievements
+    from main.utils.recommendations import get_recommendations
+    from main.utils.tests import get_tests
+
+    current_user = await get_users_with_serialize(user_guid=user_guid)
+
+    return SchoolchildrenDetailsAdmin(
+        user=current_user,
+        achievements=await get_achievements(user_guid=current_user.guid, is_accepted=True),
+        pending_achievements=await get_achievements(user_guid=current_user.guid, is_accepted=False),
+        recommendations=await get_recommendations(user_guid=current_user.guid),
+        tests=await get_tests(user_guid=current_user.guid)
+    )

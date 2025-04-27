@@ -1,6 +1,7 @@
 from main import main
 from fastapi import Depends
-from main.schemas.teacher_classes import TeacherClassDefault, TeacherClassWithSchoolchildrenDefault, EstimationUpdate
+from main.schemas.teacher_classes import TeacherClassDefault, TeacherClassWithSchoolchildrenDefault, \
+    EstimationUpdate, SchoolchildrenDetailsDefault
 from main.schemas.responses import DefaultResponse
 from main.utils.users import get_current_user
 from uuid import UUID
@@ -59,3 +60,21 @@ async def api_update_estimation_to_schoolchildren(
     from main.utils.teacher_classes import required_teacher_access, update_estimation_to_schoolchildren
     await required_teacher_access(current_user=current_user)
     return DefaultResponse(message=await update_estimation_to_schoolchildren(estimation_update=estimation_update))
+
+
+@main.get(
+    '/api/teacher_classes/schoolchildren/{user_guid}',
+    status_code=200,
+    tags=["TeacherClasses"],
+    response_model=SchoolchildrenDetailsDefault
+)
+async def api_get_schoolchildren_by_user_guid(
+        user_guid: UUID | str,
+        current_user=Depends(get_current_user)
+):
+    """
+        Этот метод предназначен для преподавателя, с помощью которого он получает подробную инфу об школьнике.
+    """
+    from main.utils.teacher_classes import required_teacher_access, get_schoolchildren_by_user_guid
+    await required_teacher_access(current_user=current_user)
+    return SchoolchildrenDetailsDefault(data=await get_schoolchildren_by_user_guid(user_guid=user_guid))
