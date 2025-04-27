@@ -15,6 +15,9 @@ async def api_admin_get_classes(
         class_guid: UUID | str | None = None,
         key: str = Depends(need_key)
 ):
+    """
+        Этот метод предназначен для администратора, который отображает список всех существующих учебных классов.
+    """
     return ClassDefault(data=await get_classes_for_admin(class_guid=class_guid))
 
 
@@ -23,6 +26,9 @@ async def api_admin_create_class(
         class_add: ClassAdd,
         key: str = Depends(need_key)
 ):
+    """
+        Этот метод предназначен для администратора, который создает учебный класс.
+    """
     return DefaultResponse(message=await admin_add_new_class(name_class=class_add.name_class))
 
 
@@ -31,6 +37,9 @@ async def api_admin_del_class(
         class_guid: UUID | str,
         key: str = Depends(need_key)
 ):
+    """
+        Этот метод предназначен для администратора, который удаляет учебный класс.
+    """
     return DefaultResponse(message=await admin_del_class(class_guid=class_guid))
 
 
@@ -44,6 +53,10 @@ async def api_admin_get_teacher_class_with_schoolchildren(
         class_guid: UUID | str,
         key: str = Depends(need_key)
 ):
+    """
+        Этот метод предназначен для администратора, с помощью которого переходит в подробно о классе
+        для просмотра всех состоящих в нем школьников.
+    """
     return TeacherClassWithSchoolchildrenDefault(
         data=await get_teacher_class_with_schoolchildren(class_guid=class_guid)
     )
@@ -59,6 +72,9 @@ async def api_admin_del_schoolchildren_from_class(
         schoolchildren_class_guid: UUID | str,
         key: str = Depends(need_key)
 ):
+    """
+        Этот метод предназначен для администратора, с помощью которого можно удалять школьника с определенного класса.
+    """
     return DefaultResponse(
         message=await admin_del_schoolchildren_from_class(schoolchildren_class_guid=schoolchildren_class_guid)
     )
@@ -69,6 +85,10 @@ async def api_admin_accept_achievement(
         achievement_guid: UUID | str,
         key: str = Depends(need_key)
 ):
+    """
+        Этот метод предназначен для администратора, с помощью которого можно
+        принять добавленное достижение школьника.
+    """
     return DefaultResponse(message=await admin_accept_achievement(achievement_guid=achievement_guid))
 
 
@@ -77,4 +97,8 @@ async def api_admin_reject_achievement(
         achievement_guid: UUID | str,
         key: str = Depends(need_key)
 ):
+    """
+        Этот метод предназначен для администратора, с помощью которого можно
+        отклонить добавленное достижение школьника.
+    """
     return DefaultResponse(message=await admin_reject_achievement(achievement_guid=achievement_guid))
