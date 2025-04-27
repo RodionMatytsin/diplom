@@ -1,4 +1,6 @@
-from main.models import engine, Classes, SchoolchildrenClasses, TeacherClasses, Achievements, CRUD, SessionHandler
+from main.models import engine, Classes, SchoolchildrenClasses, TeacherClasses, Achievements, \
+    Users, CRUD, SessionHandler
+from main.schemas.teacher_classes import TeacherClassWithSchoolchildrenRegular, Schoolchildren
 from main.schemas.admin.admin import ClassRegular
 from fastapi import HTTPException
 from uuid import UUID
@@ -72,6 +74,33 @@ async def admin_del_class(class_guid: UUID | str) -> str:
     )
 
     return "Вы успешно удалили учебный класс!"
+
+
+async def get_teacher_class_with_schoolchildren_for_admin(
+        class_guid: UUID | str
+) -> TeacherClassWithSchoolchildrenRegular | tuple:
+
+    class_: Classes | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=Classes
+    ).read(
+        _where=[Classes.is_deleted == False, Classes.guid == class_guid], _all=False
+    )
+
+    if class_ is None:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                'result': False,
+                'message': 'К сожалению, такого учебного класса просто не существует!',
+                'data': {}
+            }
+        )
+
+    from main.utils.teacher_classes import get_schoolchildren, serialize_teacher_class_with_schoolchildren
+    return await serialize_teacher_class_with_schoolchildren(
+        name_class=class_.name,
+        schoolchildren=await get_schoolchildren(class_guid=class_.guid)
+    )
 
 
 async def admin_del_schoolchildren_from_class(schoolchildren_class_guid: UUID | str) -> str:

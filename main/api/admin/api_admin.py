@@ -3,9 +3,8 @@ from fastapi import Depends
 from main.schemas.responses import DefaultResponse
 from main.schemas.admin.admin import ClassAdd, ClassDefault
 from main.schemas.teacher_classes import TeacherClassWithSchoolchildrenDefault
-from main.utils.teacher_classes import get_teacher_class_with_schoolchildren
 from main.utils.admin.admin import get_classes_for_admin, admin_add_new_class, admin_del_schoolchildren_from_class, \
-    admin_del_class, admin_accept_achievement, admin_reject_achievement
+    admin_del_class, admin_accept_achievement, admin_reject_achievement, get_teacher_class_with_schoolchildren_for_admin
 from main.utils.admin.admin import need_key
 from uuid import UUID
 
@@ -58,7 +57,7 @@ async def api_admin_get_teacher_class_with_schoolchildren(
         для просмотра всех состоящих в нем школьников.
     """
     return TeacherClassWithSchoolchildrenDefault(
-        data=await get_teacher_class_with_schoolchildren(class_guid=class_guid)
+        data=await get_teacher_class_with_schoolchildren_for_admin(class_guid=class_guid)
     )
 
 

@@ -62,10 +62,58 @@ async def required_teacher_access(current_user: UserRegular):
         )
 
 
+async def get_schoolchildren(
+        class_guid: UUID | str
+) -> tuple[SchoolchildrenClasses] | object | None:
+
+    schoolchildren: tuple[SchoolchildrenClasses] | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
+    ).extended_query(
+        _select=[
+            SchoolchildrenClasses.guid,
+            SchoolchildrenClasses.user_guid,
+            Users.fio.label('user_fio'),
+            SchoolchildrenClasses.estimation,
+            SchoolchildrenClasses.datetime_estimation_update
+        ],
+        _join=[
+            [Users, Users.guid == SchoolchildrenClasses.user_guid]
+        ],
+        _where=[
+            SchoolchildrenClasses.is_deleted == False,
+            SchoolchildrenClasses.class_guid == class_guid
+        ],
+        _group_by=[],
+        _order_by=[SchoolchildrenClasses.datetime_create],
+        _all=True
+    )
+
+    return schoolchildren
+
+
+async def serialize_teacher_class_with_schoolchildren(
+        name_class: str, schoolchildren: tuple[SchoolchildrenClasses] | object | None
+) -> TeacherClassWithSchoolchildrenRegular:
+    return TeacherClassWithSchoolchildrenRegular(
+        name_class=name_class,
+        schoolchildren=tuple(
+            Schoolchildren(
+                schoolchildren_class_guid=i.guid,
+                user_guid=i.user_guid,
+                user_fio=i.user_fio,
+                estimation=i.estimation,
+                datetime_estimation_update=f"{i.datetime_estimation_update.strftime('%d.%m.%Y')} в "
+                                           f"{i.datetime_estimation_update.strftime('%H:%M')}"
+                if i.datetime_estimation_update else None
+            ) for i in schoolchildren
+        ) if schoolchildren else tuple()
+    )
+
+
 async def get_teacher_class_with_schoolchildren(
         class_guid: UUID | str,
         user_guid: UUID | str
-) -> TeacherClassWithSchoolchildrenRegular | tuple:
+) -> TeacherClassWithSchoolchildrenRegular:
 
     class_: Classes | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Classes
@@ -92,46 +140,14 @@ async def get_teacher_class_with_schoolchildren(
             status_code=409,
             detail={
                 'result': False,
-                'message': 'К сожалению, вы не принадлежите к этому классу, либо его просто не существует!',
+                'message': 'К сожалению, вы не принадлежите к этому учебному классу, либо его просто не существует!',
                 'data': {}
             }
         )
 
-    teacher_class_with_schoolchildren: tuple[SchoolchildrenClasses] | object | None = await CRUD(
-        session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
-    ).extended_query(
-        _select=[
-            SchoolchildrenClasses.guid,
-            SchoolchildrenClasses.user_guid,
-            Users.fio.label('user_fio'),
-            SchoolchildrenClasses.estimation,
-            SchoolchildrenClasses.datetime_estimation_update
-        ],
-        _join=[
-            [Users, Users.guid == SchoolchildrenClasses.user_guid]
-        ],
-        _where=[
-            SchoolchildrenClasses.is_deleted == False,
-            SchoolchildrenClasses.class_guid == class_.guid
-        ],
-        _group_by=[],
-        _order_by=[SchoolchildrenClasses.datetime_create],
-        _all=True
-    )
-
-    return TeacherClassWithSchoolchildrenRegular(
+    return await serialize_teacher_class_with_schoolchildren(
         name_class=class_.name,
-        schoolchildren=tuple(
-            Schoolchildren(
-                schoolchildren_class_guid=i.guid,
-                user_guid=i.user_guid,
-                user_fio=i.user_fio,
-                estimation=i.estimation,
-                datetime_estimation_update=f"{i.datetime_estimation_update.strftime('%d.%m.%Y')} в "
-                                           f"{i.datetime_estimation_update.strftime('%H:%M')}"
-                if i.datetime_estimation_update else None
-            ) for i in teacher_class_with_schoolchildren
-        ) if teacher_class_with_schoolchildren else tuple()
+        schoolchildren=await get_schoolchildren(class_guid=class_.guid)
     )
 
 
@@ -167,5 +183,5 @@ async def update_estimation_to_schoolchildren(estimation_update: EstimationUpdat
             datetime_estimation_update=datetime.now()
         )
     )
-    
+
     return "Вы успешно обновили оценку у школьника!"
