@@ -1,4 +1,4 @@
-from main.models import engine, Classes, SchoolchildrenClasses, TeacherClasses, CRUD, SessionHandler
+from main.models import engine, Classes, SchoolchildrenClasses, TeacherClasses, Achievements, CRUD, SessionHandler
 from main.schemas.admin.admin import ClassRegular
 from fastapi import HTTPException
 from uuid import UUID
@@ -84,19 +84,21 @@ async def admin_del_schoolchildren_from_class(schoolchildren_class_guid: UUID | 
     return "Вы успешно удалили школьника с класса!"
 
 
-# async def accept_achievement(achievement_guid: UUID | str):
-#     await CRUD(
-#         session=SessionHandler.create(engine=engine), model=Achievements
-#     ).update(
-#         _where=[Achievements.guid == achievement_guid],
-#         _values=dict(is_accepted=True)
-#     )
-#
-#
-# async def reject_achievement(achievement_guid: UUID | str):
-#     await CRUD(
-#         session=SessionHandler.create(engine=engine), model=Achievements
-#     ).update(
-#         _where=[Achievements.guid == achievement_guid],
-#         _values=dict(is_deleted=True)
-#     )
+async def admin_accept_achievement(achievement_guid: UUID | str) -> str:
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=Achievements
+    ).update(
+        _where=[Achievements.guid == achievement_guid],
+        _values=dict(is_accepted=True)
+    )
+    return "Вы успешно приняли достижение школьника!"
+
+
+async def admin_reject_achievement(achievement_guid: UUID | str) -> str:
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=Achievements
+    ).update(
+        _where=[Achievements.guid == achievement_guid],
+        _values=dict(is_deleted=True)
+    )
+    return "Вы успешно отклонили достижение школьника!"
