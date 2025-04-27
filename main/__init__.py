@@ -78,3 +78,4 @@ from main.api import api_achievements
 from main.api import api_tests
 from main.api import api_schoolchildren_classes
 from main.api import api_teacher_classes
+from main.api import api_recommendations
