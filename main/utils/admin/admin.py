@@ -74,6 +74,16 @@ async def admin_del_class(class_guid: UUID | str) -> str:
     return "Вы успешно удалили учебный класс!"
 
 
+async def admin_del_schoolchildren_from_class(schoolchildren_class_guid: UUID | str) -> str:
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
+    ).update(
+        _where=[SchoolchildrenClasses.guid == schoolchildren_class_guid],
+        _values=dict(is_deleted=True)
+    )
+    return "Вы успешно удалили школьника с класса!"
+
+
 # async def accept_achievement(achievement_guid: UUID | str):
 #     await CRUD(
 #         session=SessionHandler.create(engine=engine), model=Achievements

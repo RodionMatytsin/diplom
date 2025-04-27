@@ -48,3 +48,19 @@ async def api_admin_get_teacher_class_with_schoolchildren(
     return TeacherClassWithSchoolchildrenDefault(
         data=await get_teacher_class_with_schoolchildren(class_guid=class_guid)
     )
+
+
+@main.delete(
+    '/api/admin/schoolchildren/{schoolchildren_class_guid}',
+    status_code=200,
+    tags=["Admin"],
+    response_model=DefaultResponse
+)
+async def api_admin_del_schoolchildren_from_class(
+        schoolchildren_class_guid: UUID | str,
+        key: str = Depends(need_key)
+):
+    from main.utils.admin.admin import admin_del_schoolchildren_from_class
+    return DefaultResponse(
+        message=await admin_del_schoolchildren_from_class(schoolchildren_class_guid=schoolchildren_class_guid)
+    )
