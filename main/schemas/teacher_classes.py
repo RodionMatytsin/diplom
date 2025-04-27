@@ -12,7 +12,7 @@ class TeacherClassDefault(DefaultResponse):
     data: TeacherClassRegular | tuple[TeacherClassRegular] | tuple
 
 
-class TeacherClassWithSchoolchildrenRegular(BaseModel):
+class Schoolchildren(BaseModel):
     schoolchildren_class_guid: UUID | str
     user_guid: UUID | str
     user_fio: str
@@ -20,8 +20,13 @@ class TeacherClassWithSchoolchildrenRegular(BaseModel):
     datetime_estimation_update: str | None
 
 
+class TeacherClassWithSchoolchildrenRegular(BaseModel):
+    name_class: str
+    schoolchildren: tuple[Schoolchildren] | tuple
+
+
 class TeacherClassWithSchoolchildrenDefault(DefaultResponse):
-    data: TeacherClassWithSchoolchildrenRegular | tuple[TeacherClassWithSchoolchildrenRegular] | tuple
+    data: TeacherClassWithSchoolchildrenRegular
 
 
 class EstimationUpdate(BaseModel):

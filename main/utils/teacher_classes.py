@@ -1,5 +1,6 @@
 from main.models import engine, TeacherClasses, Classes, SchoolchildrenClasses, Users, CRUD, SessionHandler
-from main.schemas.teacher_classes import TeacherClassRegular, TeacherClassWithSchoolchildrenRegular, EstimationUpdate
+from main.schemas.teacher_classes import TeacherClassRegular, TeacherClassWithSchoolchildrenRegular, \
+    EstimationUpdate, Schoolchildren
 from main.schemas.users import UserRegular
 from fastapi import HTTPException
 from uuid import UUID
@@ -63,7 +64,23 @@ async def required_teacher_access(current_user: UserRegular):
 
 async def get_teacher_class_with_schoolchildren(
         class_guid: UUID | str
-) -> tuple[TeacherClassWithSchoolchildrenRegular] | tuple:
+) -> TeacherClassWithSchoolchildrenRegular | tuple:
+
+    class_: Classes | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=Classes
+    ).read(
+        _where=[Classes.guid == class_guid, Classes.is_deleted == False], _all=False
+    )
+
+    if class_ is None:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                'result': False,
+                'message': 'К сожалению, такого учебного класса не существует!',
+                'data': {}
+            }
+        )
 
     teacher_class_with_schoolchildren: tuple[SchoolchildrenClasses] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
@@ -89,18 +106,19 @@ async def get_teacher_class_with_schoolchildren(
         _all=True
     )
 
-    if teacher_class_with_schoolchildren is None or teacher_class_with_schoolchildren == []:
-        return tuple()
-    return tuple(
-        TeacherClassWithSchoolchildrenRegular(
-            schoolchildren_class_guid=i.guid,
-            user_guid=i.user_guid,
-            user_fio=i.user_fio,
-            estimation=i.estimation,
-            datetime_estimation_update=f"{i.datetime_estimation_update.strftime('%d.%m.%Y')} в "
-                                       f"{i.datetime_estimation_update.strftime('%H:%M')}"
-            if i.datetime_estimation_update else None
-        ) for i in teacher_class_with_schoolchildren
+    return TeacherClassWithSchoolchildrenRegular(
+        name_class=class_.name,
+        schoolchildren=tuple(
+            Schoolchildren(
+                schoolchildren_class_guid=i.guid,
+                user_guid=i.user_guid,
+                user_fio=i.user_fio,
+                estimation=i.estimation,
+                datetime_estimation_update=f"{i.datetime_estimation_update.strftime('%d.%m.%Y')} в "
+                                           f"{i.datetime_estimation_update.strftime('%H:%M')}"
+                if i.datetime_estimation_update else None
+            ) for i in teacher_class_with_schoolchildren
+        ) if teacher_class_with_schoolchildren else tuple()
     )
 
 
