@@ -1,5 +1,7 @@
 from main.models import engine, SchoolchildrenClasses, Classes, CRUD, SessionHandler
 from main.schemas.schoolchildren_classes import SchoolchildrenClassRegular
+from main.schemas.users import UserRegular
+from fastapi import HTTPException
 from uuid import UUID
 
 
@@ -55,3 +57,15 @@ async def get_schoolchildren_classes(
             schoolchildren_class=schoolchildren_class
         ) for schoolchildren_class in schoolchildren_classes
     )
+
+
+async def required_schoolchildren_access(current_user: UserRegular):
+    if current_user.is_teacher:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                'result': False,
+                'message': 'К сожалению, вы не можете получить данные, потому что вы не школьник!',
+                'data': {}
+            }
+        )

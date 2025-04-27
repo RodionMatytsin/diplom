@@ -14,15 +14,6 @@ async def api_get_schoolchildren_classes(current_user=Depends(get_current_user))
     """
         Этот метод предназначен для школьника, с помощью которого он получает свои классы в которых он состоит.
     """
-    from fastapi import HTTPException
-    if current_user.is_teacher:
-        raise HTTPException(
-            status_code=409,
-            detail={
-                'result': False,
-                'message': 'К сожалению, вы не можете получить данные, потому что вы не школьник!',
-                'data': {}
-            }
-        )
-    from main.utils.schoolchildren_classes import get_schoolchildren_classes
+    from main.utils.schoolchildren_classes import required_schoolchildren_access, get_schoolchildren_classes
+    await required_schoolchildren_access(current_user=current_user)
     return SchoolchildrenClassDefault(data=await get_schoolchildren_classes(user_guid=current_user.guid))
