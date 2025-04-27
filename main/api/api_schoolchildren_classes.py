@@ -11,6 +11,9 @@ from main.utils.users import get_current_user
     response_model=SchoolchildrenClassDefault
 )
 async def api_get_schoolchildren_classes(current_user=Depends(get_current_user)):
+    """
+        Этот метод предназначен для школьника, с помощью которого он получает свои классы в которых он состоит.
+    """
     from fastapi import HTTPException
     if current_user.is_teacher:
         raise HTTPException(
