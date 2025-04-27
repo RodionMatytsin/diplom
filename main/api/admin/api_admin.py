@@ -80,7 +80,12 @@ async def api_admin_del_schoolchildren_from_class(
     )
 
 
-@main.post('/api/admin/achievements/accept', status_code=200, tags=["Admin"], response_model=DefaultResponse)
+@main.post(
+    '/api/admin/achievements/{achievement_guid}/accept',
+    status_code=200,
+    tags=["Admin"],
+    response_model=DefaultResponse
+)
 async def api_admin_accept_achievement(
         achievement_guid: UUID | str,
         key: str = Depends(need_key)
@@ -92,7 +97,12 @@ async def api_admin_accept_achievement(
     return DefaultResponse(message=await admin_accept_achievement(achievement_guid=achievement_guid))
 
 
-@main.post('/api/admin/achievements/reject', status_code=200, tags=["Admin"], response_model=DefaultResponse)
+@main.post(
+    '/api/admin/achievements/{achievement_guid}/reject',
+    status_code=200,
+    tags=["Admin"],
+    response_model=DefaultResponse
+)
 async def api_admin_reject_achievement(
         achievement_guid: UUID | str,
         key: str = Depends(need_key)
