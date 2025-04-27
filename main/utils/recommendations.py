@@ -14,6 +14,9 @@ def serialize_recommendation(recommendation: Recommendations) -> RecommendationR
 
 async def get_recommendations(user_guid: UUID | str) -> tuple[RecommendationRegular] | tuple:
 
+    from datetime import timedelta
+    from sqlalchemy import func
+
     recommendations: tuple[Recommendations] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Recommendations
     ).extended_query(
@@ -26,7 +29,8 @@ async def get_recommendations(user_guid: UUID | str) -> tuple[RecommendationRegu
             [Tests, Tests.guid == Recommendations.test_guid]
         ],
         _where=[
-            Tests.user_guid == user_guid
+            Tests.user_guid == user_guid,
+            Recommendations.datetime_create >= (func.now().op('AT TIME ZONE')('Asia/Novosibirsk') - timedelta(days=182))
         ],
         _group_by=[],
         _order_by=[Recommendations.datetime_create],
