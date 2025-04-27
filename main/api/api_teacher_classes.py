@@ -13,6 +13,10 @@ from uuid import UUID
     response_model=TeacherClassDefault
 )
 async def api_get_teacher_classes(current_user=Depends(get_current_user)):
+    """
+        Этот метод предназначен для преподавателя, с помощью которого переходит в подробно о классе
+        для просмотра всех состоящих в нем школьнико.
+    """
     from main.utils.teacher_classes import get_teacher_classes, required_teacher_access
     await required_teacher_access(current_user=current_user)
     return TeacherClassDefault(data=await get_teacher_classes(user_guid=current_user.guid))
