@@ -63,13 +63,28 @@ async def required_teacher_access(current_user: UserRegular):
 
 
 async def get_teacher_class_with_schoolchildren(
-        class_guid: UUID | str
+        class_guid: UUID | str,
+        user_guid: UUID | str
 ) -> TeacherClassWithSchoolchildrenRegular | tuple:
 
     class_: Classes | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Classes
-    ).read(
-        _where=[Classes.guid == class_guid, Classes.is_deleted == False], _all=False
+    ).extended_query(
+        _select=[
+            Classes.guid,
+            Classes.name
+        ],
+        _join=[
+            [TeacherClasses, TeacherClasses.class_guid == Classes.guid]
+        ],
+        _where=[
+            Classes.is_deleted == False,
+            Classes.guid == class_guid,
+            TeacherClasses.user_guid == user_guid
+        ],
+        _group_by=[],
+        _order_by=[],
+        _all=False
     )
 
     if class_ is None:
@@ -77,7 +92,7 @@ async def get_teacher_class_with_schoolchildren(
             status_code=409,
             detail={
                 'result': False,
-                'message': 'К сожалению, такого учебного класса не существует!',
+                'message': 'К сожалению, вы не принадлежите к этому классу, либо его просто не существует!',
                 'data': {}
             }
         )
@@ -93,13 +108,11 @@ async def get_teacher_class_with_schoolchildren(
             SchoolchildrenClasses.datetime_estimation_update
         ],
         _join=[
-            [Users, Users.guid == SchoolchildrenClasses.user_guid],
-            [Classes, Classes.guid == SchoolchildrenClasses.class_guid]
+            [Users, Users.guid == SchoolchildrenClasses.user_guid]
         ],
         _where=[
             SchoolchildrenClasses.is_deleted == False,
-            Classes.is_deleted == False,
-            Classes.guid == class_guid
+            SchoolchildrenClasses.class_guid == class_.guid
         ],
         _group_by=[],
         _order_by=[SchoolchildrenClasses.datetime_create],
@@ -124,13 +137,35 @@ async def get_teacher_class_with_schoolchildren(
 
 async def update_estimation_to_schoolchildren(estimation_update: EstimationUpdate) -> str:
     from datetime import datetime
+
+    schoolboy: SchoolchildrenClasses | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
+    ).read(
+        _where=[
+            SchoolchildrenClasses.guid == estimation_update.schoolchildren_class_guid,
+            SchoolchildrenClasses.is_deleted == False
+        ],
+        _all=False
+    )
+
+    if schoolboy is None:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                'result': False,
+                'message': 'К сожалению, школьник был не найден в этом классе!',
+                'data': {}
+            }
+        )
+
     await CRUD(
         session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
     ).update(
-        _where=[SchoolchildrenClasses.guid == estimation_update.schoolchildren_class_guid],
+        _where=[SchoolchildrenClasses.guid == schoolboy.guid],
         _values=dict(
             estimation=estimation_update.estimation,
             datetime_estimation_update=datetime.now()
         )
     )
+    
     return "Вы успешно обновили оценку у школьника!"

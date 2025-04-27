@@ -1,5 +1,5 @@
 from uuid import UUID
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from main.schemas.responses import DefaultResponse
 
 
@@ -32,3 +32,9 @@ class TeacherClassWithSchoolchildrenDefault(DefaultResponse):
 class EstimationUpdate(BaseModel):
     schoolchildren_class_guid: UUID | str
     estimation: float | None
+
+    @field_validator('estimation')
+    def check_estimation_(cls, estimation_):
+        if estimation_ is None or estimation_ == '':
+            return None
+        return estimation_

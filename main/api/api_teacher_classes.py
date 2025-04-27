@@ -32,7 +32,8 @@ async def api_get_teacher_class_with_schoolchildren(class_guid: UUID | str, curr
     await required_teacher_access(current_user=current_user)
     return TeacherClassWithSchoolchildrenDefault(
         data=await get_teacher_class_with_schoolchildren(
-            class_guid=class_guid
+            class_guid=class_guid,
+            user_guid=current_user.guid
         )
     )
 
