@@ -1,4 +1,5 @@
-from main.models import engine, TeacherClasses, Classes, SchoolchildrenClasses, Users, CRUD, SessionHandler
+from main.models import engine, TeacherClasses, Classes, SchoolchildrenClasses, Users, Recommendations, \
+    CRUD, SessionHandler
 from main.schemas.teacher_classes import TeacherClassRegular, TeacherClassWithSchoolchildrenRegular, \
     EstimationUpdate, Schoolchildren, SchoolchildrenDetails
 from main.schemas.users import UserRegular
@@ -203,3 +204,23 @@ async def get_schoolchildren_by_user_guid(user_guid: UUID | str) -> Schoolchildr
         pending_recommendations=await get_recommendations(user_guid=current_user.guid, is_accepted=False),
         tests=await get_tests(user_guid=current_user.guid)
     )
+
+
+async def teacher_accept_recommendation(recommendation_guid: UUID | str) -> str:
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=Recommendations
+    ).update(
+        _where=[Recommendations.guid == recommendation_guid],
+        _values=dict(is_accepted=True)
+    )
+    return "Вы успешно приняли сформированную рекомендацию для школьника!"
+
+
+async def teacher_reject_recommendation(recommendation_guid: UUID | str) -> str:
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=Recommendations
+    ).update(
+        _where=[Recommendations.guid == recommendation_guid],
+        _values=dict(is_deleted=True)
+    )
+    return "Вы успешно отклонили сформированную рекомендацию для школьника!"
