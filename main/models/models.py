@@ -207,6 +207,8 @@ class Recommendations(Base):
         nullable=False,
         index=True
     )
+    is_accepted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
+    is_deleted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
 
 
 # alembic init -t async main/alembic

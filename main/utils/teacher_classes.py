@@ -199,6 +199,7 @@ async def get_schoolchildren_by_user_guid(user_guid: UUID | str) -> Schoolchildr
     return SchoolchildrenDetails(
         user=current_user,
         achievements=await get_achievements(user_guid=current_user.guid, is_accepted=True),
-        recommendations=await get_recommendations(user_guid=current_user.guid),
+        recommendations=await get_recommendations(user_guid=current_user.guid, is_accepted=True),
+        pending_recommendations=await get_recommendations(user_guid=current_user.guid, is_accepted=False),
         tests=await get_tests(user_guid=current_user.guid)
     )

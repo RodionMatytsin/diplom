@@ -18,4 +18,4 @@ async def api_get_recommendations(current_user=Depends(get_current_user)):
     from main.utils.schoolchildren_classes import required_schoolchildren_access
     from main.utils.recommendations import get_recommendations
     await required_schoolchildren_access(current_user=current_user)
-    return RecommendationDefault(data=await get_recommendations(user_guid=current_user.guid))
+    return RecommendationDefault(data=await get_recommendations(user_guid=current_user.guid, is_accepted=True))

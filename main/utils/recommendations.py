@@ -12,10 +12,25 @@ def serialize_recommendation(recommendation: Recommendations) -> RecommendationR
     )
 
 
-async def get_recommendations(user_guid: UUID | str) -> tuple[RecommendationRegular] | tuple:
+async def get_recommendations(
+        recommendation_guid: UUID | str | None = None,
+        user_guid: UUID | str | None = None,
+        is_accepted: bool | None = None
+) -> tuple[RecommendationRegular] | tuple:
 
     from datetime import timedelta
     from sqlalchemy import func
+
+    where_ = [
+        Recommendations.is_deleted == False,
+        Recommendations.datetime_create >= (func.now().op('AT TIME ZONE')('Asia/Novosibirsk') - timedelta(days=182))
+    ]
+    if recommendation_guid is not None:
+        where_.append(Recommendations.guid == recommendation_guid)
+    if user_guid is not None:
+        where_.append(Tests.user_guid == user_guid)
+    if is_accepted is not None:
+        where_.append(Recommendations.is_accepted == is_accepted)
 
     recommendations: tuple[Recommendations] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Recommendations
@@ -28,10 +43,7 @@ async def get_recommendations(user_guid: UUID | str) -> tuple[RecommendationRegu
         _join=[
             [Tests, Tests.guid == Recommendations.test_guid]
         ],
-        _where=[
-            Tests.user_guid == user_guid,
-            Recommendations.datetime_create >= (func.now().op('AT TIME ZONE')('Asia/Novosibirsk') - timedelta(days=182))
-        ],
+        _where=where_,
         _group_by=[],
         _order_by=[Recommendations.datetime_create],
         _all=True

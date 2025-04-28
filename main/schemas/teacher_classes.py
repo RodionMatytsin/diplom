@@ -48,6 +48,7 @@ class SchoolchildrenDetails(BaseModel):
     user: UserRegular
     achievements: tuple[AchievementRegular] | tuple
     recommendations: tuple[RecommendationRegular] | tuple
+    pending_recommendations: tuple[RecommendationRegular] | tuple
     tests: tuple[TestRegular] | tuple
 
 

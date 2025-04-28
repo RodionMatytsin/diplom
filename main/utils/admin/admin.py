@@ -145,6 +145,6 @@ async def get_schoolchildren_by_user_guid_for_admin(user_guid: UUID | str) -> Sc
         user=current_user,
         achievements=await get_achievements(user_guid=current_user.guid, is_accepted=True),
         pending_achievements=await get_achievements(user_guid=current_user.guid, is_accepted=False),
-        recommendations=await get_recommendations(user_guid=current_user.guid),
+        recommendations=await get_recommendations(user_guid=current_user.guid, is_accepted=True),
         tests=await get_tests(user_guid=current_user.guid)
     )
