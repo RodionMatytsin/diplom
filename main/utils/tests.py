@@ -74,6 +74,15 @@ async def get_tests(user_guid: UUID | str) -> tuple[TestRegular] | tuple:
     return tuple(result)
 
 
+async def update_test(test_guid: UUID | str, is_accepted: bool):
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=Tests
+    ).update(
+        _where=[Tests.guid == test_guid],
+        _values=dict(is_accepted=is_accepted)
+    )
+
+
 async def accept_changes_for_test(test_guid: UUID | str) -> str:
 
     current_test: Tests | object | None = await CRUD(
@@ -84,12 +93,7 @@ async def accept_changes_for_test(test_guid: UUID | str) -> str:
 
     if current_test is not None:
 
-        await CRUD(
-            session=SessionHandler.create(engine=engine), model=Tests
-        ).update(
-            _where=[Tests.guid == current_test.guid],
-            _values=dict(is_accepted=True)
-        )
+        await update_test(test_guid=current_test.guid, is_accepted=True)
 
         tests: tuple[Tests] | object | None = await CRUD(
             session=SessionHandler.create(engine=engine), model=Tests
@@ -98,11 +102,6 @@ async def accept_changes_for_test(test_guid: UUID | str) -> str:
         )
 
         for test in tests:
-            await CRUD(
-                session=SessionHandler.create(engine=engine), model=Tests
-            ).update(
-                _where=[Tests.guid == test.guid],
-                _values=dict(is_accepted=False)
-            )
+            await update_test(test_guid=test.guid, is_accepted=False)
 
-    return "Вы успешно приняли изменения для последующего формирования рекомендации по тесту!"
+        return "Вы успешно приняли изменения для последующего формирования рекомендации по тесту!"
