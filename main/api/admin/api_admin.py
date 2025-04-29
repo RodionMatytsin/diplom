@@ -3,9 +3,6 @@ from fastapi import Depends
 from main.schemas.responses import DefaultResponse
 from main.schemas.admin.admin import ClassAdd, ClassDefault, SchoolchildrenDetailsAdminDefault
 from main.schemas.teacher_classes import TeacherClassWithSchoolchildrenDefault
-from main.utils.admin.admin import get_classes_for_admin, admin_add_new_class, admin_del_schoolchildren_from_class, \
-    admin_accept_achievement, admin_reject_achievement, get_teacher_class_with_schoolchildren_for_admin, \
-    admin_del_class, get_schoolchildren_by_user_guid_for_admin
 from main.utils.admin.admin import need_key
 from uuid import UUID
 
@@ -18,6 +15,7 @@ async def api_admin_get_classes(
     """
         Этот метод предназначен для администратора, который отображает список всех существующих учебных классов.
     """
+    from main.utils.admin.admin import get_classes_for_admin
     return ClassDefault(data=await get_classes_for_admin(class_guid=class_guid))
 
 
@@ -29,6 +27,7 @@ async def api_admin_create_class(
     """
         Этот метод предназначен для администратора, который создает учебный класс.
     """
+    from main.utils.admin.admin import admin_add_new_class
     return DefaultResponse(message=await admin_add_new_class(name_class=class_add.name_class))
 
 
@@ -40,6 +39,7 @@ async def api_admin_del_class(
     """
         Этот метод предназначен для администратора, который удаляет учебный класс.
     """
+    from main.utils.admin.admin import admin_del_class
     return DefaultResponse(message=await admin_del_class(class_guid=class_guid))
 
 
@@ -57,6 +57,7 @@ async def api_admin_get_teacher_class_with_schoolchildren(
         Этот метод предназначен для администратора, с помощью которого переходит в подробно о классе
         для просмотра всех состоящих в нем школьников.
     """
+    from main.utils.admin.admin import get_teacher_class_with_schoolchildren_for_admin
     return TeacherClassWithSchoolchildrenDefault(
         data=await get_teacher_class_with_schoolchildren_for_admin(class_guid=class_guid)
     )
@@ -75,6 +76,7 @@ async def api_admin_del_schoolchildren_from_class(
     """
         Этот метод предназначен для администратора, с помощью которого можно удалять школьника с определенного класса.
     """
+    from main.utils.admin.admin import admin_del_schoolchildren_from_class
     return DefaultResponse(
         message=await admin_del_schoolchildren_from_class(schoolchildren_class_guid=schoolchildren_class_guid)
     )
@@ -94,6 +96,7 @@ async def api_admin_accept_achievement(
         Этот метод предназначен для администратора, с помощью которого можно
         принять добавленное достижение школьника.
     """
+    from main.utils.admin.admin import admin_accept_achievement
     return DefaultResponse(message=await admin_accept_achievement(achievement_guid=achievement_guid))
 
 
@@ -111,6 +114,7 @@ async def api_admin_reject_achievement(
         Этот метод предназначен для администратора, с помощью которого можно
         отклонить добавленное достижение школьника.
     """
+    from main.utils.admin.admin import admin_reject_achievement
     return DefaultResponse(message=await admin_reject_achievement(achievement_guid=achievement_guid))
 
 
@@ -127,4 +131,5 @@ async def api_get_schoolchildren_by_user_guid_for_admin(
     """
         Этот метод предназначен для админа, с помощью которого он получает подробную инфу об школьнике.
     """
+    from main.utils.admin.admin import get_schoolchildren_by_user_guid_for_admin
     return SchoolchildrenDetailsAdminDefault(data=await get_schoolchildren_by_user_guid_for_admin(user_guid=user_guid))

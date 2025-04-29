@@ -1,9 +1,7 @@
-from main.models import engine, TeacherClasses, Classes, SchoolchildrenClasses, Users, Recommendations, \
-    CRUD, SessionHandler
-from main.schemas.teacher_classes import TeacherClassRegular, TeacherClassWithSchoolchildrenRegular, \
-    EstimationUpdate, Schoolchildren, SchoolchildrenDetails
+from main.models import TeacherClasses, SchoolchildrenClasses
+from main.schemas.teacher_classes import (TeacherClassRegular, TeacherClassWithSchoolchildrenRegular,
+                                          EstimationUpdate, SchoolchildrenDetails)
 from main.schemas.users import UserRegular
-from fastapi import HTTPException
 from uuid import UUID
 
 
@@ -23,6 +21,7 @@ async def get_teacher_classes(
         user_guid: UUID | str | None = None,
         class_guid: UUID | str | None = None
 ) -> tuple[TeacherClassRegular] | tuple:
+    from main.models import engine, Classes, CRUD, SessionHandler
 
     where_ = [Classes.is_deleted == False]
     if user_guid is not None:
@@ -53,6 +52,7 @@ async def get_teacher_classes(
 
 async def required_teacher_access(current_user: UserRegular):
     if not current_user.is_teacher:
+        from fastapi import HTTPException
         raise HTTPException(
             status_code=409,
             detail={
@@ -66,6 +66,7 @@ async def required_teacher_access(current_user: UserRegular):
 async def get_schoolchildren(
         class_guid: UUID | str
 ) -> tuple[SchoolchildrenClasses] | object | None:
+    from main.models import engine, Users, CRUD, SessionHandler
 
     schoolchildren: tuple[SchoolchildrenClasses] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
@@ -95,6 +96,7 @@ async def get_schoolchildren(
 async def serialize_teacher_class_with_schoolchildren(
         name_class: str, schoolchildren: tuple[SchoolchildrenClasses] | object | None
 ) -> TeacherClassWithSchoolchildrenRegular:
+    from main.schemas.teacher_classes import Schoolchildren
     return TeacherClassWithSchoolchildrenRegular(
         name_class=name_class,
         schoolchildren=tuple(
@@ -115,6 +117,7 @@ async def get_teacher_class_with_schoolchildren(
         class_guid: UUID | str,
         user_guid: UUID | str
 ) -> TeacherClassWithSchoolchildrenRegular:
+    from main.models import engine, CRUD, Classes, SessionHandler
 
     class_: Classes | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Classes
@@ -137,6 +140,7 @@ async def get_teacher_class_with_schoolchildren(
     )
 
     if class_ is None:
+        from fastapi import HTTPException
         raise HTTPException(
             status_code=409,
             detail={
@@ -153,6 +157,7 @@ async def get_teacher_class_with_schoolchildren(
 
 
 async def update_estimation_to_schoolchildren(estimation_update: EstimationUpdate) -> str:
+    from main.models import engine, CRUD, SessionHandler
     from datetime import datetime
 
     schoolboy: SchoolchildrenClasses | object | None = await CRUD(
@@ -166,6 +171,7 @@ async def update_estimation_to_schoolchildren(estimation_update: EstimationUpdat
     )
 
     if schoolboy is None:
+        from fastapi import HTTPException
         raise HTTPException(
             status_code=409,
             detail={
@@ -207,6 +213,7 @@ async def get_schoolchildren_by_user_guid(user_guid: UUID | str) -> Schoolchildr
 
 
 async def teacher_accept_recommendation(recommendation_guid: UUID | str) -> str:
+    from main.models import engine, Recommendations, CRUD, SessionHandler
     await CRUD(
         session=SessionHandler.create(engine=engine), model=Recommendations
     ).update(
@@ -217,6 +224,7 @@ async def teacher_accept_recommendation(recommendation_guid: UUID | str) -> str:
 
 
 async def teacher_reject_recommendation(recommendation_guid: UUID | str) -> str:
+    from main.models import engine, Recommendations, CRUD, SessionHandler
     await CRUD(
         session=SessionHandler.create(engine=engine), model=Recommendations
     ).update(

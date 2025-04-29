@@ -1,4 +1,4 @@
-from main.models import engine, Recommendations, Tests, CRUD, SessionHandler
+from main.models import Recommendations
 from main.schemas.recommendations import RecommendationRegular
 from uuid import UUID
 
@@ -18,6 +18,7 @@ async def get_recommendations(
         is_accepted: bool | None = None
 ) -> tuple[RecommendationRegular] | tuple:
 
+    from main.models import engine, Tests, CRUD, SessionHandler
     from datetime import timedelta
     from sqlalchemy import func
 

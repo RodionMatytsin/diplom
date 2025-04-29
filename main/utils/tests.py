@@ -1,4 +1,4 @@
-from main.models import engine, Questions, Tests, CRUD, SessionHandler
+from main.models import Questions
 from main.schemas.tests import QuestionRegular, TestRegular, TestDetails
 from uuid import UUID
 
@@ -12,6 +12,7 @@ def serialize_question(question: Questions) -> QuestionRegular:
 
 
 async def get_questions() -> tuple[QuestionRegular] | tuple:
+    from main.models import engine, CRUD, SessionHandler
 
     questions: tuple[Questions] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Questions
@@ -34,6 +35,7 @@ async def get_questions() -> tuple[QuestionRegular] | tuple:
 
 
 async def get_tests(user_guid: UUID | str) -> tuple[TestRegular] | tuple:
+    from main.models import engine, Tests, CRUD, SessionHandler
 
     tests: tuple[Tests] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Questions
@@ -75,6 +77,7 @@ async def get_tests(user_guid: UUID | str) -> tuple[TestRegular] | tuple:
 
 
 async def update_test(test_guid: UUID | str, is_accepted: bool):
+    from main.models import engine, Tests, CRUD, SessionHandler
     await CRUD(
         session=SessionHandler.create(engine=engine), model=Tests
     ).update(
@@ -84,6 +87,7 @@ async def update_test(test_guid: UUID | str, is_accepted: bool):
 
 
 async def accept_changes_for_test(test_guid: UUID | str) -> str:
+    from main.models import engine, Tests, CRUD, SessionHandler
 
     current_test: Tests | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Tests

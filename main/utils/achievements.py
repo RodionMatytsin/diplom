@@ -1,4 +1,4 @@
-from main.models import engine, Achievements, CRUD, SessionHandler
+from main.models import Achievements
 from main.schemas.achievements import AchievementRegular
 from uuid import UUID
 
@@ -17,6 +17,7 @@ async def get_achievements(
         user_guid: UUID | str | None = None,
         is_accepted: bool | None = None
 ) -> tuple[AchievementRegular] | AchievementRegular | tuple:
+    from main.models import engine, CRUD, SessionHandler
 
     where_ = [Achievements.is_deleted == False]
     if achievement_guid is not None:
@@ -41,6 +42,7 @@ async def get_achievements(
 
 
 async def add_achievement(description: str, user_guid: UUID | str) -> str:
+    from main.models import engine, CRUD, SessionHandler
 
     await CRUD(
         session=SessionHandler.create(engine=engine), model=Achievements

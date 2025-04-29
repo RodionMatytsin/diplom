@@ -1,7 +1,6 @@
-from main.models import engine, SchoolchildrenClasses, Classes, CRUD, SessionHandler
+from main.models import SchoolchildrenClasses
 from main.schemas.schoolchildren_classes import SchoolchildrenClassRegular
 from main.schemas.users import UserRegular
-from fastapi import HTTPException
 from uuid import UUID
 
 
@@ -23,6 +22,7 @@ async def get_schoolchildren_classes(
         user_guid: UUID | str | None = None,
         class_guid: UUID | str | None = None
 ) -> tuple[SchoolchildrenClassRegular] | tuple:
+    from main.models import engine, Classes, CRUD, SessionHandler
 
     where_ = [
         Classes.is_deleted == False,
@@ -61,6 +61,7 @@ async def get_schoolchildren_classes(
 
 async def required_schoolchildren_access(current_user: UserRegular):
     if current_user.is_teacher:
+        from fastapi import HTTPException
         raise HTTPException(
             status_code=409,
             detail={

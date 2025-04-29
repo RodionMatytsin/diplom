@@ -1,9 +1,8 @@
 import re
-import hashlib
-from fastapi import HTTPException
 
 
 def hash_password(password_: str) -> str:
+    import hashlib
     return hashlib.sha512(password_.encode()).hexdigest()
 
 
@@ -50,6 +49,7 @@ def check_birthday(birthday_: str) -> bool | str:
 
 
 def check_login(login_: str) -> str:
+    from fastapi import HTTPException
     if not (8 <= len(login_) <= 24):
         raise HTTPException(
             status_code=400,
@@ -68,6 +68,7 @@ def check_login(login_: str) -> str:
 
 
 def check_password(password_: str) -> str:
+    from fastapi import HTTPException
     if not (8 <= len(password_) <= 32):
         raise HTTPException(
             status_code=400,

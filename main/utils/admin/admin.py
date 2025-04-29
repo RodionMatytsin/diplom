@@ -1,12 +1,12 @@
-from main.models import engine, Classes, SchoolchildrenClasses, TeacherClasses, Achievements, CRUD, SessionHandler
+from main.models import Classes
 from main.schemas.teacher_classes import TeacherClassWithSchoolchildrenRegular
 from main.schemas.admin.admin import ClassRegular, SchoolchildrenDetailsAdmin
-from fastapi import HTTPException
 from uuid import UUID
 
 
 async def need_key(key: str):
     from main.config import SECRET_KEY
+    from fastapi import HTTPException
     if key != SECRET_KEY:
         raise HTTPException(
             status_code=403,
@@ -24,6 +24,8 @@ def serialize_class(class_: Classes) -> ClassRegular:
 async def get_classes_for_admin(
         class_guid: UUID | str | None = None
 ) -> ClassRegular | tuple[ClassRegular] | tuple:
+
+    from main.models import engine, CRUD, SessionHandler
 
     where_ = [Classes.is_deleted == False]
     if class_guid is not None:
@@ -44,6 +46,7 @@ async def get_classes_for_admin(
 
 
 async def admin_add_new_class(name_class: str) -> str:
+    from main.models import engine, CRUD, SessionHandler
 
     await CRUD(
         session=SessionHandler.create(engine=engine), model=Classes
@@ -55,6 +58,7 @@ async def admin_add_new_class(name_class: str) -> str:
 
 
 async def admin_del_class(class_guid: UUID | str) -> str:
+    from main.models import engine, SchoolchildrenClasses, TeacherClasses, CRUD, SessionHandler
 
     await CRUD(
         session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
@@ -78,6 +82,7 @@ async def admin_del_class(class_guid: UUID | str) -> str:
 async def get_teacher_class_with_schoolchildren_for_admin(
         class_guid: UUID | str
 ) -> TeacherClassWithSchoolchildrenRegular | tuple:
+    from main.models import engine, CRUD, SessionHandler
 
     class_: Classes | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Classes
@@ -86,6 +91,7 @@ async def get_teacher_class_with_schoolchildren_for_admin(
     )
 
     if class_ is None:
+        from fastapi import HTTPException
         raise HTTPException(
             status_code=409,
             detail={
@@ -103,6 +109,7 @@ async def get_teacher_class_with_schoolchildren_for_admin(
 
 
 async def admin_del_schoolchildren_from_class(schoolchildren_class_guid: UUID | str) -> str:
+    from main.models import engine, SchoolchildrenClasses, CRUD, SessionHandler
     await CRUD(
         session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
     ).update(
@@ -113,6 +120,7 @@ async def admin_del_schoolchildren_from_class(schoolchildren_class_guid: UUID | 
 
 
 async def admin_accept_achievement(achievement_guid: UUID | str) -> str:
+    from main.models import engine, Achievements, CRUD, SessionHandler
     await CRUD(
         session=SessionHandler.create(engine=engine), model=Achievements
     ).update(
@@ -123,6 +131,7 @@ async def admin_accept_achievement(achievement_guid: UUID | str) -> str:
 
 
 async def admin_reject_achievement(achievement_guid: UUID | str) -> str:
+    from main.models import engine, Achievements, CRUD, SessionHandler
     await CRUD(
         session=SessionHandler.create(engine=engine), model=Achievements
     ).update(
