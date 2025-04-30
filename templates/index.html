@@ -2,9 +2,179 @@
 <html lang="ru">
     <head>
         <meta charset="UTF-8">
-        <title>Index</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+        <title>Авторизация/Регистрация</title>
     </head>
     <body>
 
+        <div class="alert" id="alert" style="display: none;" onclick="this.style.display = 'none'; document.getElementById('main_conteiner').style.filter = '';">
+            <div class="notice" id="notice">
+                <p class="hello" style="text-align: center; color: black;" id="notice_title">Ошибка</p>
+                <p class="enter" id="notice_text"></p>
+            </div>
+        </div>
+
+        <div class="form-container">
+
+            <div class="tabs">
+                <div class="tab active" onclick="toggleForms('login')">Авторизация</div>
+                <div class="tab" onclick="toggleForms('signup')">Регистрация</div>
+            </div>
+
+            <div id="loginForm">
+                <div class="input_field">
+                    <label class="input_label" for="login">Логин</label>
+                    <input class="login" type="text" id="login" placeholder="Введите логин" required>
+                </div>
+                <div class="input_field">
+                    <label class="input_label" for="password">Пароль</label>
+                    <input class="login" type="password" id="password" placeholder="Введите пароль" required>
+                </div>
+                <button class="button" onclick="login_user()">Авторизоваться</button>
+            </div>
+
+            <div id="signupForm" style="display: none;">
+                <div class="input_field">
+                    <label class="input_label" for="role">Роль</label>
+                    <select id="role" required>
+                        <option value="" disabled selected>Выберите из списка роль</option>
+                        <option value="Школьник">Школьник</option>
+                        <option value="Преподаватель">Преподаватель</option>
+                    </select>
+                </div>
+                <div class="input_field">
+                    <label class="input_label" for="signupLogin">Логин</label>
+                    <input class="login" type="text" id="signupLogin" placeholder="Введите логин" required>
+                </div>
+                <div class="input_field">
+                    <label class="input_label" for="signupPassword">Пароль</label>
+                    <input class="login" type="password" id="signupPassword" placeholder="Введите пароль" required>
+                </div>
+                <div class="input_field">
+                    <label class="input_label" for="phoneNumber">Номер телефона</label>
+                    <input class="login tel" type="tel" id="phoneNumber" placeholder="+7 (955) 555 3535" required>
+                </div>
+                <div class="input_field">
+                    <label class="input_label" for="fio">ФИО</label>
+                    <input class="login" type="text" id="fio" placeholder="Введите ФИО" required>
+                </div>
+                <div class="input_field">
+                    <label class="input_label">Дата рождения</label>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div style="width: 30%;">
+                            <label class="input_label" for="day">День</label>
+                            <select class="login" name="day" id="day" required>
+                                <option value="01" selected>01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
+                                <option value="25">25</option>
+                                <option value="26">26</option>
+                                <option value="27">27</option>
+                                <option value="28">28</option>
+                                <option value="29">29</option>
+                                <option value="30">30</option>
+                                <option value="31">31</option>
+                            </select>
+                        </div>
+                        <div style="width: 30%;">
+                            <label class="input_label" for="month">Месяц</label>
+                            <select class="login" name="month" id="month" required>
+                                <option value="01" selected>01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                        </div>
+                        <div style="width: 30%;">
+                            <label class="input_label" for="year">Год</label>
+                            <select class="login" name="year" id="year" required>
+                                <option value="2001">2001</option>
+                                <option value="2002">2002</option>
+                                <option value="2003">2003</option>
+                                <option value="2004">2004</option>
+                                <option value="2005">2005</option>
+                                <option value="2006">2006</option>
+                                <option value="2007">2007</option>
+                                <option value="2008">2008</option>
+                                <option value="2009">2009</option>
+                                <option value="2010">2010</option>
+                                <option value="2011">2011</option>
+                                <option value="2012">2012</option>
+                                <option value="2013">2013</option>
+                                <option value="2014">2014</option>
+                                <option value="2015">2015</option>
+                                <option value="2016">2016</option>
+                                <option value="2017">2017</option>
+                                <option value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="input_field">
+                    <label class="input_label" for="gender">Пол</label>
+                    <select id="gender" required>
+                        <option value="" disabled selected>Выберите из списка пол</option>
+                        <option value="Мужской">Мужской</option>
+                        <option value="Женский">Женский</option>
+                    </select>
+                </div>
+                <button class="button" onclick="signup_user()">Зарегистрироваться</button>
+            </div>
+        </div>
+
+        <script src="../static/js/main.js"></script>
+        <script src="../static/js/signup.js"></script>
+        <script>
+            function toggleForms(activeForm) {
+                const loginForm = document.getElementById('loginForm');
+                const signupForm = document.getElementById('signupForm');
+                const tabs = document.querySelectorAll('.tab');
+
+                    if (activeForm === 'login') {
+                        loginForm.style.display = 'block';
+                        signupForm.style.display = 'none';
+                        tabs[0].classList.add('active');
+                        tabs[1].classList.remove('active');
+                    } else {
+                        loginForm.style.display = 'none';
+                        signupForm.style.display = 'block';
+                        tabs[1].classList.add('active');
+                        tabs[0].classList.remove('active');
+                    }
+                }
+            toggleForms('login');
+        </script>
     </body>
 </html>
