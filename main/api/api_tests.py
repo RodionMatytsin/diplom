@@ -15,7 +15,7 @@ async def api_get_questions():
     return QuestionDefault(data=await get_questions())
 
 
-@main.post('/api/tests/{test_guid}', status_code=200, tags=["Tests"], response_model=DefaultResponse)
+@main.patch('/api/tests/{test_guid}', status_code=200, tags=["Tests"], response_model=DefaultResponse)
 async def api_accept_changes_for_test(
         test_guid: UUID | str,
         current_user=Depends(get_current_user)
