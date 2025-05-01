@@ -7,7 +7,7 @@ let login = document.getElementById('login'),
     fio = document.getElementById('fio'),
     day = document.getElementById('day'),
     month = document.getElementById('month'),
-    year = document.getElementById('year')
+    year = document.getElementById('year'),
     gender = document.getElementById('gender');
 
 
