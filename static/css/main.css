@@ -25,10 +25,10 @@ body {
 
 .notice {
     background: #fff;
-    border-radius: 5px;
+    border-radius: 15px;
     box-shadow: 0 0 20px rgba(0, 0, 0, .2);
-    padding: 3%;
-    width: 80%;
+    padding: 2%;
+    width: 30%;
 	margin-bottom: 10vh;
 }
 
@@ -36,14 +36,14 @@ body {
 	text-align: center;
     color: black;
 	font-weight: 600;
-	font-size: 6vw;
-	line-height: 6vh;
+	font-size: 2vw;
+	line-height: 2vh;
 }
 
 .enter {
 	color: #424242;
 	font-weight: 600;
-	font-size: 4vw;
+	font-size: 1vw;
 	text-align: center;
     margin-bottom: 2%;
 }
@@ -51,14 +51,14 @@ body {
 .tabs {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 2.5%;
 }
 
 .tab {
     cursor: pointer;
     padding: 10px 20px;
     border: 1px solid #ced4da;
-    border-radius: 5px;
+    border-radius: 15px;
     margin: 0 5px;
     background-color: white;
 }
@@ -75,10 +75,10 @@ body {
 
 .form-container {
     background: white;
-    padding: 30px;
+    padding: 2%;
     border-radius: 15px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 400px;
+    width: 30%;
 }
 
 .form-container h2 {
@@ -89,19 +89,24 @@ body {
 
 .input_label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 0.2%;
     font-weight: bold;
-    color: #262525;
+    color: #424242;
+}
+
+.birtday{
+    margin-bottom: 1%;
+    text-align: center;
 }
 
 .input_field {
-    margin-bottom: 10px;
+    margin-bottom: 2.5%;
 }
 
 .input_field input.login,
 .input_field select {
     width: 100%;
-    padding: 12px;
+    padding: 2.5%;
     border: 1px solid #ced4da;
     border-radius: 15px;
     transition: border-color 0.3s;
@@ -115,14 +120,15 @@ body {
 }
 
 .button {
-    padding: 12px;
+    padding: 2.5%;
     background-color: #46C73F;
+    font-weight: 600;
     color: white;
     border: none;
     border-radius: 10px;
     cursor: pointer;
     width: 100%;
-    font-size: 16px;
+    font-size: 1.2rem;
     transition: background 0.25s;
 }
 
@@ -136,7 +142,6 @@ body {
     text-decoration: underline;
     display: block;
     text-align: center;
-    margin-top: 10px;
 }
 
 .toggle-link:hover {
