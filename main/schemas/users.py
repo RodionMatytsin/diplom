@@ -41,7 +41,13 @@ class User(BaseModel):
                 status_code=400,
                 detail={'result': False, 'message': 'Поле «Дата рождения» введено некорректно!', 'data': {}}
             )
-        return datetime.strptime(birthday_, '%Y-%m-%d').date()
+        try:
+            return datetime.strptime(birthday_, '%Y-%m-%d').date()
+        except ValueError:
+            raise HTTPException(
+                status_code=400,
+                detail={'result': False, 'message': 'Поле «Дата рождения» содержит недопустимую дату!', 'data': {}}
+            )
 
     @field_validator('gender')
     def check_gender_(cls, gender_):
