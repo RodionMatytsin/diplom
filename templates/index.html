@@ -7,21 +7,17 @@
         <title>Авторизация/Регистрация</title>
     </head>
     <body>
-
         <div class="alert" id="alert" style="display: none;" onclick="this.style.display = 'none';">
             <div class="notice" id="notice">
                 <p class="hello" style="text-align: center; color: black;" id="notice_title">Ошибка</p>
                 <p class="enter" id="notice_text"></p>
             </div>
         </div>
-
         <div class="form-container">
-
             <div class="tabs">
                 <div class="tab active" onclick="toggleForms('login')">Авторизация</div>
                 <div class="tab" onclick="toggleForms('signup')">Регистрация</div>
             </div>
-
             <div id="loginForm">
                 <div class="input_field">
                     <label class="input_label" for="login">Логин</label>
@@ -33,7 +29,6 @@
                 </div>
                 <button class="button" onclick="login_user()">Авторизоваться</button>
             </div>
-
             <div id="signupForm" style="display: none;">
                 <div class="input_field">
                     <label class="input_label" for="role">Роль</label>
@@ -153,7 +148,6 @@
                 <button class="button" onclick="signup_user()">Зарегистрироваться</button>
             </div>
         </div>
-
         <script src="../static/js/main.js"></script>
         <script src="../static/js/signup.js"></script>
         <script>
