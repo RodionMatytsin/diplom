@@ -1,59 +1,41 @@
 const main = document.getElementById("main");
 const testing = document.getElementById("testing");
 const profile_settings = document.getElementById("profile_settings");
-const main__wrapper = document.getElementById("main__wrapper");
-const main__wrapper__list = document.getElementById("main__wrapper__list");
-const testing__wrapper = document.getElementById("testing__wrapper");
-const testing__wrapper__list = document.getElementById("testing__wrapper__list");
 const profile__settings__wrapper = document.getElementById("profile__settings__wrapper");
-const profile__settings__wrapper__list = document.getElementById("profile__settings__wrapper__list");
 const logoExit = document.getElementById('logoExit');
+let phoneNumber = document.getElementById('phoneNumber'),
+    fio = document.getElementById('fio'),
+    day = document.getElementById('day'),
+    month = document.getElementById('month'),
+    year = document.getElementById('year'),
+    gender = document.getElementById('gender');
 
+fio.addEventListener('input', function() {
+    if (!/^[А-Яа-яЁё\s]*$/.test(fio.value)) {
+        fio.value = fio.value.replace(/[^А-Яа-яЁё\s]/g, '');
+    }
+})
 
 main.addEventListener('click', () => {
     main.classList.add("btn_active");
     testing.classList.remove("btn_active");
     profile_settings.classList.remove("btn_active");
-    main__wrapper.classList.add("hiden");
-    main__wrapper__list.classList.add("hiden");
-    testing__wrapper.classList.remove("hiden");
-    testing__wrapper__list.classList.remove("hiden");
-    profile__settings__wrapper.classList.remove("hiden");
-    profile__settings__wrapper__list.classList.remove("hiden");
-    main__wrapper__list.innerHTML='';
-    testing__wrapper__list.innerHTML='';
-    profile__settings__wrapper__list.innerHTML='';
-})
+    profile__settings__wrapper.style.display = 'none';
+});
 
 testing.addEventListener('click', () => {
     main.classList.remove("btn_active");
     testing.classList.add("btn_active");
     profile_settings.classList.remove("btn_active");
-    main__wrapper.classList.remove("hiden");
-    main__wrapper__list.classList.remove("hiden");
-    testing__wrapper.classList.add("hiden");
-    testing__wrapper__list.classList.add("hiden");
-    profile__settings__wrapper.classList.remove("hiden");
-    profile__settings__wrapper__list.classList.remove("hiden");
-    main__wrapper__list.innerHTML='';
-    testing__wrapper__list.innerHTML='';
-    profile__settings__wrapper__list.innerHTML='';
-})
+    profile__settings__wrapper.style.display = 'none';
+});
 
 profile_settings.addEventListener('click', () => {
     main.classList.remove("btn_active");
     testing.classList.remove("btn_active");
     profile_settings.classList.add("btn_active");
-    main__wrapper.classList.remove("hiden");
-    main__wrapper__list.classList.remove("hiden");
-    testing__wrapper.classList.remove("hiden");
-    testing__wrapper__list.classList.remove("hiden");
-    profile__settings__wrapper.classList.add("hiden");
-    profile__settings__wrapper__list.classList.add("hiden");
-    main__wrapper__list.innerHTML='';
-    testing__wrapper__list.innerHTML='';
-    profile__settings__wrapper__list.innerHTML='';
-})
+    profile__settings__wrapper.style.display = 'block';
+});
 
 logoExit.addEventListener('mouseover', function() {
     logoExit.src = '../static/img/logo_exit_red.svg';
@@ -92,10 +74,38 @@ function get_user() {
                 window.location.href = "/";
             } else {
                 document.getElementById('name_user').innerText = data.data.fio;
+                document.getElementById('phoneNumber').value = data.data.phone_number;
+                document.getElementById('fio').value = data.data.fio;
+                document.getElementById('day').value = data.data.birthday.day;
+                document.getElementById('month').value = data.data.birthday.month;
+                document.getElementById('year').value = data.data.birthday.year;
+                document.getElementById('gender').value = data.data.gender;
             }
         },
         function (data) {
             console.log(data);
+        }
+    )
+}
+
+function update_user() {
+    sendRequest(
+        'PATCH',
+        '/api/users',
+        true,
+        {
+            "phone_number": phoneNumber.value,
+            "fio": fio.value,
+            "birthday": (year.value+'-'+month.value+'-'+day.value),
+            "gender": gender.value
+        },
+        function (data) {
+            console.log(data);
+            get_user();
+        },
+        function (data) {
+            console.log(data)
+            show_error(data.message, 'Ошибка');
         }
     )
 }

@@ -97,3 +97,69 @@ header{
     margin-left: 1vw;
     cursor: pointer;
 }
+
+.form-container {
+    background: white;
+    padding: 2%;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 30%;
+}
+
+.form-container h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000000;
+    text-align: center;
+}
+
+.input_label {
+    display: block;
+    margin-bottom: 0.2%;
+    font-weight: bold;
+    color: #424242;
+}
+
+.birtday{
+    margin-bottom: 1%;
+    text-align: center;
+}
+
+.input_field {
+    margin-bottom: 2.5%;
+}
+
+.input_field input.login,
+.input_field select {
+    width: 100%;
+    padding: 2.5%;
+    border: 1px solid #ced4da;
+    border-radius: 1rem;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+    font-size: 0.85vw;
+}
+
+.input_field input:focus,
+.input_field select:focus {
+    border-color: #46C73F;
+    outline: none;
+}
+
+.button {
+    margin-top: 2.5%;
+    padding: 2.5%;
+    background-color: #46C73F;
+    font-weight: 600;
+    color: white;
+    border: none;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.2rem;
+    transition: background 0.25s;
+}
+
+.button:hover {
+    background-color: #24A51D;
+}

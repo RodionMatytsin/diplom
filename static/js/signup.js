@@ -10,6 +10,35 @@ let login = document.getElementById('login'),
     year = document.getElementById('year'),
     gender = document.getElementById('gender');
 
+fio.addEventListener('input', function() {
+    if (!/^[А-Яа-яЁё\s]*$/.test(fio.value)) {
+        fio.value = fio.value.replace(/[^А-Яа-яЁё\s]/g, '');
+    }
+})
+
+login.addEventListener('input', function() {
+    if (!/^[a-zA-Z0-9_\-]+$/.test(login.value)) {
+        login.value = login.value.replace(/[^a-zA-Z0-9_\-]/g, '');
+    }
+});
+
+password.addEventListener('input', function() {
+    if (!/^[a-zA-Z0-9_.\-!]+$/.test(password.value)) {
+        password.value = password.value.replace(/[^a-zA-Z0-9_.\-!]/g, '');
+    }
+});
+
+signupLogin.addEventListener('input', function() {
+    if (!/^[a-zA-Z0-9_\-]+$/.test(signupLogin.value)) {
+        signupLogin.value = signupLogin.value.replace(/[^a-zA-Z0-9_\-]/g, '');
+    }
+});
+
+signupPassword.addEventListener('input', function() {
+    if (!/^[a-zA-Z0-9_.\-!]+$/.test(signupPassword.value)) {
+        signupPassword.value = signupPassword.value.replace(/[^a-zA-Z0-9_.\-!]/g, '');
+    }
+});
 
 function signup_user() {
     sendRequest(
