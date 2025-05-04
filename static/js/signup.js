@@ -27,6 +27,11 @@ function signup_user() {
         },
         function (data) {
             console.log(data);
+            if (data.data.is_teacher) {
+                window.location.href = "/teachers";
+            } else {
+                window.location.href = "/schoolchildren";
+            }
         },
         function (data) {
             console.log(data)
@@ -46,6 +51,11 @@ function login_user() {
         },
         function (data) {
             console.log(data);
+            if (data.data.is_teacher) {
+                window.location.href = "/teachers";
+            } else {
+                window.location.href = "/schoolchildren";
+            }
         },
         function (data) {
             console.log(data)

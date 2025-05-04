@@ -63,7 +63,7 @@ header{
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 2vh 4vh;
+    padding: 1.5vh 3vh;
 }
 
 .btn_header{
@@ -95,4 +95,5 @@ header{
 
 .logo_exit{
     margin-left: 1vw;
+    cursor: pointer;
 }

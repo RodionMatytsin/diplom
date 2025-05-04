@@ -7,6 +7,8 @@ const testing__wrapper = document.getElementById("testing__wrapper");
 const testing__wrapper__list = document.getElementById("testing__wrapper__list");
 const profile__settings__wrapper = document.getElementById("profile__settings__wrapper");
 const profile__settings__wrapper__list = document.getElementById("profile__settings__wrapper__list");
+const logoExit = document.getElementById('logoExit');
+
 
 main.addEventListener('click', () => {
     main.classList.add("btn_active");
@@ -53,3 +55,49 @@ profile_settings.addEventListener('click', () => {
     profile__settings__wrapper__list.innerHTML='';
 })
 
+logoExit.addEventListener('mouseover', function() {
+    logoExit.src = '../static/img/logo_exit_red.svg';
+});
+
+logoExit.addEventListener('mouseout', function() {
+    logoExit.src = '../static/img/logo_exit_black.svg';
+});
+
+function logout() {
+    sendRequest(
+        'POST',
+        '/api/logout',
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            window.location.href = "/";
+        },
+        function (data) {
+            console.log(data)
+            window.location.href = "/";
+        }
+    )
+}
+
+function get_user() {
+    sendRequest(
+        'GET',
+        '/api/users/me',
+        true,
+        null,
+        function (data) {
+            if (data.data.is_teacher) {
+                window.location.href = "/";
+            } else {
+                console.log(data);
+                document.getElementById('name_user').innerText = data.data.fio;
+            }
+        },
+        function (data) {
+            console.log(data);
+        }
+    )
+}
+
+window.onload = get_user;

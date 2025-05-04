@@ -45,10 +45,11 @@ function sendRequest(method, url, async=true, responses_data, onsuccess, onerror
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
     request.onload = function () {
-        //document.getElementById('alert').style.display = 'none';
         let responseObj = JSON.parse(request.response);
         console.log(method, url, responseObj);
-        if (request.status >= 400) {
+        if (request.status === 401) {
+            window.location.href = "/";
+        } else if (request.status >= 400) {
             show_error(responseObj.message, 'Ошибка');
         } else {
             if (responseObj.result === true) {

@@ -21,7 +21,7 @@ async def api_login_user(login_user=Depends(get_login_user)):
     return DefaultResponse(message=login_user['message'], data=login_user['data'])
 
 
-@main.get('/api/logout', status_code=200, tags=["Auth"], response_model=DefaultResponse)
+@main.post('/api/logout', status_code=200, tags=["Auth"], response_model=DefaultResponse)
 async def api_logout_user(response=Depends(get_logout_user)):
     """
         Этот метод предназначен для школьника или преподавателя, с помощью которого можно выйти из системы.
