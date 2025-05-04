@@ -152,10 +152,11 @@ async def update_user(user_update: UserUpdate, current_user: UserRegular) -> str
     return 'Вы успешно отредактировали свои личные данные!'
 
 
-async def get_current_user(user_token=Cookie(default=None)) -> UserRegular:
+async def get_current_user(response: Response, user_token=Cookie(default=None)) -> UserRegular:
     from fastapi import HTTPException
 
     if user_token is None or user_token == 'null' or user_token == '':
+        response.delete_cookie(key="user_token")
         raise HTTPException(
             status_code=401,
             detail={"result": False, "message": "Пожалуйста, авторизуйтесь на сайте!", "data": {}}
@@ -165,6 +166,7 @@ async def get_current_user(user_token=Cookie(default=None)) -> UserRegular:
     if current_user:
         return serialize_user(user=current_user)
     else:
+        response.delete_cookie(key="user_token")
         raise HTTPException(
             status_code=401,
             detail={"result": False, "message": "Ваш токен истек, авторизуйтесь на сайте еще раз!", "data": {}}
