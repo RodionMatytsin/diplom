@@ -87,10 +87,10 @@ function get_user() {
         true,
         null,
         function (data) {
+            console.log(data);
             if (data.data.is_teacher) {
                 window.location.href = "/";
             } else {
-                console.log(data);
                 document.getElementById('name_user').innerText = data.data.fio;
             }
         },
