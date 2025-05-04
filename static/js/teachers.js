@@ -24,7 +24,7 @@ main.addEventListener('click', () => {
 profile_settings.addEventListener('click', () => {
     main.classList.remove("btn_active");
     profile_settings.classList.add("btn_active");
-    profile__settings__wrapper.style.display = 'block';
+    profile__settings__wrapper.style.display = 'flex';
 });
 
 logoExit.addEventListener('mouseover', function() {
