@@ -11,3 +11,8 @@ async def index(request: Request):
 @main.get("/schoolchildren", response_class=HTMLResponse, status_code=200, tags=["Views"])
 async def schoolchildren(request: Request):
     return templates.TemplateResponse("schoolchildren.html", context={"request": request})
+
+
+@main.get("/teachers", response_class=HTMLResponse, status_code=200, tags=["Views"])
+async def teachers(request: Request):
+    return templates.TemplateResponse("teachers.html", context={"request": request})
