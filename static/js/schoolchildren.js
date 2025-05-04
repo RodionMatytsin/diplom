@@ -13,7 +13,7 @@ const logoExit = document.getElementById('logoExit');
 main.addEventListener('click', () => {
     main.classList.add("btn_active");
     testing.classList.remove("btn_active");
-    profile_settings.classList.remove("btn_active"); // Исправлено
+    profile_settings.classList.remove("btn_active");
     main__wrapper.classList.add("hiden");
     main__wrapper__list.classList.add("hiden");
     testing__wrapper.classList.remove("hiden");
@@ -28,7 +28,7 @@ main.addEventListener('click', () => {
 testing.addEventListener('click', () => {
     main.classList.remove("btn_active");
     testing.classList.add("btn_active");
-    profile_settings.classList.remove("btn_active"); // Исправлено
+    profile_settings.classList.remove("btn_active");
     main__wrapper.classList.remove("hiden");
     main__wrapper__list.classList.remove("hiden");
     testing__wrapper.classList.add("hiden");
@@ -43,7 +43,7 @@ testing.addEventListener('click', () => {
 profile_settings.addEventListener('click', () => {
     main.classList.remove("btn_active");
     testing.classList.remove("btn_active");
-    profile_settings.classList.add("btn_active"); // Исправлено
+    profile_settings.classList.add("btn_active");
     main__wrapper.classList.remove("hiden");
     main__wrapper__list.classList.remove("hiden");
     testing__wrapper.classList.remove("hiden");
