@@ -63,6 +63,32 @@ async def api_admin_get_teacher_class_with_schoolchildren(
     )
 
 
+@main.post(
+    '/api/admin/classes/{class_guid}/schoolchildren/{user_guid}',
+    status_code=200,
+    tags=["Admin"],
+    response_model=DefaultResponse
+)
+async def api_admin_add_user_to_class(
+        class_guid: UUID | str,
+        user_guid: UUID | str,
+        is_teacher: bool = False,
+        key: str = Depends(need_key)
+):
+    """
+        Этот метод предназначен для администратора, с помощью которого он может добавлять нового ученика в
+        учебный класс или назначать нового преподавателя для данного учебного класса.
+    """
+    from main.utils.admin.admin import admin_add_user_to_class
+    return DefaultResponse(
+        message=await admin_add_user_to_class(
+            class_guid=class_guid,
+            user_guid=user_guid,
+            is_teacher=is_teacher
+        )
+    )
+
+
 @main.delete(
     '/api/admin/classes/{class_guid}/schoolchildren/{schoolchildren_class_guid}',
     status_code=200,

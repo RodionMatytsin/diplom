@@ -59,23 +59,30 @@ async def get_schoolchildren_classes(
     )
 
 
-async def get_schoolchildren(
+async def get_schoolboy(
         class_guid: UUID | str,
-        schoolchildren_class_guid: UUID | str
+        schoolchildren_class_guid: UUID | str | None = None,
+        user_guid: UUID | str | None = None,
+        with_exception: bool = False,
 ) -> SchoolchildrenClasses:
     from main.models import engine, CRUD, SessionHandler
+
+    where_ = [
+        SchoolchildrenClasses.is_deleted == False,
+        SchoolchildrenClasses.class_guid == class_guid
+    ]
+    if schoolchildren_class_guid is not None:
+        where_.append(SchoolchildrenClasses.guid == schoolchildren_class_guid)
+    if user_guid is not None:
+        where_.append(SchoolchildrenClasses.user_guid == user_guid)
 
     schoolchildren: SchoolchildrenClasses | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
     ).read(
-        _where=[
-            SchoolchildrenClasses.is_deleted == False,
-            SchoolchildrenClasses.class_guid == class_guid,
-            SchoolchildrenClasses.guid == schoolchildren_class_guid
-        ], _all=False
+        _where=where_, _all=False
     )
 
-    if schoolchildren is None:
+    if schoolchildren is None and with_exception:
         from fastapi import HTTPException
         raise HTTPException(
             status_code=409,

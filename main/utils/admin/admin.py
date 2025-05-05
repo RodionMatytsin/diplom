@@ -108,14 +108,75 @@ async def get_teacher_class_with_schoolchildren_for_admin(
     )
 
 
+async def admin_add_user_to_class(
+        class_guid: UUID | str,
+        user_guid: UUID | str,
+        is_teacher: bool = False,
+) -> str:
+    from main.models import engine, CRUD, SessionHandler
+
+    from main.utils.users import get_users_with_serialize
+    current_user = await get_users_with_serialize(user_guid=user_guid, is_teacher=is_teacher)
+
+    if current_user.is_teacher:
+        from main.models import TeacherClasses
+
+        current_teacher: TeacherClasses | object | None = await CRUD(
+            session=SessionHandler.create(engine=engine), model=TeacherClasses
+        ).read(
+            _where=[TeacherClasses.class_guid == class_guid, TeacherClasses.user_guid == user_guid],
+            _all=False
+        )
+        if current_teacher is not None:
+            from fastapi import HTTPException
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    'result': False,
+                    'message': 'К сожалению, данный преподаватель уже назначен на этот учебный класс!',
+                    'data': {}
+                }
+            )
+
+        await CRUD(
+            session=SessionHandler.create(engine=engine), model=TeacherClasses
+        ).create(
+            _values=dict(class_guid=class_guid, user_guid=user_guid)
+        )
+
+        return "Вы успешно назначили преподавателя для этого учебного класса!"
+    else:
+        from main.models import SchoolchildrenClasses
+        from main.utils.schoolchildren_classes import get_schoolboy
+
+        if await get_schoolboy(class_guid=class_guid, user_guid=user_guid, with_exception=False) is not None:
+            from fastapi import HTTPException
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    'result': False,
+                    'message': 'К сожалению, данный школьник уже состоит в этом учебном классе!',
+                    'data': {}
+                }
+            )
+
+        await CRUD(
+            session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
+        ).create(
+            _values=dict(class_guid=class_guid, user_guid=user_guid)
+        )
+
+        return "Вы успешно добавили школьника в этот учебный класс!"
+
+
 async def admin_del_schoolchildren_from_class(
         class_guid: UUID | str,
         schoolchildren_class_guid: UUID | str
 ) -> str:
     from main.models import engine, SchoolchildrenClasses, CRUD, SessionHandler
-    from main.utils.schoolchildren_classes import get_schoolchildren
+    from main.utils.schoolchildren_classes import get_schoolboy
 
-    await get_schoolchildren(class_guid=class_guid, schoolchildren_class_guid=schoolchildren_class_guid)
+    await get_schoolboy(class_guid=class_guid, schoolchildren_class_guid=schoolchildren_class_guid, with_exception=True)
 
     await CRUD(
         session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
@@ -160,12 +221,13 @@ async def get_schoolchildren_by_user_guid_for_admin(
     from main.utils.users import get_users_with_serialize
     from main.utils.achievements import get_achievements
     from main.utils.recommendations import get_recommendations
-    from main.utils.schoolchildren_classes import get_schoolchildren
+    from main.utils.schoolchildren_classes import get_schoolboy
     from main.utils.tests import get_tests
 
-    schoolchildren = await get_schoolchildren(
+    schoolchildren = await get_schoolboy(
         class_guid=class_guid,
-        schoolchildren_class_guid=schoolchildren_class_guid
+        schoolchildren_class_guid=schoolchildren_class_guid,
+        with_exception=True
     )
 
     current_user = await get_users_with_serialize(user_guid=schoolchildren.user_guid)

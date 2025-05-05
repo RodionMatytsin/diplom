@@ -206,12 +206,13 @@ async def get_schoolchildren_by_user_guid(
     from main.utils.users import get_users_with_serialize
     from main.utils.achievements import get_achievements
     from main.utils.recommendations import get_recommendations
-    from main.utils.schoolchildren_classes import get_schoolchildren
+    from main.utils.schoolchildren_classes import get_schoolboy
     from main.utils.tests import get_tests
 
-    schoolchildren = await get_schoolchildren(
+    schoolchildren = await get_schoolboy(
         class_guid=class_guid,
-        schoolchildren_class_guid=schoolchildren_class_guid
+        schoolchildren_class_guid=schoolchildren_class_guid,
+        with_exception=True
     )
 
     current_user = await get_users_with_serialize(user_guid=schoolchildren.user_guid)
