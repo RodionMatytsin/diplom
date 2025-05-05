@@ -64,12 +64,13 @@ async def api_admin_get_teacher_class_with_schoolchildren(
 
 
 @main.delete(
-    '/api/admin/schoolchildren/{schoolchildren_class_guid}',
+    '/api/admin/classes/{class_guid}/schoolchildren/{schoolchildren_class_guid}',
     status_code=200,
     tags=["Admin"],
     response_model=DefaultResponse
 )
 async def api_admin_del_schoolchildren_from_class(
+        class_guid: UUID | str,
         schoolchildren_class_guid: UUID | str,
         key: str = Depends(need_key)
 ):
@@ -78,7 +79,10 @@ async def api_admin_del_schoolchildren_from_class(
     """
     from main.utils.admin.admin import admin_del_schoolchildren_from_class
     return DefaultResponse(
-        message=await admin_del_schoolchildren_from_class(schoolchildren_class_guid=schoolchildren_class_guid)
+        message=await admin_del_schoolchildren_from_class(
+            class_guid=class_guid,
+            schoolchildren_class_guid=schoolchildren_class_guid
+        )
     )
 
 
@@ -119,17 +123,23 @@ async def api_admin_reject_achievement(
 
 
 @main.get(
-    '/api/admin/schoolchildren/{user_guid}',
+    '/api/admin/classes/{class_guid}/schoolchildren/{schoolchildren_class_guid}',
     status_code=200,
     tags=["Admin"],
     response_model=SchoolchildrenDetailsAdminDefault
 )
 async def api_get_schoolchildren_by_user_guid_for_admin(
-        user_guid: UUID | str,
+        class_guid: UUID | str,
+        schoolchildren_class_guid: UUID | str,
         key: str = Depends(need_key)
 ):
     """
         Этот метод предназначен для админа, с помощью которого он получает подробную инфу об школьнике.
     """
     from main.utils.admin.admin import get_schoolchildren_by_user_guid_for_admin
-    return SchoolchildrenDetailsAdminDefault(data=await get_schoolchildren_by_user_guid_for_admin(user_guid=user_guid))
+    return SchoolchildrenDetailsAdminDefault(
+        data=await get_schoolchildren_by_user_guid_for_admin(
+            class_guid=class_guid,
+            schoolchildren_class_guid=schoolchildren_class_guid
+        )
+    )

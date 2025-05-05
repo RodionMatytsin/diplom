@@ -94,10 +94,13 @@ async def get_schoolchildren(
 
 
 async def serialize_teacher_class_with_schoolchildren(
-        name_class: str, schoolchildren: tuple[SchoolchildrenClasses] | object | None
+        class_guid: UUID | str,
+        name_class: str,
+        schoolchildren: tuple[SchoolchildrenClasses] | object | None
 ) -> TeacherClassWithSchoolchildrenRegular:
     from main.schemas.teacher_classes import Schoolchildren
     return TeacherClassWithSchoolchildrenRegular(
+        class_guid=class_guid,
         name_class=name_class,
         schoolchildren=tuple(
             Schoolchildren(
@@ -151,6 +154,7 @@ async def get_teacher_class_with_schoolchildren(
         )
 
     return await serialize_teacher_class_with_schoolchildren(
+        class_guid=class_.guid,
         name_class=class_.name,
         schoolchildren=await get_schoolchildren(class_guid=class_.guid)
     )
@@ -194,16 +198,26 @@ async def update_estimation_to_schoolchildren(estimation_update: EstimationUpdat
     return "Вы успешно обновили оценку у школьника!"
 
 
-async def get_schoolchildren_by_user_guid(user_guid: UUID | str) -> SchoolchildrenDetails:
+async def get_schoolchildren_by_user_guid(
+        class_guid: UUID | str,
+        schoolchildren_class_guid: UUID | str,
+) -> SchoolchildrenDetails:
 
     from main.utils.users import get_users_with_serialize
     from main.utils.achievements import get_achievements
     from main.utils.recommendations import get_recommendations
+    from main.utils.schoolchildren_classes import get_schoolchildren
     from main.utils.tests import get_tests
 
-    current_user = await get_users_with_serialize(user_guid=user_guid)
+    schoolchildren = await get_schoolchildren(
+        class_guid=class_guid,
+        schoolchildren_class_guid=schoolchildren_class_guid
+    )
+
+    current_user = await get_users_with_serialize(user_guid=schoolchildren.user_guid)
 
     return SchoolchildrenDetails(
+        schoolchildren_class_guid=schoolchildren.guid,
         user=current_user,
         achievements=await get_achievements(user_guid=current_user.guid, is_accepted=True),
         recommendations=await get_recommendations(user_guid=current_user.guid, is_accepted=True),

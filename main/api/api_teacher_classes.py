@@ -43,6 +43,30 @@ async def api_get_teacher_class_with_schoolchildren(class_guid: UUID | str, curr
     )
 
 
+@main.get(
+    '/api/teacher_classes/{class_guid}/schoolchildren/{schoolchildren_class_guid}',
+    status_code=200,
+    tags=["TeacherClasses"],
+    response_model=SchoolchildrenDetailsDefault
+)
+async def api_get_schoolchildren_by_user_guid(
+        class_guid: UUID | str,
+        schoolchildren_class_guid: UUID | str,
+        current_user=Depends(get_current_user)
+):
+    """
+        Этот метод предназначен для преподавателя, с помощью которого он получает подробную инфу об школьнике.
+    """
+    from main.utils.teacher_classes import required_teacher_access, get_schoolchildren_by_user_guid
+    await required_teacher_access(current_user=current_user)
+    return SchoolchildrenDetailsDefault(
+        data=await get_schoolchildren_by_user_guid(
+            class_guid=class_guid,
+            schoolchildren_class_guid=schoolchildren_class_guid
+        )
+    )
+
+
 @main.patch(
     '/api/teacher_classes/estimation',
     status_code=200,
@@ -60,24 +84,6 @@ async def api_update_estimation_to_schoolchildren(
     from main.utils.teacher_classes import required_teacher_access, update_estimation_to_schoolchildren
     await required_teacher_access(current_user=current_user)
     return DefaultResponse(message=await update_estimation_to_schoolchildren(estimation_update=estimation_update))
-
-
-@main.get(
-    '/api/teacher_classes/schoolchildren/{user_guid}',
-    status_code=200,
-    tags=["TeacherClasses"],
-    response_model=SchoolchildrenDetailsDefault
-)
-async def api_get_schoolchildren_by_user_guid(
-        user_guid: UUID | str,
-        current_user=Depends(get_current_user)
-):
-    """
-        Этот метод предназначен для преподавателя, с помощью которого он получает подробную инфу об школьнике.
-    """
-    from main.utils.teacher_classes import required_teacher_access, get_schoolchildren_by_user_guid
-    await required_teacher_access(current_user=current_user)
-    return SchoolchildrenDetailsDefault(data=await get_schoolchildren_by_user_guid(user_guid=user_guid))
 
 
 @main.post(

@@ -25,6 +25,7 @@ class Schoolchildren(BaseModel):
 
 
 class TeacherClassWithSchoolchildrenRegular(BaseModel):
+    class_guid: UUID | str
     name_class: str
     schoolchildren: tuple[Schoolchildren] | tuple
 
@@ -45,6 +46,7 @@ class EstimationUpdate(BaseModel):
 
 
 class SchoolchildrenDetails(BaseModel):
+    schoolchildren_class_guid: UUID | str
     user: UserRegular
     achievements: tuple[AchievementRegular] | tuple
     recommendations: tuple[RecommendationRegular] | tuple

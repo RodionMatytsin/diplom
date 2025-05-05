@@ -59,6 +59,32 @@ async def get_schoolchildren_classes(
     )
 
 
+async def get_schoolchildren(
+        class_guid: UUID | str,
+        schoolchildren_class_guid: UUID | str
+) -> SchoolchildrenClasses:
+    from main.models import engine, CRUD, SessionHandler
+
+    schoolchildren: SchoolchildrenClasses | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
+    ).read(
+        _where=[
+            SchoolchildrenClasses.is_deleted == False,
+            SchoolchildrenClasses.class_guid == class_guid,
+            SchoolchildrenClasses.guid == schoolchildren_class_guid
+        ], _all=False
+    )
+
+    if schoolchildren is None:
+        from fastapi import HTTPException
+        raise HTTPException(
+            status_code=409,
+            detail={'result': False, 'message': 'К сожалению, в этом классе нет такой записи об ученике!', 'data': {}}
+        )
+
+    return schoolchildren
+
+
 async def required_schoolchildren_access(current_user: UserRegular):
     if current_user.is_teacher:
         from fastapi import HTTPException

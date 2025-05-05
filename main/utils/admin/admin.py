@@ -89,7 +89,6 @@ async def get_teacher_class_with_schoolchildren_for_admin(
     ).read(
         _where=[Classes.is_deleted == False, Classes.guid == class_guid], _all=False
     )
-
     if class_ is None:
         from fastapi import HTTPException
         raise HTTPException(
@@ -103,19 +102,31 @@ async def get_teacher_class_with_schoolchildren_for_admin(
 
     from main.utils.teacher_classes import get_schoolchildren, serialize_teacher_class_with_schoolchildren
     return await serialize_teacher_class_with_schoolchildren(
+        class_guid=class_.guid,
         name_class=class_.name,
         schoolchildren=await get_schoolchildren(class_guid=class_.guid)
     )
 
 
-async def admin_del_schoolchildren_from_class(schoolchildren_class_guid: UUID | str) -> str:
+async def admin_del_schoolchildren_from_class(
+        class_guid: UUID | str,
+        schoolchildren_class_guid: UUID | str
+) -> str:
     from main.models import engine, SchoolchildrenClasses, CRUD, SessionHandler
+    from main.utils.schoolchildren_classes import get_schoolchildren
+
+    await get_schoolchildren(class_guid=class_guid, schoolchildren_class_guid=schoolchildren_class_guid)
+
     await CRUD(
         session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
     ).update(
-        _where=[SchoolchildrenClasses.guid == schoolchildren_class_guid],
+        _where=[
+            SchoolchildrenClasses.guid == schoolchildren_class_guid,
+            SchoolchildrenClasses.class_guid == class_guid
+        ],
         _values=dict(is_deleted=True)
     )
+
     return "Вы успешно удалили школьника с класса!"
 
 
@@ -141,16 +152,26 @@ async def admin_reject_achievement(achievement_guid: UUID | str) -> str:
     return "Вы успешно отклонили достижение школьника!"
 
 
-async def get_schoolchildren_by_user_guid_for_admin(user_guid: UUID | str) -> SchoolchildrenDetailsAdmin:
+async def get_schoolchildren_by_user_guid_for_admin(
+        class_guid: UUID | str,
+        schoolchildren_class_guid: UUID | str,
+) -> SchoolchildrenDetailsAdmin:
 
     from main.utils.users import get_users_with_serialize
     from main.utils.achievements import get_achievements
     from main.utils.recommendations import get_recommendations
+    from main.utils.schoolchildren_classes import get_schoolchildren
     from main.utils.tests import get_tests
 
-    current_user = await get_users_with_serialize(user_guid=user_guid)
+    schoolchildren = await get_schoolchildren(
+        class_guid=class_guid,
+        schoolchildren_class_guid=schoolchildren_class_guid
+    )
+
+    current_user = await get_users_with_serialize(user_guid=schoolchildren.user_guid)
 
     return SchoolchildrenDetailsAdmin(
+        schoolchildren_class_guid=schoolchildren.guid,
         user=current_user,
         achievements=await get_achievements(user_guid=current_user.guid, is_accepted=True),
         pending_achievements=await get_achievements(user_guid=current_user.guid, is_accepted=False),

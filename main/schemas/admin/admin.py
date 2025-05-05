@@ -33,6 +33,7 @@ class ClassDefault(DefaultResponse):
 
 
 class SchoolchildrenDetailsAdmin(BaseModel):
+    schoolchildren_class_guid: UUID | str
     user: UserRegular
     achievements: tuple[AchievementRegular] | tuple
     pending_achievements: tuple[AchievementRegular] | tuple
