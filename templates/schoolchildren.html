@@ -30,8 +30,8 @@
         </header>
 
         <!--Раздел "Главная"-->
-        <div class="main__wrapper hiden" id="main__wrapper">
-            <div class="main__wrapper__list" id="main__wrapper__list"></div>
+        <div class="main__wrapper" id="main__wrapper">
+            <div id="schoolchildren_classes_list" class="schoolchildren_classes_list"></div>
         </div>
 
         <!--Раздел "Тестирование"-->
@@ -161,7 +161,10 @@
 
         <script src="../static/js/main.js"></script>
         <script src="../static/js/schoolchildren.js"></script>
-        <script>get_achievements()</script>
+        <script>
+            get_schoolchildren_classes();
+            get_achievements();
+        </script>
 
     </body>
 </html>

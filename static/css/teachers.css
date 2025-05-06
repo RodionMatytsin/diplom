@@ -98,6 +98,9 @@ header{
 .profile__settings__wrapper {
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 4vh 0;
 }
 
 .form-container {

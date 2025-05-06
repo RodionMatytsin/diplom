@@ -1,6 +1,7 @@
 const main = document.getElementById("main");
 const testing = document.getElementById("testing");
 const profile_settings = document.getElementById("profile_settings");
+const main__wrapper = document.getElementById("main__wrapper");
 const profile__settings__wrapper = document.getElementById("profile__settings__wrapper");
 const logoExit = document.getElementById('logoExit');
 let phoneNumber = document.getElementById('phoneNumber'),
@@ -20,13 +21,16 @@ main.addEventListener('click', () => {
     main.classList.add("btn_active");
     testing.classList.remove("btn_active");
     profile_settings.classList.remove("btn_active");
+    main__wrapper.style.display = 'flex';
     profile__settings__wrapper.style.display = 'none';
+    get_schoolchildren_classes();
 });
 
 testing.addEventListener('click', () => {
     main.classList.remove("btn_active");
     testing.classList.add("btn_active");
     profile_settings.classList.remove("btn_active");
+    main__wrapper.style.display = 'none';
     profile__settings__wrapper.style.display = 'none';
 });
 
@@ -34,6 +38,7 @@ profile_settings.addEventListener('click', () => {
     main.classList.remove("btn_active");
     testing.classList.remove("btn_active");
     profile_settings.classList.add("btn_active");
+    main__wrapper.style.display = 'none';
     profile__settings__wrapper.style.display = 'flex';
     get_achievements();
 });
@@ -175,7 +180,7 @@ function get_achievements() {
             if (achievements.length === 0) {
                 const achievementItem = document.createElement('div');
                 achievementItem.classList.add('none_data');
-                achievementItem.innerHTML = 'У вас сейчас нет никаких достижений :('
+                achievementItem.innerHTML = 'У вас сейчас нет никаких достижений :(';
                 achievements_list.appendChild(achievementItem);
             }else{
                 for (let i = 0; i < achievements.length; i++) {
@@ -184,6 +189,68 @@ function get_achievements() {
                             achievements[i].achievement_guid,
                             achievements[i].description,
                             achievements[i].datetime_create,
+                        )
+                    );
+                }
+            }
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
+function create_schoolchildren_class_for_dom(
+    class_guid,
+    name_class,
+    estimation
+) {
+   let div_schoolchildren_class = document.createElement('div'),
+       div_schoolchildren_class_about = document.createElement('div'),
+       div_name_class = document.createElement('div'),
+       div_estimation = document.createElement('div');
+
+   div_schoolchildren_class.id = class_guid;
+   div_schoolchildren_class.className = 'schoolchildren_class';
+   div_schoolchildren_class.appendChild(div_schoolchildren_class_about);
+
+   div_schoolchildren_class_about.className = 'schoolchildren_class_about';
+
+   div_schoolchildren_class_about.appendChild(div_name_class);
+   div_name_class.className = 'schoolchildren_class_name_class';
+   div_name_class.innerHTML = '<b>Класс: </b>' + name_class;
+
+   div_schoolchildren_class_about.appendChild(div_estimation);
+   div_estimation.className = 'schoolchildren_class_estimation';
+   div_estimation.innerHTML = '<b>Успеваемость: </b>' + ((estimation) ? estimation : "-");
+
+   return div_schoolchildren_class
+}
+
+function get_schoolchildren_classes() {
+    let schoolchildren_classes_list = document.getElementById('schoolchildren_classes_list');
+    schoolchildren_classes_list.innerHTML = '';
+    sendRequest(
+        'GET',
+        '/api/schoolchildren_classes',
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            let schoolchildren_classes = data.data;
+            if (schoolchildren_classes.length === 0) {
+                const schoolchildren_classItem = document.createElement('div');
+                schoolchildren_classItem.classList.add('none_data');
+                schoolchildren_classItem.innerHTML = 'Пока что Ты не состоишь не в каком классе ! :(';
+                schoolchildren_classes_list.appendChild(schoolchildren_classItem);
+            }else{
+                for (let i = 0; i < schoolchildren_classes.length; i++) {
+                    schoolchildren_classes_list.appendChild(
+                        create_schoolchildren_class_for_dom(
+                            schoolchildren_classes[i].class_guid,
+                            schoolchildren_classes[i].name_class,
+                            schoolchildren_classes[i].estimation,
                         )
                     );
                 }
