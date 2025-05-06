@@ -85,7 +85,7 @@ function update_user() {
         true,
         {
             "phone_number": phoneNumber.value,
-            "fio": fio.value,
+            "fio": fio.value.trim(),
             "birthday": (year.value+'-'+month.value+'-'+day.value),
             "gender": gender.value
         },

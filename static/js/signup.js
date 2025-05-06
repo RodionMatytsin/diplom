@@ -47,12 +47,12 @@ function signup_user() {
         true,
         {
             "phone_number": phoneNumber.value,
-            "fio": fio.value,
+            "fio": fio.value.trim(),
             "birthday": (year.value+'-'+month.value+'-'+day.value),
             "gender": gender.value,
             "role": role.value,
-            "login": signupLogin.value,
-            "password": signupPassword.value
+            "login": signupLogin.value.trim(),
+            "password": signupPassword.value.trim()
         },
         function (data) {
             console.log(data);
@@ -75,8 +75,8 @@ function login_user() {
         '/api/login',
         true,
         {
-            "login": login.value,
-            "password": password.value
+            "login": login.value.trim(),
+            "password": password.value.trim()
         },
         function (data) {
             console.log(data);

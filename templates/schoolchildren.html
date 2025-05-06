@@ -41,7 +41,7 @@
 
         <!--Раздел "Настройки профиля"-->
         <div class="profile__settings__wrapper hiden" id="profile__settings__wrapper">
-            <div class="form-container" id="form__container">
+            <div class="form-container">
                 <div id="personalInfoForm">
                     <h2>Личные данные</h2>
                     <div class="input_field">
@@ -146,10 +146,22 @@
                     <button class="button" onclick="update_user()">Отредактировать</button>
                 </div>
             </div>
+            <div class="form-container">
+                <div id="personalAchievementsForm">
+                    <h2>Личные достижения</h2>
+                    <div class="input_field">
+                        <label class="input_label" for="achievement">Наименование достижения</label>
+                        <textarea class="login" style="resize: none; padding: 3% 2.5%; height: 8rem" id="achievement" placeholder="Введите свое достижение" required></textarea>
+                    </div>
+                    <button class="button" onclick="create_achievement()">Отправить достижение</button>
+                    <div id="achievements_list" class="achievements_list"></div>
+                </div>
+            </div>
         </div>
 
         <script src="../static/js/main.js"></script>
         <script src="../static/js/schoolchildren.js"></script>
+        <script>get_achievements()</script>
 
     </body>
 </html>

@@ -24,10 +24,6 @@ header{
     width: 100vw;
     top: 0;
     height: 100vh;
-    backdrop-filter: blur(3px) brightness(0.9);
-    --webkit-backdrop-filter: blur(3px) brightness(0.9);
-    -webkit-backdrop-filter: blur(3px) brightness(0.9);
-    background: rgba(0, 0, 0, 0.24);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -102,6 +98,9 @@ header{
 .profile__settings__wrapper {
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 1rem;
 }
 
 .form-container {
@@ -136,7 +135,8 @@ header{
 }
 
 .input_field input.login,
-.input_field select {
+.input_field select,
+.input_field textarea.login {
     width: 100%;
     padding: 2%;
     border: 1px solid #ced4da;
@@ -147,7 +147,8 @@ header{
 }
 
 .input_field input:focus,
-.input_field select:focus {
+.input_field select:focus,
+.input_field textarea:focus {
     border-color: #46C73F;
     outline: none;
 }
@@ -167,4 +168,30 @@ header{
 
 .button:hover {
     background-color: rgba(70, 199, 63, 0.35);
+}
+
+.achievement {
+    margin: 1.5vh 0;
+    background: #fff;
+    border-radius: 0.8rem;
+    padding: 1.5%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.achievement_about {
+    padding: 0.5%;
+}
+
+.achievement_datetime_create {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.7vw;
+    color: #424242;
+    gap: 0.25%;
+}
+
+.achievement_description {
+    font-size: 0.85vw;
+    color: #424242;
+    margin-top: 1%;
 }

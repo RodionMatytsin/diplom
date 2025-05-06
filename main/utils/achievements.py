@@ -18,6 +18,7 @@ async def get_achievements(
         is_accepted: bool | None = None
 ) -> tuple[AchievementRegular] | AchievementRegular | tuple:
     from main.models import engine, CRUD, SessionHandler
+    from sqlalchemy import desc
 
     where_ = [Achievements.is_deleted == False]
     if achievement_guid is not None:
@@ -29,8 +30,17 @@ async def get_achievements(
 
     achievements: tuple[Achievements] | Achievements | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Achievements
-    ).read(
-        _where=where_, _all=achievement_guid is None
+    ).extended_query(
+        _select=[
+            Achievements.guid,
+            Achievements.description,
+            Achievements.datetime_create
+        ],
+        _join=[],
+        _where=where_,
+        _group_by=[],
+        _order_by=[desc(Achievements.datetime_create)],
+        _all=achievement_guid is None
     )
 
     if achievements is None or achievements == []:

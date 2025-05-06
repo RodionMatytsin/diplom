@@ -35,6 +35,7 @@ profile_settings.addEventListener('click', () => {
     testing.classList.remove("btn_active");
     profile_settings.classList.add("btn_active");
     profile__settings__wrapper.style.display = 'flex';
+    get_achievements();
 });
 
 logoExit.addEventListener('mouseover', function() {
@@ -56,7 +57,7 @@ function logout() {
             window.location.href = "/";
         },
         function (data) {
-            console.log(data)
+            console.log(data);
             window.location.href = "/";
         }
     )
@@ -95,7 +96,7 @@ function update_user() {
         true,
         {
             "phone_number": phoneNumber.value,
-            "fio": fio.value,
+            "fio": fio.value.trim(),
             "birthday": (year.value+'-'+month.value+'-'+day.value),
             "gender": gender.value
         },
@@ -111,3 +112,79 @@ function update_user() {
 }
 
 window.onload = get_user;
+
+function create_achievement() {
+    let achievement = document.getElementById('achievement');
+    sendRequest(
+        'POST',
+        '/api/achievements',
+        true,
+        {
+            "description": achievement.value.trim()
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Оповещение');
+            achievement.value = '';
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
+function create_achievement_for_dom(
+    achievement_guid,
+    description,
+    datetime_create
+) {
+   let div_achievement = document.createElement('div'),
+       div_achievement_about = document.createElement('div'),
+       div_description = document.createElement('div'),
+       div_datetime_create = document.createElement('div');
+
+   div_achievement.id = achievement_guid;
+   div_achievement.className = 'achievement';
+   div_achievement.appendChild(div_achievement_about);
+
+   div_achievement_about.className = 'achievement_about';
+
+   div_achievement_about.appendChild(div_datetime_create);
+   div_datetime_create.className = 'achievement_datetime_create';
+   div_datetime_create.innerHTML = '<b>Дата/Время создания: </b>' + datetime_create;
+
+   div_achievement_about.appendChild(div_description);
+   div_description.className = 'achievement_description';
+   div_description.innerHTML = '<b>Описание достижения: </b>' + description;
+
+   return div_achievement
+}
+
+function get_achievements() {
+    let achievements_list = document.getElementById('achievements_list');
+    achievements_list.innerHTML = '';
+    sendRequest(
+        'GET',
+        '/api/achievements',
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            let achievements = data.data;
+            for (let i = 0; i < achievements.length; i++) {
+                achievements_list.appendChild(
+                    create_achievement_for_dom(
+                        achievements[i].achievement_guid,
+                        achievements[i].description,
+                        achievements[i].datetime_create,
+                    )
+                );
+            }
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
