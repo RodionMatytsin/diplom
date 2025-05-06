@@ -57,25 +57,25 @@ body {
 .tab {
     cursor: pointer;
     padding: 2% 4%;
-    border: 1px solid #ced4da;
+    border: 1px solid #46C73F;
     border-radius: 1rem;
     margin: 0 1%;
-    background-color: white;
+    font-weight: 600;
+    color: #46C73F;
+    transition: background 0.25s;
 }
 
 .tab.active {
-    color: white;
-    background-color: #46C73F;
+    background-color: rgba(70, 199, 63, 0.25);
 }
 
 .tab:hover {
-    color: white;
-    background-color: #24A51D;
+    background-color: rgba(70, 199, 63, 0.35);
 }
 
 .form-container {
     background: white;
-    padding: 2%;
+    padding: 1.5%;
     border-radius: 1rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     width: 30%;
@@ -123,9 +123,9 @@ body {
 .button {
     margin-top: 2.5%;
     padding: 2.5%;
-    background-color: #46C73F;
+    background-color: rgba(70, 199, 63, 0.25);
     font-weight: 600;
-    color: white;
+    color: #46C73F;
     border: none;
     border-radius: 0.8rem;
     cursor: pointer;
@@ -135,7 +135,7 @@ body {
 }
 
 .button:hover {
-    background-color: #24A51D;
+    background-color: rgba(70, 199, 63, 0.35);
 }
 
 .toggle-link {
