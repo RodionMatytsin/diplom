@@ -64,7 +64,7 @@ async def api_admin_get_teacher_class_with_schoolchildren(
 
 
 @main.post(
-    '/api/admin/classes/{class_guid}/schoolchildren/{user_guid}',
+    '/api/admin/classes/{class_guid}/users/{user_guid}',
     status_code=200,
     tags=["Admin"],
     response_model=DefaultResponse
