@@ -78,7 +78,7 @@ body {
     padding: 1%;
     border-radius: 1rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 30%;
+    width: 35%;
 }
 
 .form-container h2 {
@@ -106,7 +106,7 @@ body {
 .input_field input.login,
 .input_field select {
     width: 100%;
-    padding: 2.5%;
+    padding: 2%;
     border: 1px solid #ced4da;
     border-radius: 1rem;
     transition: border-color 0.3s;
@@ -121,7 +121,6 @@ body {
 }
 
 .button {
-    margin-top: 2.5%;
     padding: 2.5%;
     background-color: rgba(70, 199, 63, 0.25);
     font-weight: 600;
