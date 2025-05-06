@@ -95,19 +95,31 @@ header{
     cursor: pointer;
 }
 
-.schoolchildren_classes_list {
+.main__wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: row;
-    gap: 1.5rem;
-    padding: 1.5vh;
-    width: 90%;
+    flex-direction: column;
     background-color: #ffffff;
     box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
     border-radius: 5vh;
     margin: 4vh 5%;
+}
+
+.schoolchildren_classes_list{
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1.5vh;
+    width: 100%;
     flex-wrap: wrap;
+}
+
+.schoolboy_classes {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000000;
+    padding: 1%;
 }
 
 .profile__settings__wrapper {
