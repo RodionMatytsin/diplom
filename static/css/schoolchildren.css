@@ -195,3 +195,10 @@ header{
     color: #424242;
     margin-top: 1%;
 }
+
+.none_data {
+    text-align: center;
+    margin: 3% 0 0 0;
+    font-size: 1.25vw;
+    font-weight: 700;
+}

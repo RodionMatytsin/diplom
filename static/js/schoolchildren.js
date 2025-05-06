@@ -172,14 +172,21 @@ function get_achievements() {
         function (data) {
             console.log(data);
             let achievements = data.data;
-            for (let i = 0; i < achievements.length; i++) {
-                achievements_list.appendChild(
-                    create_achievement_for_dom(
-                        achievements[i].achievement_guid,
-                        achievements[i].description,
-                        achievements[i].datetime_create,
-                    )
-                );
+            if (achievements.length === 0) {
+                const achievementItem = document.createElement('div');
+                achievementItem.classList.add('none_data');
+                achievementItem.innerHTML = 'У вас сейчас нет никаких достижений :('
+                achievements_list.appendChild(achievementItem);
+            }else{
+                for (let i = 0; i < achievements.length; i++) {
+                    achievements_list.appendChild(
+                        create_achievement_for_dom(
+                            achievements[i].achievement_guid,
+                            achievements[i].description,
+                            achievements[i].datetime_create,
+                        )
+                    );
+                }
             }
         },
         function (data) {
