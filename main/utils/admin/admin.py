@@ -169,6 +169,44 @@ async def admin_add_user_to_class(
         return "Вы успешно добавили школьника в этот учебный класс!"
 
 
+async def admin_del_user_to_class(
+        class_guid: UUID | str,
+        user_guid: UUID | str
+) -> str:
+    from main.models import engine, TeacherClasses, CRUD, SessionHandler
+
+    from main.utils.users import get_users_with_serialize
+    current_user = await get_users_with_serialize(user_guid=user_guid, is_teacher=True)
+
+    current_teacher: TeacherClasses | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=TeacherClasses
+    ).read(
+        _where=[TeacherClasses.class_guid == class_guid, TeacherClasses.user_guid == current_user.guid],
+        _all=False
+    )
+    if current_teacher is None:
+        from fastapi import HTTPException
+        raise HTTPException(
+            status_code=409,
+            detail={
+                'result': False,
+                'message': 'К сожалению, этот преподаватель уже был удален из этого учебного класса!',
+                'data': {}
+            }
+        )
+
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=TeacherClasses
+    ).delete(
+        _where=[
+            TeacherClasses.class_guid == current_teacher.class_guid,
+            TeacherClasses.user_guid == current_teacher.user_guid
+        ]
+    )
+
+    return "Вы успешно удалили преподавателя из этого учебного класса!"
+
+
 async def admin_del_schoolchildren_from_class(
         class_guid: UUID | str,
         schoolchildren_class_guid: UUID | str

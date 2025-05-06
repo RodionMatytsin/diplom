@@ -90,6 +90,30 @@ async def api_admin_add_user_to_class(
 
 
 @main.delete(
+    '/api/admin/classes/{class_guid}/users/{user_guid}',
+    status_code=200,
+    tags=["Admin"],
+    response_model=DefaultResponse
+)
+async def api_admin_del_user_to_class(
+        class_guid: UUID | str,
+        user_guid: UUID | str,
+        key: str = Depends(need_key)
+):
+    """
+        Этот метод предназначен для администратора, с помощью которого он может удалять определенного
+        преподавателя из учебного класса.
+    """
+    from main.utils.admin.admin import admin_del_user_to_class
+    return DefaultResponse(
+        message=await admin_del_user_to_class(
+            class_guid=class_guid,
+            user_guid=user_guid
+        )
+    )
+
+
+@main.delete(
     '/api/admin/classes/{class_guid}/schoolchildren/{schoolchildren_class_guid}',
     status_code=200,
     tags=["Admin"],
