@@ -1,7 +1,8 @@
 const main = document.getElementById("main");
 const testing = document.getElementById("testing");
 const profile_settings = document.getElementById("profile_settings");
-const main__wrapper = document.getElementById("main__wrapper");
+const main__wrapper__schoolchildren_classes_list = document.getElementById("main__wrapper__schoolchildren_classes_list");
+const main__wrapper__recommendations_list = document.getElementById("main__wrapper__recommendations_list");
 const profile__settings__wrapper = document.getElementById("profile__settings__wrapper");
 const logoExit = document.getElementById('logoExit');
 let phoneNumber = document.getElementById('phoneNumber'),
@@ -21,16 +22,19 @@ main.addEventListener('click', () => {
     main.classList.add("btn_active");
     testing.classList.remove("btn_active");
     profile_settings.classList.remove("btn_active");
-    main__wrapper.style.display = 'flex';
+    main__wrapper__schoolchildren_classes_list.style.display = 'flex';
+    main__wrapper__recommendations_list.style.display = 'flex';
     profile__settings__wrapper.style.display = 'none';
     get_schoolchildren_classes();
+    get_recommendations();
 });
 
 testing.addEventListener('click', () => {
     main.classList.remove("btn_active");
     testing.classList.add("btn_active");
     profile_settings.classList.remove("btn_active");
-    main__wrapper.style.display = 'none';
+    main__wrapper__schoolchildren_classes_list.style.display = 'none';
+    main__wrapper__recommendations_list.style.display = 'none';
     profile__settings__wrapper.style.display = 'none';
 });
 
@@ -38,7 +42,8 @@ profile_settings.addEventListener('click', () => {
     main.classList.remove("btn_active");
     testing.classList.remove("btn_active");
     profile_settings.classList.add("btn_active");
-    main__wrapper.style.display = 'none';
+    main__wrapper__schoolchildren_classes_list.style.display = 'none';
+    main__wrapper__recommendations_list.style.display = 'none';
     profile__settings__wrapper.style.display = 'flex';
     get_achievements();
 });
@@ -243,6 +248,7 @@ function get_schoolchildren_classes() {
                 const schoolchildren_classItem = document.createElement('div');
                 schoolchildren_classItem.classList.add('none_data');
                 schoolchildren_classItem.style.margin = '1% 0 0 0';
+                schoolchildren_classItem.style.fontSize = '2vw';
                 schoolchildren_classItem.innerHTML = 'Пока что Ты не состоишь не в каком классе ! :(';
                 schoolchildren_classes_list.appendChild(schoolchildren_classItem);
             }else{
@@ -252,6 +258,70 @@ function get_schoolchildren_classes() {
                             schoolchildren_classes[i].class_guid,
                             schoolchildren_classes[i].name_class,
                             schoolchildren_classes[i].estimation,
+                        )
+                    );
+                }
+            }
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
+function create_recommendation_class_for_dom(
+    recommendation_guid,
+    description,
+    datetime_create
+) {
+    let div_recommendation = document.createElement('div'),
+       div_recommendation_about = document.createElement('div'),
+       div_description = document.createElement('div'),
+       div_datetime_create = document.createElement('div');
+
+   div_recommendation.id = recommendation_guid;
+   div_recommendation.className = 'recommendation';
+   div_recommendation.appendChild(div_recommendation_about);
+
+   div_recommendation_about.className = 'recommendation_about';
+
+   div_recommendation_about.appendChild(div_datetime_create);
+   div_datetime_create.className = 'recommendation_datetime_create';
+   div_datetime_create.innerHTML = '<b>Дата/Время создания: </b>' + datetime_create;
+
+   div_recommendation_about.appendChild(div_description);
+   div_description.className = 'recommendation_description';
+   div_description.innerHTML = '<b>Описание рекомендации: </b>' + description;
+
+   return div_recommendation
+}
+
+function get_recommendations() {
+    let recommendations_list = document.getElementById('recommendations_list');
+    recommendations_list.innerHTML = '';
+    sendRequest(
+        'GET',
+        '/api/recommendations',
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            let recommendations = data.data;
+            if (recommendations.length === 0) {
+                const recommendationItem = document.createElement('div');
+                recommendationItem.classList.add('none_data');
+                recommendationItem.style.margin = '1% 0 0 0';
+                recommendationItem.style.fontSize = '2vw';
+                recommendationItem.innerHTML = 'Для Тебя сейчас нет никаких рекомендаций ! :(';
+                recommendations_list.appendChild(recommendationItem);
+            }else{
+                for (let i = 0; i < recommendations.length; i++) {
+                    recommendations_list.appendChild(
+                        create_recommendation_class_for_dom(
+                            recommendations[i].recommendation_guid,
+                            recommendations[i].description,
+                            recommendations[i].datetime_create,
                         )
                     );
                 }

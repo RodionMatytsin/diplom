@@ -95,7 +95,7 @@ header{
     cursor: pointer;
 }
 
-.main__wrapper {
+.main__wrapper__schoolchildren_classes_list {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -116,6 +116,33 @@ header{
 }
 
 .schoolboy_classes {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000000;
+    padding: 1% 0 0 0;
+}
+
+.main__wrapper__recommendations_list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5vh;
+    margin: 4vh 5%;
+}
+
+.recommendations_list{
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1.5vh;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.schoolboy_recommendations {
     font-size: 1.5rem;
     font-weight: 700;
     color: #000000;
@@ -215,12 +242,14 @@ header{
     flex-direction: row;
     gap: 2%;
     margin-right: 2.5vh;
+    font-size: 1vw;
 }
 
 .schoolchildren_class_estimation {
     display: flex;
     flex-direction: row;
     gap: 2%;
+    font-size: 1vw;
 }
 
 .achievement {
@@ -251,7 +280,7 @@ header{
 
 .none_data {
     text-align: center;
-    margin: 3% 0 0 0;
-    font-size: 1.25vw;
+    margin: 6% 0 3% 0;
+    font-size: 1.55vw;
     font-weight: 700;
 }
