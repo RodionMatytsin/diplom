@@ -50,7 +50,7 @@ function logout() {
             window.location.href = "/";
         },
         function (data) {
-            console.log(data)
+            console.log(data);
             window.location.href = "/";
         }
     )
@@ -98,7 +98,7 @@ function update_user() {
             get_user();
         },
         function (data) {
-            console.log(data)
+            console.log(data);
             show_error(data.message, 'Ошибка');
         }
     )
@@ -109,6 +109,26 @@ window.onload = get_user;
 document.getElementById("close_positions_wrapper_teacher_class_with_schoolchildren").addEventListener('click', () => {
     document.getElementById("positions_popup_teacher_class_with_schoolchildren").style.display = 'none';
 });
+
+function update_estimation_to_schoolchildren(schoolchildren_class_guid, estimation) {
+    sendRequest(
+        'PATCH',
+        '/api/teacher_classes/estimation',
+        true,
+        {
+            "schoolchildren_class_guid": schoolchildren_class_guid,
+            "estimation": Number(estimation)
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Оповещение');
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
 
 function get_teacher_class_with_schoolchildren(class_guid) {
     let positions_popup_teacher_class_with_schoolchildren = document.getElementById("positions_popup_teacher_class_with_schoolchildren");
@@ -180,7 +200,10 @@ function get_teacher_class_with_schoolchildren(class_guid) {
                     btn_update_estimation_to_schoolchildren.className = 'btn_update_estimation_to_schoolchildren';
                     btn_update_estimation_to_schoolchildren.textContent = 'Сохранить изменения';
                     btn_update_estimation_to_schoolchildren.onclick = function() {
-                        show_error(schoolchildren[j].schoolchildren_class_guid, "Оповещение");
+                        update_estimation_to_schoolchildren(
+                            schoolchildren[j].schoolchildren_class_guid,
+                            input_estimation.value
+                        );
                     };
 
                     div_teacher_class_with_schoolchildren_about.appendChild(div_schoolchildren_about);

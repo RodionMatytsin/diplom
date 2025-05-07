@@ -233,7 +233,6 @@ header{
     left: 0;
     width: 100%;
     height: 100%;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 #positions_wrapper_teacher_class_with_schoolchildren {
@@ -258,43 +257,99 @@ header{
 }
 
 .teacher_class_with_schoolchildren_list {
-
+    width: 95%;
 }
 
 .teacher_class_with_schoolchildren_about {
-
+    margin-bottom: 1.25rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .teacher_class_with_schoolchildren_name_class {
-
+    font-weight: 700;
+    font-size: 1.75rem;
+    margin: 2% 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5%;
 }
 
-.schoolchildren_about{
+.schoolchildren_about {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.9rem;
+    padding: 0.8rem;
+    border-radius: 1rem;
+    background: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
 
+.schoolchildren_user_fio,
+.schoolchildren_label_estimation,
+.schoolchildren_datetime_estimation_update,
+.btn_detail_about_to_schoolchildren,
+.btn_update_estimation_to_schoolchildren
+{
+    flex: 1;
+    text-align: center;
 }
 
 .schoolchildren_user_fio {
-
+    font-size: 1rem;
+    font-weight: normal;
 }
 
 .schoolchildren_label_estimation {
-
+    font-size: 1rem;
 }
 
 .schoolchildren_input_estimation {
-
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    padding: 0.5rem;
+    width: 4%;
 }
 
 .schoolchildren_datetime_estimation_update {
-
+    font-size: 1rem;
 }
 
 .btn_detail_about_to_schoolchildren {
+    background-color: rgba(226, 173, 36, 0.25);
+    color: #E2AD24;
+    border: none;
+    border-radius: 15px;
+    padding: 0.8rem 1.6rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: 700;
+}
 
+.btn_detail_about_to_schoolchildren:hover {
+    background-color: rgba(226, 173, 36, 0.35);
 }
 
 .btn_update_estimation_to_schoolchildren {
+    background-color: rgba(70, 199, 63, 0.25);
+    color: #46C73F;
+    border: none;
+    border-radius: 15px;
+    padding: 0.8rem 1.6rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: 700;
+}
 
+.btn_update_estimation_to_schoolchildren:hover {
+    background-color: rgba(70, 199, 63, 0.35);
 }
 
 .none_data {

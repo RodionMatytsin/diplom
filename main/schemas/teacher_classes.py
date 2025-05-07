@@ -40,7 +40,7 @@ class EstimationUpdate(BaseModel):
 
     @field_validator('estimation')
     def check_estimation_(cls, estimation_):
-        if estimation_ is None or estimation_ == '':
+        if estimation_ is None or estimation_ == ''or estimation_ not in [2, 3, 4, 5]:
             return None
         return estimation_
 
