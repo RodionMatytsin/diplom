@@ -180,7 +180,7 @@ function get_achievements() {
             if (achievements.length === 0) {
                 const achievementItem = document.createElement('div');
                 achievementItem.classList.add('none_data');
-                achievementItem.innerHTML = 'У вас сейчас нет никаких достижений :(';
+                achievementItem.innerHTML = 'У вас сейчас нет никаких достижений ! :(';
                 achievements_list.appendChild(achievementItem);
             }else{
                 for (let i = 0; i < achievements.length; i++) {
@@ -242,6 +242,7 @@ function get_schoolchildren_classes() {
             if (schoolchildren_classes.length === 0) {
                 const schoolchildren_classItem = document.createElement('div');
                 schoolchildren_classItem.classList.add('none_data');
+                schoolchildren_classItem.style.margin = '1% 0 0 0';
                 schoolchildren_classItem.innerHTML = 'Пока что Ты не состоишь не в каком классе ! :(';
                 schoolchildren_classes_list.appendChild(schoolchildren_classItem);
             }else{
