@@ -198,6 +198,7 @@ header{
     transition: border-color 0.3s;
     box-sizing: border-box;
     font-size: 0.85vw;
+    font-family: "Montserrat", sans-serif;
 }
 
 .input_field input:focus,
