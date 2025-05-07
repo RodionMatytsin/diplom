@@ -135,7 +135,8 @@ header{
 }
 
 .input_field input.login,
-.input_field select {
+.input_field select,
+.input_field textarea.login {
     width: 100%;
     padding: 2%;
     border: 1px solid #ced4da;
@@ -143,10 +144,12 @@ header{
     transition: border-color 0.3s;
     box-sizing: border-box;
     font-size: 0.85vw;
+    font-family: "Montserrat", sans-serif;
 }
 
 .input_field input:focus,
-.input_field select:focus {
+.input_field select:focus,
+.input_field textarea:focus {
     border-color: #46C73F;
     outline: none;
 }
@@ -166,4 +169,58 @@ header{
 
 .button:hover {
     background-color: rgba(70, 199, 63, 0.35);
+}
+
+.main__wrapper__teacher_classes_list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 3.5vh;
+    margin: 4vh 5%;
+}
+
+.teacher_classes {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000000;
+    padding: 1% 0 0 0;
+}
+
+.teacher_classes_list{
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1.5vh;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.teacher_class {
+    margin: 0.25% 0;
+    background: #fff;
+    border-radius: 0.8rem;
+    padding: 1.5%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.teacher_class_about {
+    display: flex;
+    flex-direction: row;
+}
+
+.teacher_class_name_class {
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+    font-size: 1vw;
+}
+
+.none_data {
+    text-align: center;
+    margin: 6% 0 3% 0;
+    font-size: 1.55vw;
+    font-weight: 700;
 }

@@ -29,8 +29,11 @@
         </header>
 
         <!--Раздел "Главная"-->
-        <div class="main__wrapper hiden" id="main__wrapper">
-            <div class="main__wrapper__list" id="main__wrapper__list"></div>
+        <div class="main__wrapper" id="main__wrapper">
+            <div class="main__wrapper__teacher_classes_list" id="main__wrapper__teacher_classes_list">
+                <div class="teacher_classes">Классы преподавателя</div>
+                <div id="teacher_classes_list" class="teacher_classes_list"></div>
+            </div>
         </div>
 
         <!--Раздел "Настройки профиля"-->
@@ -144,6 +147,9 @@
 
         <script src="../static/js/main.js"></script>
         <script src="../static/js/teachers.js"></script>
+        <script>
+            get_teacher_classes();
+        </script>
 
     </body>
 </html>
