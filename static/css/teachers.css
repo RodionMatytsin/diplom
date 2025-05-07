@@ -187,6 +187,7 @@ header{
     font-weight: 700;
     color: #000000;
     padding: 1% 0 0 0;
+    cursor: pointer;
 }
 
 .teacher_classes_list{
@@ -206,6 +207,11 @@ header{
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
+.teacher_class:hover {
+    background-color: rgba(70, 199, 63, 0.25);
+    cursor: pointer;
+}
+
 .teacher_class_about {
     display: flex;
     flex-direction: row;
@@ -216,6 +222,66 @@ header{
     flex-direction: row;
     gap: 2%;
     font-size: 1vw;
+}
+
+#positions_popup_teacher_class_with_schoolchildren {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+#positions_wrapper_teacher_class_with_schoolchildren {
+    background-color: white;
+    padding: 20px;
+
+}
+
+.teacher_class_with_schoolchildren_list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.teacher_class_with_schoolchildren_about {
+
+}
+
+.teacher_class_with_schoolchildren_name_class {
+
+}
+
+.schoolchildren_about{
+
+}
+
+.schoolchildren_user_fio {
+
+}
+
+.schoolchildren_label_estimation {
+
+}
+
+.schoolchildren_input_estimation {
+
+}
+
+.schoolchildren_datetime_estimation_update {
+
+}
+
+.btn_detail_about_to_schoolchildren {
+
+}
+
+.btn_update_estimation_to_schoolchildren {
+
 }
 
 .none_data {

@@ -22,6 +22,7 @@ main.addEventListener('click', () => {
     profile_settings.classList.remove("btn_active");
     main__wrapper__teacher_classes_list.style.display = 'flex';
     profile__settings__wrapper.style.display = 'none';
+    get_teacher_classes();
 });
 
 profile_settings.addEventListener('click', () => {
@@ -106,6 +107,92 @@ function update_user() {
 
 window.onload = get_user;
 
+function get_teacher_class_with_schoolchildren(class_guid) {
+    let positions_popup_teacher_class_with_schoolchildren = document.getElementById("positions_popup_teacher_class_with_schoolchildren");
+    let teacher_class_with_schoolchildren_list = document.getElementById("teacher_class_with_schoolchildren_list");
+    teacher_class_with_schoolchildren_list.innerHTML = "";
+    sendRequest(
+        'GET',
+        `/api/teacher_classes/${class_guid}/schoolchildren`,
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            let teacher_class_with_schoolchildren = data.data;
+
+            let div_teacher_class_with_schoolchildren_about = document.createElement('div'),
+                div_teacher_class_with_schoolchildren_name_class = document.createElement('div');
+
+            div_teacher_class_with_schoolchildren_about.id = teacher_class_with_schoolchildren.class_guid;
+            div_teacher_class_with_schoolchildren_about.className = 'teacher_class_with_schoolchildren_about';
+
+            div_teacher_class_with_schoolchildren_about.appendChild(div_teacher_class_with_schoolchildren_name_class);
+            div_teacher_class_with_schoolchildren_name_class.className = 'teacher_class_with_schoolchildren_name_class';
+            div_teacher_class_with_schoolchildren_name_class.innerHTML = '<b>Класс: </b>' + teacher_class_with_schoolchildren.name_class;
+
+            let schoolchildren = teacher_class_with_schoolchildren.schoolchildren;
+            if (schoolchildren.length === 0) {
+                const teacher_class_with_schoolchildrenItem = document.createElement('div');
+                teacher_class_with_schoolchildrenItem.classList.add('none_data');
+                teacher_class_with_schoolchildrenItem.style.margin = '1% 0 0 0';
+                teacher_class_with_schoolchildrenItem.style.fontSize = '2vw';
+                teacher_class_with_schoolchildrenItem.innerHTML = 'Пока что в этом классе нет школьников ! :(';
+                div_teacher_class_with_schoolchildren_about.appendChild(teacher_class_with_schoolchildrenItem);
+            }else{
+                for (let j = 0; j < schoolchildren.length; j++) {
+                    let div_schoolchildren_about = document.createElement('div'),
+                        div_user_fio = document.createElement('div'),
+                        label_estimation = document.createElement('div'),
+                        input_estimation = document.createElement('input'),
+                        div_datetime_estimation_update = document.createElement('div'),
+                        btn_detail_about_to_schoolchildren = document.createElement('button'),
+                        btn_update_estimation_to_schoolchildren = document.createElement('button');
+
+                    div_schoolchildren_about.id = schoolchildren[j].schoolchildren_class_guid;
+                    div_schoolchildren_about.className = 'schoolchildren_about';
+
+                    div_schoolchildren_about.appendChild(div_user_fio);
+                    div_user_fio.className = 'schoolchildren_user_fio';
+                    div_user_fio.innerHTML = '<b>ФИО: </b>' + schoolchildren[j].user_fio;
+
+                    div_schoolchildren_about.appendChild(label_estimation);
+                    label_estimation.className = 'schoolchildren_label_estimation';
+                    label_estimation.innerHTML = '<b>Оценка: </b>';
+                    label_estimation.appendChild(input_estimation);
+                    input_estimation.className = 'schoolchildren_input_estimation';
+                    input_estimation.value = schoolchildren[j].estimation;
+
+                    div_schoolchildren_about.appendChild(div_datetime_estimation_update);
+                    div_datetime_estimation_update.className = 'schoolchildren_datetime_estimation_update';
+                    div_datetime_estimation_update.innerHTML = '<b>Дата и время обновления оцени: </b>' + ((schoolchildren[j].datetime_estimation_update) ? schoolchildren[j].datetime_estimation_update : "-");
+
+                    div_schoolchildren_about.appendChild(btn_detail_about_to_schoolchildren);
+                    btn_detail_about_to_schoolchildren.className = 'btn_detail_about_to_schoolchildren';
+                    btn_detail_about_to_schoolchildren.textContent = 'Подробнее о школьнике';
+                    btn_detail_about_to_schoolchildren.onclick = function() {
+                        show_error(schoolchildren[j].schoolchildren_class_guid, "Оповещение");
+                    };
+
+                    div_schoolchildren_about.appendChild(btn_update_estimation_to_schoolchildren);
+                    btn_update_estimation_to_schoolchildren.className = 'btn_update_estimation_to_schoolchildren';
+                    btn_update_estimation_to_schoolchildren.textContent = 'Сохранить изменения';
+                    btn_update_estimation_to_schoolchildren.onclick = function() {
+                        show_error(schoolchildren[j].schoolchildren_class_guid, "Оповещение");
+                    };
+
+                    div_teacher_class_with_schoolchildren_about.appendChild(div_schoolchildren_about);
+                }
+            }
+            teacher_class_with_schoolchildren_list.appendChild(div_teacher_class_with_schoolchildren_about);
+            positions_popup_teacher_class_with_schoolchildren.style.display = 'flex';
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
 function create_teacher_class_for_dom(
     class_guid,
     name_class
@@ -123,6 +210,10 @@ function create_teacher_class_for_dom(
    div_teacher_class_about.appendChild(div_name_class);
    div_name_class.className = 'teacher_class_name_class';
    div_name_class.innerHTML = '<b>Класс: </b>' + name_class;
+
+   div_teacher_class.onclick = function () {
+       get_teacher_class_with_schoolchildren(class_guid);
+   };
 
    return div_teacher_class
 }
