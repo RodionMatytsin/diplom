@@ -237,15 +237,28 @@ header{
 }
 
 #positions_wrapper_teacher_class_with_schoolchildren {
-    background-color: white;
-    padding: 20px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.close_positions_wrapper_teacher_class_with_schoolchildren {
+    position: absolute;
+    top: 2vw;
+    right: 2vw;
+    font-size: 2rem;
+    transform: rotate(45deg);
+    cursor: pointer;
+}
+
+.close_positions_wrapper_teacher_class_with_schoolchildren:hover {
+    scale: 1.15;
 }
 
 .teacher_class_with_schoolchildren_list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+
 }
 
 .teacher_class_with_schoolchildren_about {

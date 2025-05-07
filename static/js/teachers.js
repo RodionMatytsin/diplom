@@ -1,6 +1,5 @@
 const main = document.getElementById("main");
 const profile_settings = document.getElementById("profile_settings");
-const main__wrapper = document.getElementById("main__wrapper");
 const main__wrapper__teacher_classes_list = document.getElementById("main__wrapper__teacher_classes_list");
 const profile__settings__wrapper = document.getElementById("profile__settings__wrapper");
 const logoExit = document.getElementById('logoExit');
@@ -106,6 +105,10 @@ function update_user() {
 }
 
 window.onload = get_user;
+
+document.getElementById("close_positions_wrapper_teacher_class_with_schoolchildren").addEventListener('click', () => {
+    document.getElementById("positions_popup_teacher_class_with_schoolchildren").style.display = 'none';
+});
 
 function get_teacher_class_with_schoolchildren(class_guid) {
     let positions_popup_teacher_class_with_schoolchildren = document.getElementById("positions_popup_teacher_class_with_schoolchildren");
