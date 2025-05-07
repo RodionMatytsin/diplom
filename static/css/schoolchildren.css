@@ -102,7 +102,7 @@ header{
     flex-direction: column;
     background-color: #ffffff;
     box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5vh;
+    border-radius: 3.5vh;
     margin: 4vh 5%;
 }
 
@@ -129,7 +129,7 @@ header{
     flex-direction: column;
     background-color: #ffffff;
     box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5vh;
+    border-radius: 3.5vh;
     margin: 4vh 5%;
 }
 
