@@ -169,6 +169,7 @@ header{
 
 .button:hover {
     background-color: rgba(70, 199, 63, 0.35);
+    scale: 1.03;
 }
 
 .main__wrapper__teacher_classes_list {
@@ -210,6 +211,7 @@ header{
 .teacher_class:hover {
     background-color: rgba(70, 199, 63, 0.25);
     cursor: pointer;
+    scale: 1.03;
 }
 
 .teacher_class_about {
@@ -344,6 +346,7 @@ header{
 
 .btn_detail_about_to_schoolchildren:hover {
     background-color: rgba(226, 173, 36, 0.35);
+    scale: 1.03;
 }
 
 .btn_update_estimation_to_schoolchildren {
@@ -360,6 +363,7 @@ header{
 
 .btn_update_estimation_to_schoolchildren:hover {
     background-color: rgba(70, 199, 63, 0.35);
+    scale: 1.03;
 }
 
 .none_data {

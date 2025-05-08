@@ -67,6 +67,7 @@ body {
 
 .tab:hover {
     background-color: rgba(70, 199, 63, 0.35);
+    scale: 1.03;
 }
 
 .form-container {
@@ -131,16 +132,5 @@ body {
 
 .button:hover {
     background-color: rgba(70, 199, 63, 0.35);
-}
-
-.toggle-link {
-    cursor: pointer;
-    color: #46C73F;
-    text-decoration: underline;
-    display: block;
-    text-align: center;
-}
-
-.toggle-link:hover {
-    color: #24A51D;
+    scale: 1.03;
 }
