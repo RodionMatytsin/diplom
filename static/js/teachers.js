@@ -187,7 +187,7 @@ function get_teacher_class_with_schoolchildren(class_guid) {
 
                     div_schoolchildren_about.appendChild(div_datetime_estimation_update);
                     div_datetime_estimation_update.className = 'schoolchildren_datetime_estimation_update';
-                    div_datetime_estimation_update.innerHTML = '<b>Дата и время обновления оцени: </b>' + ((schoolchildren[j].datetime_estimation_update) ? schoolchildren[j].datetime_estimation_update : "-");
+                    div_datetime_estimation_update.innerHTML = '<b>Дата и время обновления оценки: </b>' + ((schoolchildren[j].datetime_estimation_update) ? schoolchildren[j].datetime_estimation_update : "-");
 
                     div_schoolchildren_about.appendChild(btn_detail_about_to_schoolchildren);
                     btn_detail_about_to_schoolchildren.className = 'btn_detail_about_to_schoolchildren';
