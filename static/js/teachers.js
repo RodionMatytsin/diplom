@@ -171,6 +171,11 @@ function get_teacher_class_with_schoolchildren(class_guid) {
                         btn_detail_about_to_schoolchildren = document.createElement('button'),
                         btn_update_estimation_to_schoolchildren = document.createElement('button');
 
+                    input_estimation.setAttribute('maxlength', '1');
+                    input_estimation.addEventListener('input', function() {
+                        this.value = this.value.replace(/[^2345]/g, '');
+                    });
+
                     div_schoolchildren_about.id = schoolchildren[j].schoolchildren_class_guid;
                     div_schoolchildren_about.className = 'schoolchildren_about';
 

@@ -312,6 +312,11 @@ header{
     width: 4%;
 }
 
+.schoolchildren_input_estimation:focus {
+    border-color: #46C73F;
+    outline: none;
+}
+
 .schoolchildren_datetime_estimation_update {
     font-size: 1rem;
 }
