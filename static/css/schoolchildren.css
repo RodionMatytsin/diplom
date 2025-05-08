@@ -96,6 +96,7 @@ header{
 }
 
 .main__wrapper__schoolchildren_classes_list {
+    width: 91%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -123,6 +124,7 @@ header{
 }
 
 .main__wrapper__recommendations_list {
+    width: 91%;
     display: flex;
     align-items: center;
     justify-content: center;
