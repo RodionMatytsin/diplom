@@ -1,7 +1,7 @@
 from main import main
 from fastapi import Depends
 from main.schemas.responses import DefaultResponse
-from main.schemas.admin.admin import ClassAdd, ClassDefault, SchoolchildrenDetailsAdminDefault
+from main.schemas.admin.admin import ClassAdd, ClassDefault, SchoolchildrenDetailsAdminDefault, UsersToClassAdminDefault
 from main.schemas.teacher_classes import TeacherClassWithSchoolchildrenDefault
 from main.utils.admin.admin import need_key
 from uuid import UUID
@@ -44,23 +44,24 @@ async def api_admin_del_class(
 
 
 @main.get(
-    '/api/admin/classes/{class_guid}/schoolchildren',
+    '/api/admin/classes/{class_guid}/users',
     status_code=200,
     tags=["Admin"],
-    response_model=TeacherClassWithSchoolchildrenDefault
+    response_model=UsersToClassAdminDefault
 )
-async def api_admin_get_teacher_class_with_schoolchildren(
+async def api_admin_get_users_to_class(
         class_guid: UUID | str,
         key: str = Depends(need_key)
 ):
     """
-        Этот метод предназначен для администратора, с помощью которого переходит в подробно о классе
-        для просмотра всех состоящих в нем школьников.
+        Этот метод предназначен для администратора, с помощью которого он получает списки пользователей, а именно:
+        - список школьников, которых нет в этом учебном классе, но которые могут быть добавлены в этот класс;
+        - список преподаватель, которые не назначены в этот класс, но могут быть назначены в этот класс;
+        - список преподаватель, которые могут быть удалены из этого класса и они не смогут взаимодействовать
+          в системе с данным учебным классов;
     """
-    from main.utils.admin.admin import get_teacher_class_with_schoolchildren_for_admin
-    return TeacherClassWithSchoolchildrenDefault(
-        data=await get_teacher_class_with_schoolchildren_for_admin(class_guid=class_guid)
-    )
+    from main.utils.admin.admin import admin_get_users_to_class
+    return UsersToClassAdminDefault(data=await admin_get_users_to_class(class_guid=class_guid))
 
 
 @main.post(
@@ -110,6 +111,26 @@ async def api_admin_del_user_to_class(
             class_guid=class_guid,
             user_guid=user_guid
         )
+    )
+
+
+@main.get(
+    '/api/admin/classes/{class_guid}/schoolchildren',
+    status_code=200,
+    tags=["Admin"],
+    response_model=TeacherClassWithSchoolchildrenDefault
+)
+async def api_admin_get_teacher_class_with_schoolchildren(
+        class_guid: UUID | str,
+        key: str = Depends(need_key)
+):
+    """
+        Этот метод предназначен для администратора, с помощью которого переходит в подробно о классе
+        для просмотра всех состоящих в нем школьников.
+    """
+    from main.utils.admin.admin import get_teacher_class_with_schoolchildren_for_admin
+    return TeacherClassWithSchoolchildrenDefault(
+        data=await get_teacher_class_with_schoolchildren_for_admin(class_guid=class_guid)
     )
 
 

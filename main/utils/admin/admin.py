@@ -1,6 +1,6 @@
 from main.models import Classes
 from main.schemas.teacher_classes import TeacherClassWithSchoolchildrenRegular
-from main.schemas.admin.admin import ClassRegular, SchoolchildrenDetailsAdmin
+from main.schemas.admin.admin import ClassRegular, SchoolchildrenDetailsAdmin, UsersToClassAdmin
 from uuid import UUID
 
 
@@ -105,6 +105,118 @@ async def get_teacher_class_with_schoolchildren_for_admin(
         class_guid=class_.guid,
         name_class=class_.name,
         schoolchildren=await get_schoolchildren(class_guid=class_.guid)
+    )
+
+
+async def admin_get_users_to_class(class_guid: UUID | str) -> UsersToClassAdmin:
+    from main.models import engine, Users, TeacherClasses, SchoolchildrenClasses, CRUD, SessionHandler
+    from main.schemas.admin.admin import AvailableSchoolchildrenAdmin, AvailableTeachersAdmin, AssignedTeachersAdmin
+    from sqlalchemy import null, and_
+
+    # Получаем список школьников, которых нет в данном классе
+    list_available_schoolchildren: tuple[Users] | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=Users
+    ).extended_query(
+        _select=[
+            Users.guid,
+            Users.fio
+        ],
+        _join=[
+            [
+                SchoolchildrenClasses,
+                and_(
+                    Users.guid == SchoolchildrenClasses.user_guid,
+                    SchoolchildrenClasses.class_guid == class_guid,
+                    SchoolchildrenClasses.is_deleted == False
+                )
+            ]
+        ],
+        _where=[
+            SchoolchildrenClasses.user_guid == null(),
+            Users.is_teacher == False
+        ],
+        _group_by=[],
+        _order_by=[Users.fio],
+        _all=True
+    )
+
+    # Получаем список преподавателей, которые не назначены в этот класс
+    list_available_teachers: tuple[Users] | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=Users
+    ).extended_query(
+        _select=[
+            Users.guid,
+            Users.fio
+        ],
+        _join=[
+            [
+                TeacherClasses,
+                and_(
+                    Users.guid == TeacherClasses.user_guid,
+                    TeacherClasses.class_guid == class_guid
+                )
+            ]
+        ],
+        _where=[
+            TeacherClasses.user_guid == null(),
+            Users.is_teacher == True
+        ],
+        _group_by=[],
+        _order_by=[Users.fio],
+        _all=True
+    )
+
+    # Получаем список преподавателей, которые назначены в данный класс
+    list_assigned_teachers: tuple[Users] | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=Users
+    ).extended_query(
+        _select=[
+            Users.guid,
+            Users.fio
+        ],
+        _join=[
+            [
+                TeacherClasses,
+                and_(
+                    Users.guid == TeacherClasses.user_guid,
+                    TeacherClasses.class_guid == class_guid
+                )
+            ]
+        ],
+        _where=[
+            TeacherClasses.user_guid != null(),
+            Users.is_teacher == True
+        ],
+        _group_by=[],
+        _order_by=[Users.fio],
+        _all=True
+    )
+
+    return UsersToClassAdmin(
+        available_schoolchildren=tuple(
+            [
+                AvailableSchoolchildrenAdmin(
+                    user_guid=available_schoolchildren.guid,
+                    user_fio=available_schoolchildren.fio
+                ) for available_schoolchildren in list_available_schoolchildren
+            ] if list_available_schoolchildren is not None else tuple()
+        ),
+        available_teachers=tuple(
+            [
+                AvailableTeachersAdmin(
+                    user_guid=available_teachers.guid,
+                    user_fio=available_teachers.fio
+                ) for available_teachers in list_available_teachers
+            ] if list_available_teachers is not None else tuple()
+        ),
+        assigned_teachers=tuple(
+            [
+                AssignedTeachersAdmin(
+                    user_guid=assigned_teachers.guid,
+                    user_fio=assigned_teachers.fio
+                ) for assigned_teachers in list_assigned_teachers
+            ] if list_assigned_teachers is not None else tuple()
+        )
     )
 
 

@@ -43,3 +43,28 @@ class SchoolchildrenDetailsAdmin(BaseModel):
 
 class SchoolchildrenDetailsAdminDefault(DefaultResponse):
     data: SchoolchildrenDetailsAdmin
+
+
+class AvailableSchoolchildrenAdmin(BaseModel):
+    user_guid: UUID | str
+    user_fio: str
+
+
+class AvailableTeachersAdmin(BaseModel):
+    user_guid: UUID | str
+    user_fio: str
+
+
+class AssignedTeachersAdmin(BaseModel):
+    user_guid: UUID | str
+    user_fio: str
+
+
+class UsersToClassAdmin(BaseModel):
+    available_schoolchildren: tuple[AvailableSchoolchildrenAdmin] | tuple
+    available_teachers: tuple[AvailableTeachersAdmin] | tuple
+    assigned_teachers: tuple[AssignedTeachersAdmin] | tuple
+
+
+class UsersToClassAdminDefault(DefaultResponse):
+    data: UsersToClassAdmin
