@@ -229,6 +229,7 @@ header{
 }
 
 #positions_wrapper_teacher_class_with_schoolchildren {
+    margin-top: 3%;
     width: 100%;
     height: 100%;
     display: flex;
