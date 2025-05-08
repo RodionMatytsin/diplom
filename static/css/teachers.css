@@ -238,8 +238,16 @@ header{
 
 .close_positions_wrapper_teacher_class_with_schoolchildren {
     position: absolute;
-    top: 2vw;
-    right: 2vw;
+    top: 1.5vw;
+    right: 1.5vw;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     font-size: 2rem;
     transform: rotate(45deg);
     cursor: pointer;
