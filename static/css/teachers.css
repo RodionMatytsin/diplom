@@ -240,7 +240,6 @@ header{
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
 .close_positions_wrapper_teacher_class_with_schoolchildren {
@@ -258,6 +257,7 @@ header{
 
 .teacher_class_with_schoolchildren_list {
     width: 95%;
+    margin-top: 4%;
 }
 
 .teacher_class_with_schoolchildren_about {
