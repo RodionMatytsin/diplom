@@ -16,3 +16,15 @@ async def schoolchildren(request: Request):
 @main.get("/teachers", response_class=HTMLResponse, status_code=200, tags=["Views"])
 async def teachers(request: Request):
     return templates.TemplateResponse("teachers.html", context={"request": request})
+
+
+@main.get("/admin/{secret_key}", response_class=HTMLResponse, status_code=200, tags=["Views"])
+async def admin(secret_key: str, request: Request):
+    from main.config import SECRET_KEY
+    if secret_key != SECRET_KEY:
+        from fastapi import HTTPException
+        raise HTTPException(
+            status_code=403,
+            detail={"result": False, "message": "У вас нет прав!", "data": {}}
+        )
+    return templates.TemplateResponse("admin.html", context={"request": request})

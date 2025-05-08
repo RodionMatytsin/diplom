@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="../static/css/admin.css">
+        <title>Админ панель</title>
+    </head>
+    <body style="min-height: auto">
+
+        <div class="alert" id="alert" style="display: none;" onclick="this.style.display = 'none';">
+            <div class="notice" id="notice">
+                <p class="hello" style="text-align: center; color: black;" id="notice_title">Ошибка</p>
+                <p class="enter" id="notice_text"></p>
+            </div>
+        </div>
+
+        <header>
+            <div class="header__but__wrapper">
+                <button class="btn_header btn_active" id="main">Главная</button>
+            </div>
+        </header>
+
+        <!--Раздел "Главная"-->
+        <div class="main__wrapper" id="main__wrapper">
+            <div class="main__wrapper_classes_list" id="main__wrapper_classes_list">
+                <div class="classes">Классы</div>
+                <div id="classes_list" class="classes_list"></div>
+            </div>
+        </div>
+
+        <script src="../static/js/main.js"></script>
+        <script src="../static/js/admin.js"></script>
+        <script>
+            get_classes();
+        </script>
+    </body>
+</html>

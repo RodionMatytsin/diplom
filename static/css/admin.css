@@ -1,0 +1,157 @@
+body{
+    font-family: "Montserrat", sans-serif;
+    background-color: #e9ecef;
+}
+
+.hiden {
+    display: none;
+}
+
+header{
+    width: 90%;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5vh;
+    margin: 2vh 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8vh;
+}
+
+.alert{
+    position: fixed;
+    z-index: 100000;
+    width: 100vw;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notice {
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+    padding: 2%;
+    width: 30%;
+	margin-bottom: 10vh;
+}
+
+.hello {
+	text-align: center;
+    color: black;
+	font-weight: 600;
+	font-size: 2vw;
+	line-height: 2vh;
+}
+
+.enter {
+	color: #424242;
+	font-weight: 600;
+	font-size: 1vw;
+	text-align: center;
+    margin-bottom: 2%;
+}
+
+.header__but__wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.5vh 3vh;
+}
+
+.btn_header{
+    border: none;
+    background: none;
+    font-size: 1.25rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.25s;
+}
+
+.btn_header:hover{
+    color: #ec2f33;
+}
+
+.btn_active{
+    font-size: 1.3rem!important;
+    font-weight: 700!important;
+}
+
+.main__wrapper_classes_list {
+    width: 91%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 3.5vh;
+    margin: 4vh 5%;
+}
+
+.classes {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000000;
+    padding: 1% 0 0 0;
+}
+
+.classes_list{
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1.5vh;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.class_ {
+    margin: 0.25% 0;
+    background: #fff;
+    border-radius: 0.8rem;
+    padding: 1%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.class_about {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.name_class {
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+    font-size: 1vw;
+}
+
+.name_class:hover {
+    cursor: pointer;
+    scale: 1.03;
+}
+
+.del_class {
+    margin-left: 1.5vw;
+    position: relative;
+    font-size: 2rem;
+    background-color: white;
+    transform: rotate(45deg);
+    cursor: pointer;
+}
+
+.del_class:hover {
+    scale: 1.15;
+    color: #ec2f33;
+}
+
+.none_data {
+    text-align: center;
+    margin: 6% 0 3% 0;
+    font-size: 1.55vw;
+    font-weight: 700;
+}
