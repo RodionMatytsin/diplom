@@ -287,6 +287,7 @@ header{
     border-radius: 1rem;
     background: #f9f9f9;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    gap: 1%;
 }
 
 .schoolchildren_user_fio,
@@ -301,7 +302,7 @@ header{
 
 .schoolchildren_user_fio {
     font-size: 1rem;
-    font-weight: normal;
+    font-weight: 700;
 }
 
 .schoolchildren_label_estimation {

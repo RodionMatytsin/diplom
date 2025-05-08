@@ -176,7 +176,7 @@ function get_teacher_class_with_schoolchildren(class_guid) {
 
                     div_schoolchildren_about.appendChild(div_user_fio);
                     div_user_fio.className = 'schoolchildren_user_fio';
-                    div_user_fio.innerHTML = '<b>ФИО: </b>' + schoolchildren[j].user_fio;
+                    div_user_fio.innerHTML = schoolchildren[j].user_fio;
 
                     div_schoolchildren_about.appendChild(label_estimation);
                     label_estimation.className = 'schoolchildren_label_estimation';
