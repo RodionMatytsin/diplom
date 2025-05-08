@@ -239,8 +239,8 @@ header{
 
 .close_positions_wrapper_teacher_class_with_schoolchildren {
     position: absolute;
-    top: 1.5vw;
-    right: 1.5vw;
+    top: 1.5%;
+    right: 1.5%;
     width: 30px;
     height: 30px;
     background-color: white;
