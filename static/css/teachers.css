@@ -225,21 +225,16 @@ header{
 }
 
 #positions_popup_teacher_class_with_schoolchildren {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
 }
 
 #positions_wrapper_teacher_class_with_schoolchildren {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    align-items: flex-start;
 }
 
 .close_positions_wrapper_teacher_class_with_schoolchildren {
