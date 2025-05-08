@@ -86,7 +86,7 @@ async def get_schoolchildren(
             SchoolchildrenClasses.class_guid == class_guid
         ],
         _group_by=[],
-        _order_by=[SchoolchildrenClasses.datetime_create],
+        _order_by=[Users.fio],
         _all=True
     )
 
