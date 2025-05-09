@@ -117,6 +117,10 @@ header{
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
+.class_:hover {
+    background-color: rgba(70, 199, 63, 0.25);
+}
+
 .class_about {
     display: flex;
     justify-content: space-between;
@@ -147,6 +151,10 @@ header{
 .del_class:hover {
     scale: 1.15;
     color: #ec2f33;
+}
+
+.class_:hover .del_class {
+    background-color: rgba(70, 199, 63, 0.05);
 }
 
 .none_data {
