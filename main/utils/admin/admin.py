@@ -36,8 +36,16 @@ async def get_classes_for_admin(
 
     classes: Classes | tuple[Classes] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Classes
-    ).read(
-        _where=where_, _all=class_guid is None
+    ).extended_query(
+        _select=[
+            Classes.guid,
+            Classes.name
+        ],
+        _join=[],
+        _where=where_,
+        _group_by=[],
+        _order_by=[Classes.datetime_create],
+        _all=True
     )
 
     if classes is None or classes == []:
