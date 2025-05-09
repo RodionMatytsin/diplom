@@ -76,36 +76,37 @@ async def get_tests(user_guid: UUID | str) -> tuple[TestRegular] | tuple:
     return tuple(result)
 
 
-async def update_test(test_guid: UUID | str, is_accepted: bool):
+async def update_test(test_guid: UUID | str, user_guid: UUID | str, is_accepted: bool):
     from main.models import engine, Tests, CRUD, SessionHandler
     await CRUD(
         session=SessionHandler.create(engine=engine), model=Tests
     ).update(
-        _where=[Tests.guid == test_guid],
+        _where=[Tests.guid == test_guid, Tests.user_guid == user_guid],
         _values=dict(is_accepted=is_accepted)
     )
 
 
-async def accept_changes_for_test(test_guid: UUID | str) -> str:
+async def accept_changes_for_test(test_guid: UUID | str, user_guid: UUID | str) -> str:
     from main.models import engine, Tests, CRUD, SessionHandler
 
     current_test: Tests | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Tests
     ).read(
-        _where=[Tests.guid == test_guid], _all=False
+        _where=[Tests.guid == test_guid, Tests.user_guid == user_guid], _all=False
     )
 
     if current_test is not None:
 
-        await update_test(test_guid=current_test.guid, is_accepted=True)
+        await update_test(test_guid=current_test.guid, user_guid=current_test.user_guid, is_accepted=True)
 
         tests: tuple[Tests] | object | None = await CRUD(
             session=SessionHandler.create(engine=engine), model=Tests
         ).read(
-            _where=[Tests.guid != current_test.guid], _all=True
+            _where=[Tests.guid != current_test.guid, Tests.user_guid == current_test.user_guid], _all=True
         )
 
-        for test in tests:
-            await update_test(test_guid=test.guid, is_accepted=False)
+        if tests is not None:
+            for test in tests:
+                await update_test(test_guid=test.guid, user_guid=test.user_guid, is_accepted=False)
 
         return "Вы успешно приняли изменения для последующего формирования рекомендации по тесту!"

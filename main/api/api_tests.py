@@ -15,15 +15,17 @@ async def api_get_questions():
     return QuestionDefault(data=await get_questions())
 
 
-@main.patch('/api/tests/{test_guid}', status_code=200, tags=["Tests"], response_model=DefaultResponse)
+@main.patch('/api/tests/{test_guid}/users/{user_guid}', status_code=200, tags=["Tests"], response_model=DefaultResponse)
 async def api_accept_changes_for_test(
         test_guid: UUID | str,
+        user_guid: UUID | str,
         current_user=Depends(get_current_user)
 ):
     """
-        Этот метод предназначен для преподавателя, который принимает изменения для формирования рекомендации по тесту.
+        Этот метод предназначен для преподавателя, который принимает изменения для формирования рекомендации
+        по тесту у конкретного школьника.
     """
     from main.utils.tests import accept_changes_for_test
     from main.utils.teacher_classes import required_teacher_access
     await required_teacher_access(current_user=current_user)
-    return DefaultResponse(message=await accept_changes_for_test(test_guid=test_guid))
+    return DefaultResponse(message=await accept_changes_for_test(test_guid=test_guid, user_guid=user_guid))
