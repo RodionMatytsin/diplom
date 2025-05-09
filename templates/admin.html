@@ -17,45 +17,45 @@
 
         <div class="alert" id="positions_popup_teacher_class_with_schoolchildren_for_admin" style="display: none; z-index: 10000;">
             <div class="close_positions_wrapper_teacher_class_with_schoolchildren_for_admin" id="close_positions_wrapper_teacher_class_with_schoolchildren_for_admin">+</div>
-            <div class="notice" id="positions_wrapper_form_container_for_admin" style="overflow-y: auto;">
-                <div class="form-container">
-                    <div id="schoolchildrenAddForm">
-                        <h2 style="font-size: 1.2rem;">Добавить школьника в класс</h2>
-                        <div class="input_field">
-                            <label class="input_label" for="schoolchildren_add">Школьник</label>
-                            <select id="schoolchildren_add" required>
-                                <option value="" disabled selected>Выберите из списка школьника</option>
-                            </select>
-                        </div>
-                        <button class="btn_for_admin_add_user" onclick="">Добавить школьника</button>
-                    </div>
-                </div>
-                <div class="form-container">
-                    <div id="teacherAddForm">
-                        <h2 style="font-size: 1.2rem;">Назначение класса преподавателю</h2>
-                        <div class="input_field">
-                            <label class="input_label" for="teacher_add">Преподаватель</label>
-                            <select id="teacher_add" required>
-                                <option value="" disabled selected>Выберите из списка преподавателя</option>
-                            </select>
-                        </div>
-                        <button class="btn_for_admin_add_user" onclick="">Назначить преподавателя</button>
-                    </div>
-                </div>
-                <div class="form-container">
-                    <div id="teacherDelForm">
-                        <h2 style="font-size: 1.2rem;">Удалить преподавателя с класса</h2>
-                        <div class="input_field">
-                            <label class="input_label" for="teacher_del">Преподаватель</label>
-                            <select id="teacher_del" required>
-                                <option value="" disabled selected>Выберите из списка преподавателя</option>
-                            </select>
-                        </div>
-                        <button class="btn_for_admin_del_teacher" onclick="">Удалить преподавателя</button>
-                    </div>
-                </div>
-            </div>
             <div class="notice" id="positions_wrapper_teacher_class_with_schoolchildren_for_admin" style="overflow-y: auto;">
+                <div class="form_container_for_admin">
+                    <div class="form-container">
+                        <div id="schoolchildrenAddForm">
+                            <h2 style="font-size: 1.2rem;">Добавить школьника в класс</h2>
+                            <div class="input_field">
+                                <label class="input_label" for="schoolchildren_add">Школьник</label>
+                                <select id="schoolchildren_add" required>
+                                    <option value="" disabled selected>Выберите из списка школьника</option>
+                                </select>
+                            </div>
+                            <button class="btn_for_admin_add_user" onclick="">Добавить школьника</button>
+                        </div>
+                    </div>
+                    <div class="form-container">
+                        <div id="teacherAddForm">
+                            <h2 style="font-size: 1.2rem;">Назначение класса преподавателю</h2>
+                            <div class="input_field">
+                                <label class="input_label" for="teacher_add">Преподаватель</label>
+                                <select id="teacher_add" required>
+                                    <option value="" disabled selected>Выберите из списка преподавателя</option>
+                                </select>
+                            </div>
+                            <button class="btn_for_admin_add_user" onclick="">Назначить преподавателя</button>
+                        </div>
+                    </div>
+                    <div class="form-container">
+                        <div id="teacherDelForm">
+                            <h2 style="font-size: 1.2rem;">Удалить преподавателя с класса</h2>
+                            <div class="input_field">
+                                <label class="input_label" for="teacher_del">Преподаватель</label>
+                                <select id="teacher_del" required>
+                                    <option value="" disabled selected>Выберите из списка преподавателя</option>
+                                </select>
+                            </div>
+                            <button class="btn_for_admin_del_teacher" onclick="">Удалить преподавателя</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="teacher_class_with_schoolchildren_for_admin_list" id="teacher_class_with_schoolchildren_for_admin_list"></div>
             </div>
         </div>
