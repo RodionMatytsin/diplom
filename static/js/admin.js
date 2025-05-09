@@ -58,6 +58,61 @@ function del_class(class_guid) {
     )
 }
 
+function get_users_to_class_for_admin(class_guid) {
+    let schoolchildren_add = document.getElementById('schoolchildren_add'),
+        teacher_add = document.getElementById('teacher_add'),
+        teacher_del = document.getElementById('teacher_del');
+
+    let placeholderSchoolchildrenAddOption = schoolchildren_add.querySelector('option'),
+        placeholderTeacherAddOption = teacher_add.querySelector('option'),
+        placeholderTeacherDelOption = teacher_del.querySelector('option');
+
+    schoolchildren_add.innerHTML = '';
+    schoolchildren_add.appendChild(placeholderSchoolchildrenAddOption);
+    teacher_add.innerHTML = '';
+    teacher_add.appendChild(placeholderTeacherAddOption);
+    teacher_del.innerHTML = '';
+    teacher_del.appendChild(placeholderTeacherDelOption);
+
+    sendRequest(
+        'GET',
+        `/api/admin/classes/${class_guid}/users?key=${key}`,
+        true,
+        null,
+        function (data) {
+            let available_schoolchildren_list = data.data.available_schoolchildren;
+            let available_teachers_list = data.data.available_teachers;
+            let assigned_teachers_list = data.data.assigned_teachers;
+
+            for (let i = 0; i < available_schoolchildren_list.length; i++) {
+                let new_option = document.createElement('option');
+                new_option.value = available_schoolchildren_list[i].user_guid;
+                new_option.innerHTML = available_schoolchildren_list[i].user_fio;
+                schoolchildren_add.appendChild(new_option);
+            }
+
+            for (let i = 0; i < available_teachers_list.length; i++) {
+                let new_option = document.createElement('option');
+                new_option.value = available_teachers_list[i].user_guid;
+                new_option.innerHTML = available_teachers_list[i].user_fio;
+                teacher_add.appendChild(new_option);
+            }
+
+            for (let i = 0; i < assigned_teachers_list.length; i++) {
+                let new_option = document.createElement('option');
+                new_option.value = assigned_teachers_list[i].user_guid;
+                new_option.innerHTML = assigned_teachers_list[i].user_fio;
+                teacher_del.appendChild(new_option);
+            }
+
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
 function del_schoolchildren(
     class_guid,
     schoolchildren_class_guid
@@ -185,6 +240,7 @@ function create_class_for_dom(
    div_name_class.className = 'name_class';
    div_name_class.innerHTML = '<b>Класс: </b>' + name_class;
    div_name_class.onclick = function () {
+       get_users_to_class_for_admin(class_guid);
        get_teacher_class_with_schoolchildren_for_admin(class_guid);
    };
 
