@@ -227,6 +227,134 @@ header{
     background-color: rgba(70, 199, 63, 0.05);
 }
 
+#positions_popup_teacher_class_with_schoolchildren_for_admin {
+    top: 0;
+    left: 0;
+}
+
+#positions_wrapper_teacher_class_with_schoolchildren_for_admin {
+    background-color: #e9ecef;
+    margin-top: 3%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.close_positions_wrapper_teacher_class_with_schoolchildren_for_admin {
+    position: absolute;
+    top: 1.5%;
+    right: 1.5%;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    font-size: 2rem;
+    transform: rotate(45deg);
+    cursor: pointer;
+}
+
+.close_positions_wrapper_teacher_class_with_schoolchildren_for_admin:hover {
+    scale: 1.15;
+}
+
+.teacher_class_with_schoolchildren_for_admin_list {
+    width: 95%;
+    margin-top: 4%;
+}
+
+.teacher_class_with_schoolchildren_for_admin_about {
+    margin-bottom: 1.25rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.teacher_class_with_schoolchildren_for_admin_name_class {
+    font-weight: 500;
+    font-size: 1.75rem;
+    margin: 2% 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5%;
+}
+
+.schoolchildren_for_admin_about {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.9rem;
+    padding: 0.8rem;
+    border-radius: 1rem;
+    background: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    gap: 1%;
+}
+
+.schoolchildren_for_admin_user_fio,
+.schoolchildren_div_for_admin_estimation,
+.schoolchildren_for_admin_datetime_estimation_update,
+.btn_for_admin_detail_about_to_schoolchildren,
+.btn_for_admin_del_schoolchildren
+{
+    flex: 1;
+    text-align: center;
+}
+
+.schoolchildren_for_admin_user_fio {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.schoolchildren_div_for_admin_estimation {
+    font-size: 1rem;
+}
+
+.schoolchildren_for_admin_datetime_estimation_update {
+    font-size: 1rem;
+}
+
+.btn_for_admin_detail_about_to_schoolchildren {
+    background-color: rgba(226, 173, 36, 0.25);
+    color: #E2AD24;
+    border: none;
+    border-radius: 15px;
+    padding: 0.8rem 1.6rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: 700;
+}
+
+.btn_for_admin_detail_about_to_schoolchildren:hover {
+    background-color: rgba(226, 173, 36, 0.35);
+    scale: 1.03;
+}
+
+.btn_for_admin_del_schoolchildren {
+    background-color: rgba(255, 114, 114, 0.25);
+    color: #FF7272;
+    border: none;
+    border-radius: 15px;
+    padding: 0.8rem 1.6rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: 700;
+}
+
+.btn_for_admin_del_schoolchildren:hover {
+    background-color: rgba(255, 114, 114, 0.35);
+    scale: 1.03;
+}
+
 .none_data {
     text-align: center;
     margin: 6% 0 3% 0;

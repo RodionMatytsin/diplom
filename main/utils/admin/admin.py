@@ -22,7 +22,8 @@ def serialize_class(class_: Classes) -> ClassRegular:
 
 
 async def get_classes_for_admin(
-        class_guid: UUID | str | None = None
+        class_guid: UUID | str | None = None,
+        name_class: str | None = None
 ) -> ClassRegular | tuple[ClassRegular] | tuple:
 
     from main.models import engine, CRUD, SessionHandler
@@ -30,6 +31,8 @@ async def get_classes_for_admin(
     where_ = [Classes.is_deleted == False]
     if class_guid is not None:
         where_.append(Classes.guid == class_guid)
+    if name_class is not None:
+        where_.append(Classes.name == name_class)
 
     classes: Classes | tuple[Classes] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Classes
@@ -47,6 +50,13 @@ async def get_classes_for_admin(
 
 async def admin_add_new_class(name_class: str) -> str:
     from main.models import engine, CRUD, SessionHandler
+
+    if await get_classes_for_admin(name_class=name_class):
+        from fastapi import HTTPException
+        raise HTTPException(
+            status_code=409,
+            detail={"result": False, "message": "Учебный класс с таким наименованием уже существует!", "data": {}}
+        )
 
     await CRUD(
         session=SessionHandler.create(engine=engine), model=Classes
