@@ -67,8 +67,12 @@ function add_user_to_class(is_teacher = false) {
         function (data) {
             console.log(data);
             setTimeout(() => {
-                get_users_to_class_for_admin(class_guid);
-                get_teacher_class_with_schoolchildren_for_admin(class_guid);
+                if (is_teacher === false) {
+                    get_users_to_class_for_admin(class_guid);
+                    get_teacher_class_with_schoolchildren_for_admin(class_guid);
+                } else {
+                    get_users_to_class_for_admin(class_guid);
+                }
             }, 500);
             show_error(data.message, 'Оповещение');
             schoolchildren_add.selectedIndex = 0;
@@ -100,7 +104,6 @@ function del_user_to_class() {
             console.log(data);
             setTimeout(() => {
                 get_users_to_class_for_admin(class_guid);
-                get_teacher_class_with_schoolchildren_for_admin(class_guid);
             }, 500);
             show_error(data.message, 'Оповещение');
             document.getElementById('schoolchildren_add').selectedIndex = 0;
