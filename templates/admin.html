@@ -23,6 +23,16 @@
 
         <!--Раздел "Главная"-->
         <div class="main__wrapper" id="main__wrapper">
+            <div class="form-container">
+                <div id="classForm">
+                    <h2>Создать учебный класс</h2>
+                    <div class="input_field">
+                        <label class="input_label" for="name_class">Наименование учебного класса</label>
+                        <input class="login" type="text" id="name_class" placeholder="Введите наименование учебного класса" required>
+                    </div>
+                    <button class="button" onclick="add_class();">Создать учебный класс</button>
+                </div>
+            </div>
             <div class="main__wrapper_classes_list" id="main__wrapper_classes_list">
                 <div class="classes">Классы</div>
                 <div id="classes_list" class="classes_list"></div>

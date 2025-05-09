@@ -1,9 +1,38 @@
 const key = "kAlu7NqZwoWx7MaRwoXv9Qc4woZnAp==";
 const main = document.getElementById("main");
+let name_class = document.getElementById('name_class');
 
 main.addEventListener('click', () => {
     get_classes();
 });
+
+name_class.addEventListener('input', function() {
+    if (!/^[a-zA-ZА-Яа-я0-9_+=\s]*$/.test(name_class.value)) {
+        name_class.value = name_class.value.replace(/[^a-zA-ZА-Яа-я0-9_+=\s]/g, '');
+    }
+});
+
+function add_class() {
+    sendRequest(
+        'POST',
+        `/api/admin/classes?key=${key}`,
+        true,
+        {
+            "name_class": name_class.value.trim()
+        },
+        function (data) {
+            console.log(data);
+            setTimeout(() => {
+                get_classes();
+            }, 500);
+            show_error(data.message, 'Оповещение');
+        },
+        function (data) {
+            console.log(data)
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
 
 function del_class(class_guid) {
     sendRequest(

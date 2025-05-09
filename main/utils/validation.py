@@ -87,6 +87,6 @@ def check_password(password_: str) -> str:
 
 
 def check_class(name_class_: str) -> bool | str:
-    if re.match(r'^[a-zA-ZА-Яа-я0-9_\-+=\s]+$', name_class_) is None:
+    if re.match(r'^[a-zA-ZА-Яа-я0-9_+=\s]+$', name_class_) is None:
         return False
     return name_class_

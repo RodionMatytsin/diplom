@@ -81,6 +81,14 @@ header{
     font-weight: 700!important;
 }
 
+.main__wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 4vh 0;
+}
+
 .main__wrapper_classes_list {
     width: 91%;
     display: flex;
@@ -91,6 +99,68 @@ header{
     box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
     border-radius: 3.5vh;
     margin: 4vh 5%;
+}
+
+.form-container {
+    background: white;
+    padding: 1%;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 30%;
+}
+
+.form-container h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000000;
+    text-align: center;
+}
+
+.input_label {
+    display: block;
+    margin-bottom: 0.2%;
+    font-weight: bold;
+    color: #424242;
+}
+
+.input_field {
+    margin-bottom: 2.5%;
+}
+
+.input_field input.login,
+.input_field select {
+    width: 100%;
+    padding: 2%;
+    border: 1px solid #ced4da;
+    border-radius: 1rem;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+    font-size: 0.85vw;
+    font-family: "Montserrat", sans-serif;
+}
+
+.input_field input:focus,
+.input_field select:focus {
+    border-color: #46C73F;
+    outline: none;
+}
+
+.button {
+    padding: 2.5%;
+    background-color: rgba(70, 199, 63, 0.25);
+    font-weight: 600;
+    color: #46C73F;
+    border: none;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.2rem;
+    transition: background 0.25s;
+}
+
+.button:hover {
+    background-color: rgba(70, 199, 63, 0.35);
+    scale: 1.03;
 }
 
 .classes {
