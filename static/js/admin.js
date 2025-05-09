@@ -68,6 +68,41 @@ function add_user_to_class(is_teacher = false) {
                 get_teacher_class_with_schoolchildren_for_admin(class_guid);
             }, 500);
             show_error(data.message, 'Оповещение');
+            schoolchildren_add.selectedIndex = 0;
+            teacher_add.selectedIndex = 0;
+            document.getElementById('teacher_del').selectedIndex = 0;
+        },
+        function (data) {
+            console.log(data)
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
+function del_user_to_class() {
+    let class_guid = sessionStorage.getItem("class_guid");
+    let teacher_del = document.getElementById('teacher_del');
+
+    if (!teacher_del.value) {
+        show_error('Пожалуйста, выберите из списка преподавателя!', 'Ошибка');
+        return;
+    }
+
+    sendRequest(
+        'DELETE',
+        `/api/admin/classes/${class_guid}/users/${teacher_del.value}?key=${key}`,
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            setTimeout(() => {
+                get_users_to_class_for_admin(class_guid);
+                get_teacher_class_with_schoolchildren_for_admin(class_guid);
+            }, 500);
+            show_error(data.message, 'Оповещение');
+            document.getElementById('schoolchildren_add').selectedIndex = 0;
+            document.getElementById('teacher_add').selectedIndex = 0;
+            teacher_del.selectedIndex = 0;
         },
         function (data) {
             console.log(data)
