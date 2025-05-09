@@ -13,6 +13,7 @@ name_class.addEventListener('input', function() {
 });
 
 document.getElementById("close_positions_wrapper_teacher_class_with_schoolchildren_for_admin").addEventListener('click', () => {
+    sessionStorage.removeItem("class_guid");
     document.getElementById("positions_popup_teacher_class_with_schoolchildren_for_admin").style.display = 'none';
 });
 
@@ -28,6 +29,43 @@ function add_class() {
             console.log(data);
             setTimeout(() => {
                 get_classes();
+            }, 500);
+            show_error(data.message, 'Оповещение');
+        },
+        function (data) {
+            console.log(data)
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
+function add_user_to_class(is_teacher = false) {
+    let class_guid = sessionStorage.getItem("class_guid");
+    let schoolchildren_add = document.getElementById('schoolchildren_add');
+    let teacher_add = document.getElementById('teacher_add');
+
+    if (is_teacher === false) {
+        if (!schoolchildren_add.value) {
+            show_error('Пожалуйста, выберите из списка школьника!', 'Ошибка');
+            return;
+        }
+    } else {
+        if (!teacher_add.value) {
+            show_error('Пожалуйста, выберите из списка преподавателя!', 'Ошибка');
+            return;
+        }
+    }
+
+    sendRequest(
+        'POST',
+        `/api/admin/classes/${class_guid}/users/${(is_teacher === false) ? schoolchildren_add.value : teacher_add.value}?is_teacher=${is_teacher}&key=${key}`,
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            setTimeout(() => {
+                get_users_to_class_for_admin(class_guid);
+                get_teacher_class_with_schoolchildren_for_admin(class_guid);
             }, 500);
             show_error(data.message, 'Оповещение');
         },
@@ -59,6 +97,8 @@ function del_class(class_guid) {
 }
 
 function get_users_to_class_for_admin(class_guid) {
+    sessionStorage.setItem("class_guid", class_guid);
+
     let schoolchildren_add = document.getElementById('schoolchildren_add'),
         teacher_add = document.getElementById('teacher_add'),
         teacher_del = document.getElementById('teacher_del');
@@ -125,6 +165,7 @@ function del_schoolchildren(
         function (data) {
             console.log(data);
             setTimeout(() => {
+                get_users_to_class_for_admin(class_guid);
                 get_teacher_class_with_schoolchildren_for_admin(class_guid);
             }, 500);
             show_error(data.message, 'Оповещение');
