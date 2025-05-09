@@ -232,6 +232,16 @@ header{
     left: 0;
 }
 
+#positions_wrapper_form_container_for_admin {
+    background-color: #e9ecef;
+    margin-top: 3%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
 #positions_wrapper_teacher_class_with_schoolchildren_for_admin {
     background-color: #e9ecef;
     margin-top: 3%;
@@ -351,6 +361,42 @@ header{
 }
 
 .btn_for_admin_del_schoolchildren:hover {
+    background-color: rgba(255, 114, 114, 0.35);
+    scale: 1.03;
+}
+
+.btn_for_admin_add_user {
+    padding: 2%;
+    background-color: rgba(70, 199, 63, 0.25);
+    font-weight: 600;
+    color: #46C73F;
+    border: none;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1rem;
+    transition: background 0.25s;
+}
+
+.btn_for_admin_add_user:hover {
+    background-color: rgba(70, 199, 63, 0.35);
+    scale: 1.03;
+}
+
+.btn_for_admin_del_teacher{
+    padding: 2%;
+    background-color: rgba(255, 114, 114, 0.25);
+    font-weight: 600;
+    color: #FF7272;
+    border: none;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1rem;
+    transition: background 0.25s;
+}
+
+.btn_for_admin_del_teacher:hover {
     background-color: rgba(255, 114, 114, 0.35);
     scale: 1.03;
 }
