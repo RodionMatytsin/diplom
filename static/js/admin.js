@@ -1,9 +1,30 @@
 const key = "kAlu7NqZwoWx7MaRwoXv9Qc4woZnAp==";
 const main = document.getElementById("main");
+const _schoolchildren = document.getElementById("schoolchildren");
+const _teachers = document.getElementById("teachers");
+const main__wrapper = document.getElementById("main__wrapper");
 let name_class = document.getElementById('name_class');
 
 main.addEventListener('click', () => {
+    main.classList.add("btn_active");
+    _schoolchildren.classList.remove("btn_active");
+    _teachers.classList.remove("btn_active");
+    main__wrapper.style.display = 'flex';
     get_classes();
+});
+
+_schoolchildren.addEventListener('click', () => {
+    main.classList.remove("btn_active");
+    _schoolchildren.classList.add("btn_active");
+    _teachers.classList.remove("btn_active");
+    main__wrapper.style.display = 'none';
+});
+
+_teachers.addEventListener('click', () => {
+    main.classList.remove("btn_active");
+    _schoolchildren.classList.remove("btn_active");
+    _teachers.classList.add("btn_active");
+    main__wrapper.style.display = 'none';
 });
 
 name_class.addEventListener('input', function() {
