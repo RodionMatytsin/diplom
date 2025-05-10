@@ -1,10 +1,24 @@
 from main import main
 from fastapi import Depends
 from main.schemas.responses import DefaultResponse
-from main.schemas.admin.admin import ClassAdd, ClassDefault, SchoolchildrenDetailsAdminDefault, UsersToClassAdminDefault
+from main.schemas.admin.admin import (ClassAdd, ClassDefault, SchoolchildrenDetailsAdminDefault,
+                                      UserRegularAdminDefault, UsersToClassAdminDefault)
 from main.schemas.teacher_classes import TeacherClassWithSchoolchildrenDefault
 from main.utils.admin.admin import need_key
 from uuid import UUID
+
+
+@main.get('/api/admin/users', status_code=200, tags=["Admin"], response_model=UserRegularAdminDefault)
+async def api_admin_get_users(
+        is_teacher: bool = False,
+        key: str = Depends(need_key)
+):
+    """
+        Этот метод предназначен для администратора, который отображает список всех существующих пользователей,
+        в зависимости от его роли, а именно: школьник или преподаватель.
+    """
+    from main.utils.admin.admin import get_users_for_admin
+    return UserRegularAdminDefault(data=await get_users_for_admin(is_teacher=is_teacher))
 
 
 @main.get('/api/admin/classes', status_code=200, tags=["Admin"], response_model=ClassDefault)

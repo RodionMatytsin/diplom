@@ -1,6 +1,6 @@
-from main.models import Classes
+from main.models import Classes, Users
 from main.schemas.teacher_classes import TeacherClassWithSchoolchildrenRegular
-from main.schemas.admin.admin import ClassRegular, SchoolchildrenDetailsAdmin, UsersToClassAdmin
+from main.schemas.admin.admin import ClassRegular, SchoolchildrenDetailsAdmin, UsersToClassAdmin, UserRegularAdmin
 from uuid import UUID
 
 
@@ -12,6 +12,83 @@ async def need_key(key: str):
             status_code=403,
             detail={"result": False, "message": "Нет прав", "data": {}}
         )
+
+
+def serialize_user_for_admin(user: Users, classes: tuple[Classes] | None) -> UserRegularAdmin:
+    from main.schemas.users import BirthdayUser
+    return UserRegularAdmin(
+        guid=user.guid,
+        login=user.login,
+        hash_password=user.hash_password,
+        phone_number=user.phone_number,
+        fio=user.fio,
+        birthday=BirthdayUser(
+            day=f"0{user.birthday.day}" if user.birthday.day < 10 else f"{user.birthday.day}",
+            month=f"0{user.birthday.month}" if user.birthday.month < 10 else f"{user.birthday.month}",
+            year=f"{user.birthday.year}"
+        ),
+        gender=user.gender,
+        datetime_create=f"{user.datetime_create.strftime('%d.%m.%Y')} в {user.datetime_create.strftime('%H:%M')}",
+        is_teacher=user.is_teacher,
+        classes=tuple([serialize_class(class_=class_) for class_ in classes]) if classes is not None else tuple()
+    )
+
+
+async def get_users_for_admin(is_teacher: bool = False) -> tuple[UserRegularAdmin] | tuple:
+
+    from main.models import engine, SchoolchildrenClasses, TeacherClasses, CRUD, SessionHandler
+
+    classes_model = TeacherClasses if is_teacher else SchoolchildrenClasses
+    where_ = []
+    if not is_teacher:
+        where_ = [classes_model.is_deleted == False]
+
+    users: tuple[Users] | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=Users
+    ).extended_query(
+        _select=[
+            Users.guid,
+            Users.login,
+            Users.hash_password,
+            Users.phone_number,
+            Users.fio,
+            Users.birthday,
+            Users.gender,
+            Users.datetime_create,
+            Users.is_teacher
+        ],
+        _join=[],
+        _where=[Users.is_teacher == is_teacher],
+        _group_by=[],
+        _order_by=[Users.datetime_create],
+        _all=True
+    )
+
+    if users is None or users == []:
+        return tuple()
+
+    result = []
+    for user in users:
+        classes: tuple[Classes] | object | None = await CRUD(
+            session=SessionHandler.create(engine=engine), model=classes_model
+        ).extended_query(
+            _select=[
+                classes_model.class_guid.label('guid'),
+                Classes.name
+            ],
+            _join=[
+                [Classes, Classes.guid == classes_model.class_guid]
+            ],
+            _where=[
+                classes_model.user_guid == user.guid,
+                *where_
+            ],
+            _group_by=[],
+            _order_by=[],
+            _all=True
+        )
+        result.append(serialize_user_for_admin(user=user, classes=classes))
+    return tuple(result)
 
 
 def serialize_class(class_: Classes) -> ClassRegular:
@@ -127,7 +204,7 @@ async def get_teacher_class_with_schoolchildren_for_admin(
 
 
 async def admin_get_users_to_class(class_guid: UUID | str) -> UsersToClassAdmin:
-    from main.models import engine, Users, TeacherClasses, SchoolchildrenClasses, CRUD, SessionHandler
+    from main.models import engine, TeacherClasses, SchoolchildrenClasses, CRUD, SessionHandler
     from main.schemas.admin.admin import AvailableSchoolchildrenAdmin, AvailableTeachersAdmin, AssignedTeachersAdmin
     from sqlalchemy import null, and_
 

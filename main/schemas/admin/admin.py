@@ -68,3 +68,11 @@ class UsersToClassAdmin(BaseModel):
 
 class UsersToClassAdminDefault(DefaultResponse):
     data: UsersToClassAdmin
+
+
+class UserRegularAdmin(UserRegular):
+    classes: tuple[ClassRegular] | tuple
+
+
+class UserRegularAdminDefault(DefaultResponse):
+    data: UserRegularAdmin | tuple[UserRegularAdmin] | tuple
