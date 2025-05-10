@@ -3,6 +3,8 @@ const main = document.getElementById("main");
 const _schoolchildren = document.getElementById("schoolchildren");
 const _teachers = document.getElementById("teachers");
 const main__wrapper = document.getElementById("main__wrapper");
+const schoolchildren__wrapper = document.getElementById("schoolchildren__wrapper");
+const teachers__wrapper = document.getElementById("teachers__wrapper");
 let name_class = document.getElementById('name_class');
 
 main.addEventListener('click', () => {
@@ -10,6 +12,8 @@ main.addEventListener('click', () => {
     _schoolchildren.classList.remove("btn_active");
     _teachers.classList.remove("btn_active");
     main__wrapper.style.display = 'flex';
+    schoolchildren__wrapper.style.display = 'none';
+    teachers__wrapper.style.display = 'none';
     get_classes();
 });
 
@@ -18,6 +22,9 @@ _schoolchildren.addEventListener('click', () => {
     _schoolchildren.classList.add("btn_active");
     _teachers.classList.remove("btn_active");
     main__wrapper.style.display = 'none';
+    schoolchildren__wrapper.style.display = 'flex';
+    teachers__wrapper.style.display = 'none';
+    get_schoolchildren();
 });
 
 _teachers.addEventListener('click', () => {
@@ -25,6 +32,9 @@ _teachers.addEventListener('click', () => {
     _schoolchildren.classList.remove("btn_active");
     _teachers.classList.add("btn_active");
     main__wrapper.style.display = 'none';
+    schoolchildren__wrapper.style.display = 'none';
+    teachers__wrapper.style.display = 'flex';
+    get_teachers();
 });
 
 name_class.addEventListener('input', function() {
@@ -383,6 +393,68 @@ function get_classes() {
                             classes[i].name
                         )
                     );
+                }
+            }
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
+function get_schoolchildren() {
+    let schoolchildren_list = document.getElementById('schoolchildren_list');
+    schoolchildren_list.innerHTML = '';
+    sendRequest(
+        'GET',
+        `/api/admin/users?is_teacher=false&key=${key}`,
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            let users = data.data;
+            if (users.length === 0) {
+                const userItem = document.createElement('div');
+                userItem.classList.add('none_data');
+                userItem.style.margin = '0';
+                userItem.style.fontSize = '2vw';
+                userItem.innerHTML = 'Пока еще нет в этой системе школьников ! :(';
+                schoolchildren_list.appendChild(userItem);
+            }else{
+                for (let i = 0; i < users.length; i++) {
+                    schoolchildren_list.appendChild(users[i]);
+                }
+            }
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
+function get_teachers() {
+    let teachers_list = document.getElementById('teachers_list');
+    teachers_list.innerHTML = '';
+    sendRequest(
+        'GET',
+        `/api/admin/users?is_teacher=true&key=${key}`,
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            let users = data.data;
+            if (users.length === 0) {
+                const userItem = document.createElement('div');
+                userItem.classList.add('none_data');
+                userItem.style.margin = '0';
+                userItem.style.fontSize = '2vw';
+                userItem.innerHTML = 'Пока еще нет в этой системе преподавателей ! :(';
+                teachers_list.appendChild(userItem);
+            }else{
+                for (let i = 0; i < users.length; i++) {
+                    teachers_list.appendChild(users[i].guid);
                 }
             }
         },

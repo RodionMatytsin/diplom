@@ -89,6 +89,22 @@ header{
     margin: 4vh 0;
 }
 
+.schoolchildren__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 4vh 0;
+}
+
+.teachers__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 4vh 0;
+}
+
 .main__wrapper_classes_list {
     width: 91%;
     display: flex;
