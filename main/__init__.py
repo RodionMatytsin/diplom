@@ -9,7 +9,7 @@ from main.config import DEBUG, SERVICE_NAME, SERVICE_VERSION, SERVICE_ID
 from log import ConfigureLogger
 
 
-main = FastAPI(title='diplom')
+main = FastAPI(title='diplom')  # , docs_url=None, redoc_url=None
 main.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory='templates')
 
