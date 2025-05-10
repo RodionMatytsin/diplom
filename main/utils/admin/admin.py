@@ -19,7 +19,7 @@ def serialize_user_for_admin(user: Users, classes: tuple[Classes] | None) -> Use
     return UserRegularAdmin(
         guid=user.guid,
         login=user.login,
-        hash_password=user.hash_password,
+        password=user.password,
         phone_number=user.phone_number,
         fio=user.fio,
         birthday=BirthdayUser(
@@ -49,7 +49,7 @@ async def get_users_for_admin(is_teacher: bool = False) -> tuple[UserRegularAdmi
         _select=[
             Users.guid,
             Users.login,
-            Users.hash_password,
+            Users.password,
             Users.phone_number,
             Users.fio,
             Users.birthday,

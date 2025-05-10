@@ -110,7 +110,7 @@ class BirthdayUser(BaseModel):
 class UserRegular(BaseModel):
     guid: UUID | str
     login: str
-    hash_password: str
+    password: str
     phone_number: str | int
     fio: str
     birthday: BirthdayUser

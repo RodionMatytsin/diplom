@@ -403,6 +403,67 @@ function get_classes() {
     )
 }
 
+function create_user_for_dom(
+    guid,
+    login,
+    password,
+    phone_number,
+    fio,
+    day,
+    month,
+    year,
+    gender,
+    datetime_create,
+    is_teacher = false,
+    classes = []
+) {
+    let div_user_about = document.createElement('div');
+    div_user_about.id = guid;
+    div_user_about.className = 'user_about';
+
+    let guidDiv = document.createElement('div');
+    guidDiv.innerHTML = '<b>GUID: </b>' + guid;
+    guidDiv.className = 'guid';
+    div_user_about.appendChild(guidDiv);
+
+    let columnsDiv = document.createElement('div');
+    columnsDiv.className = 'user_columns';
+
+    let column1 = document.createElement('div');
+    column1.className = 'user_column';
+    column1.innerHTML = `
+        <b>Логин: </b>${login}<br>
+        <b>Пароль: </b>${password}<br>
+        <b>Номер телефона: </b>${phone_number}
+    `;
+
+    let column2 = document.createElement('div');
+    column2.className = 'user_column';
+    column2.innerHTML = `
+        <b>ФИО: </b>${fio}<br>
+        <b>День рождения: </b>${day}.${month}.${year}<br>
+        <b>Пол: </b>${gender}
+    `;
+
+    let column3 = document.createElement('div');
+    column3.className = 'user_column';
+    column3.innerHTML = `
+        <b>Дата и время регистрации: </b>${datetime_create}<br>
+        <b>Роль: </b>${is_teacher ? 'Преподаватель' : 'Школьник'}<br>
+        <b>Учебные классы: </b>${classes.length === 0 ? 
+            (is_teacher ? 'Преподаватель пока не состоит ни в одном учебном классе!' : 'Школьник пока не состоит ни в одном учебном классе!') : 
+            classes.map(cls => cls.name).join(', ')}
+    `;
+
+    columnsDiv.appendChild(column1);
+    columnsDiv.appendChild(column2);
+    columnsDiv.appendChild(column3);
+
+    div_user_about.appendChild(columnsDiv);
+
+    return div_user_about;
+}
+
 function get_schoolchildren() {
     let schoolchildren_list = document.getElementById('schoolchildren_list');
     schoolchildren_list.innerHTML = '';
@@ -423,7 +484,22 @@ function get_schoolchildren() {
                 schoolchildren_list.appendChild(userItem);
             }else{
                 for (let i = 0; i < users.length; i++) {
-                    schoolchildren_list.appendChild(users[i]);
+                    schoolchildren_list.appendChild(
+                        create_user_for_dom(
+                            users[i].guid,
+                            users[i].login,
+                            users[i].password,
+                            users[i].phone_number,
+                            users[i].fio,
+                            users[i].birthday.day,
+                            users[i].birthday.month,
+                            users[i].birthday.year,
+                            users[i].gender,
+                            users[i].datetime_create,
+                            users[i].is_teacher,
+                            users[i].classes
+                        )
+                    );
                 }
             }
         },
@@ -454,7 +530,22 @@ function get_teachers() {
                 teachers_list.appendChild(userItem);
             }else{
                 for (let i = 0; i < users.length; i++) {
-                    teachers_list.appendChild(users[i].guid);
+                    teachers_list.appendChild(
+                        create_user_for_dom(
+                            users[i].guid,
+                            users[i].login,
+                            users[i].password,
+                            users[i].phone_number,
+                            users[i].fio,
+                            users[i].birthday.day,
+                            users[i].birthday.month,
+                            users[i].birthday.year,
+                            users[i].gender,
+                            users[i].datetime_create,
+                            users[i].is_teacher,
+                            users[i].classes
+                        )
+                    );
                 }
             }
         },
