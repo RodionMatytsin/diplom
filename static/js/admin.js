@@ -239,7 +239,7 @@ function get_teacher_class_with_schoolchildren_for_admin(class_guid) {
 
             div_teacher_class_with_schoolchildren_for_admin_about.appendChild(div_teacher_class_with_schoolchildren_for_admin_name_class);
             div_teacher_class_with_schoolchildren_for_admin_name_class.className = 'teacher_class_with_schoolchildren_for_admin_name_class';
-            div_teacher_class_with_schoolchildren_for_admin_name_class.innerHTML = '<b>Класс: </b>' + teacher_class_with_schoolchildren_for_admin.name_class;
+            div_teacher_class_with_schoolchildren_for_admin_name_class.innerHTML = '<b>Учебный класс: </b>' + teacher_class_with_schoolchildren_for_admin.name_class;
 
             let schoolchildren_for_admin = teacher_class_with_schoolchildren_for_admin.schoolchildren;
             if (schoolchildren_for_admin.length === 0) {

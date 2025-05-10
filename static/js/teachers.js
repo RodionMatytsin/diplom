@@ -151,7 +151,7 @@ function get_teacher_class_with_schoolchildren(class_guid) {
 
             div_teacher_class_with_schoolchildren_about.appendChild(div_teacher_class_with_schoolchildren_name_class);
             div_teacher_class_with_schoolchildren_name_class.className = 'teacher_class_with_schoolchildren_name_class';
-            div_teacher_class_with_schoolchildren_name_class.innerHTML = '<b>Класс: </b>' + teacher_class_with_schoolchildren.name_class;
+            div_teacher_class_with_schoolchildren_name_class.innerHTML = '<b>Учебный класс: </b>' + teacher_class_with_schoolchildren.name_class;
 
             let schoolchildren = teacher_class_with_schoolchildren.schoolchildren;
             if (schoolchildren.length === 0) {
