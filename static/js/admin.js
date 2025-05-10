@@ -431,29 +431,61 @@ function create_user_for_dom(
 
     let column1 = document.createElement('div');
     column1.className = 'user_column';
-    column1.innerHTML = `
-        <b>Логин: </b>${login}<br>
-        <b>Пароль: </b>${password}<br>
-        <b>Номер телефона: </b>${phone_number}
-    `;
+
+    let div_login = document.createElement('div'),
+        div_password = document.createElement('div'),
+        div_phone_number = document.createElement('div');
+
+    div_login.className = 'user_login';
+    div_password.className = 'user_password';
+
+    div_login.innerHTML = '<b>Логин: </b>' + login;
+    div_password.innerHTML = '<b>Пароль: </b>' + password;
+    div_phone_number.innerHTML = '<b>Номер телефона: </b>' + phone_number;
+
+    column1.appendChild(div_login);
+    column1.appendChild(div_password);
+    column1.appendChild(div_phone_number);
 
     let column2 = document.createElement('div');
     column2.className = 'user_column';
-    column2.innerHTML = `
-        <b>ФИО: </b>${fio}<br>
-        <b>День рождения: </b>${day}.${month}.${year}<br>
-        <b>Пол: </b>${gender}
-    `;
+
+    let div_fio = document.createElement('div'),
+        div_birthday = document.createElement('div'),
+        div_gender = document.createElement('div');
+
+    div_fio.className = 'user_fio';
+    div_birthday.className = 'user_birthday';
+
+    div_fio.innerHTML = '<b>ФИО: </b>' + fio;
+    div_birthday.innerHTML = '<b>День рождения: </b>' + day + '.' + month + '.' + year;
+    div_gender.innerHTML = '<b>Пол: </b>' + gender;
+
+    column2.appendChild(div_fio);
+    column2.appendChild(div_birthday);
+    column2.appendChild(div_gender);
 
     let column3 = document.createElement('div');
     column3.className = 'user_column';
-    column3.innerHTML = `
-        <b>Дата и время регистрации: </b>${datetime_create}<br>
-        <b>Роль: </b>${is_teacher ? 'Преподаватель' : 'Школьник'}<br>
-        <b>Учебные классы: </b>${classes.length === 0 ? 
-            (is_teacher ? 'Преподаватель пока не состоит ни в одном учебном классе!' : 'Школьник пока не состоит ни в одном учебном классе!') : 
-            classes.map(cls => cls.name).join(', ')}
-    `;
+
+    let div_datetime_create = document.createElement('div'),
+        div_role = document.createElement('div'),
+        div_classes = document.createElement('div');
+
+    div_datetime_create.className = 'user_datetime_create';
+    div_role.className = 'user_role';
+
+    div_datetime_create.innerHTML = '<b>Дата и время регистрации: </b>' + datetime_create;
+    div_role.innerHTML = '<b>Роль: </b>' + ((is_teacher) ? 'Преподаватель' : 'Школьник');
+    div_classes.innerHTML = '<b>Учебные классы: </b>' + (
+        classes.length === 0 ?
+            (is_teacher ? 'Преподаватель пока не состоит ни в одном учебном классе!' : 'Школьник пока не состоит ни в одном учебном классе!') :
+            classes.map(cls => cls.name).join(', ')
+    );
+
+    column3.appendChild(div_datetime_create);
+    column3.appendChild(div_role);
+    column3.appendChild(div_classes);
 
     columnsDiv.appendChild(column1);
     columnsDiv.appendChild(column2);
