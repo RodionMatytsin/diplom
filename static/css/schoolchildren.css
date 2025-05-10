@@ -152,6 +152,34 @@ header{
     padding: 1% 0 0 0;
 }
 
+.main__wrapper__testing__list {
+    width: 91%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 3.5vh;
+    margin: 2vh 5%;
+}
+
+.entrance_testing {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #000000;
+    padding: 1% 0 0 0;
+}
+
+.testing__list{
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1.5vh;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
 .profile__settings__wrapper {
     align-items: center;
     justify-content: center;

@@ -3,6 +3,8 @@ const testing = document.getElementById("testing");
 const profile_settings = document.getElementById("profile_settings");
 const main__wrapper__schoolchildren_classes_list = document.getElementById("main__wrapper__schoolchildren_classes_list");
 const main__wrapper__recommendations_list = document.getElementById("main__wrapper__recommendations_list");
+const testing__wrapper = document.getElementById("testing__wrapper");
+const main__wrapper__testing__list = document.getElementById("main__wrapper__testing__list");
 const profile__settings__wrapper = document.getElementById("profile__settings__wrapper");
 const logoExit = document.getElementById('logoExit');
 let phoneNumber = document.getElementById('phoneNumber'),
@@ -24,6 +26,8 @@ main.addEventListener('click', () => {
     profile_settings.classList.remove("btn_active");
     main__wrapper__schoolchildren_classes_list.style.display = 'flex';
     main__wrapper__recommendations_list.style.display = 'flex';
+    testing__wrapper.style.display = 'none';
+    main__wrapper__testing__list.style.display = 'none';
     profile__settings__wrapper.style.display = 'none';
     get_schoolchildren_classes();
     get_recommendations();
@@ -35,7 +39,10 @@ testing.addEventListener('click', () => {
     profile_settings.classList.remove("btn_active");
     main__wrapper__schoolchildren_classes_list.style.display = 'none';
     main__wrapper__recommendations_list.style.display = 'none';
+    testing__wrapper.style.display = 'flex';
+    main__wrapper__testing__list.style.display = 'flex';
     profile__settings__wrapper.style.display = 'none';
+    get_questions();
 });
 
 profile_settings.addEventListener('click', () => {
@@ -44,6 +51,8 @@ profile_settings.addEventListener('click', () => {
     profile_settings.classList.add("btn_active");
     main__wrapper__schoolchildren_classes_list.style.display = 'none';
     main__wrapper__recommendations_list.style.display = 'none';
+    testing__wrapper.style.display = 'none';
+    main__wrapper__testing__list.style.display = 'none';
     profile__settings__wrapper.style.display = 'flex';
     get_achievements();
 });
@@ -122,6 +131,23 @@ function update_user() {
 }
 
 window.onload = get_user;
+
+function get_questions() {
+    sendRequest(
+        'GET',
+        `/api/questions`,
+        true,
+        {},
+        function (data) {
+            console.log(data);
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Ошибка');
+        }
+    );
+
+}
 
 function create_achievement() {
     let achievement = document.getElementById('achievement');
