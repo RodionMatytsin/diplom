@@ -63,6 +63,7 @@ function add_class() {
             console.log(data);
             setTimeout(() => {
                 get_classes();
+                name_class.value = '';
             }, 500);
             show_error(data.message, 'Оповещение');
         },
