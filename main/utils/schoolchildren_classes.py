@@ -99,7 +99,7 @@ async def required_schoolchildren_access(current_user: UserRegular):
             status_code=409,
             detail={
                 'result': False,
-                'message': 'К сожалению, вы не можете получить данные, потому что вы не школьник!',
+                'message': 'К сожалению, вы не можете получить или отправить данные, потому что вы не школьник!',
                 'data': {}
             }
         )

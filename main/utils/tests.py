@@ -1,5 +1,5 @@
 from main.models import Questions
-from main.schemas.tests import QuestionRegular, TestRegular, TestDetails
+from main.schemas.tests import QuestionRegular, TestRegular, ScoreTestAdd, TestDetails
 from uuid import UUID
 
 
@@ -110,3 +110,52 @@ async def accept_changes_for_test(test_guid: UUID | str, user_guid: UUID | str) 
                 await update_test(test_guid=test.guid, user_guid=test.user_guid, is_accepted=False)
 
         return "Вы успешно приняли изменения для последующего формирования рекомендации по тесту!"
+
+
+async def add_test_to_schoolchildren(score_test: ScoreTestAdd, user_guid: UUID | str) -> str:
+    from main.models import engine, Tests, AnswersTests, CRUD, SessionHandler
+    from datetime import datetime, timedelta
+    from fastapi import HTTPException
+    from sqlalchemy import select
+
+    one_year_ago = datetime.now() - timedelta(days=365)
+
+    existing_test_query = select(Tests).where(
+        Tests.user_guid == user_guid,
+        Tests.datetime_create >= one_year_ago
+    )
+
+    existing_test: Tests | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=Tests
+    ).get(query=existing_test_query, _all=False)
+
+    if existing_test is not None:
+        datetime_test = existing_test.datetime_create + timedelta(days=365)
+        raise HTTPException(
+            status_code=409,
+            detail={
+                'result': False,
+                'message': f'Вы уже проходили этот тест в течение последнего года. '
+                           f'Вы сможете пройти его снова после '
+                           f'{datetime_test.strftime("%d.%m.%Y")} {datetime_test.strftime("%H:%M")}!',
+                'data': {}
+            }
+        )
+
+    test: Tests | object = await CRUD(
+        session=SessionHandler.create(engine=engine), model=Tests
+    ).create(_values=dict(user_guid=user_guid))
+
+    for i in score_test.details:
+        await CRUD(
+            session=SessionHandler.create(engine=engine), model=AnswersTests
+        ).create(
+            _values=dict(
+                test_guid=test.guid,
+                question_id=i.question_id,
+                score=i.score,
+                comment=i.comment
+            )
+        )
+
+    return "Вы успешно отправили данные с оцененными ответами на вопросы этого теста!"
