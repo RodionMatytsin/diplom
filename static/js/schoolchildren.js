@@ -147,7 +147,6 @@ function get_questions() {
             show_error(data.message, 'Ошибка');
         }
     );
-
 }
 
 function create_questions_for_dom(data) {
