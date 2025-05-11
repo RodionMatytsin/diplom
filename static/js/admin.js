@@ -60,6 +60,10 @@ document.getElementById("btn_no").addEventListener('click', () => {
 });
 
 document.getElementById("btn_for_admin_del_teacher").addEventListener('click', () => {
+    if (!document.getElementById('teacher_del').value) {
+        show_error('Пожалуйста, выберите из списка преподавателя!', 'Ошибка');
+        return;
+    }
     document.getElementById("notification_content").style.display = 'flex';
     document.getElementById("btn_yes").onclick = function() {
         del_user_to_class();
