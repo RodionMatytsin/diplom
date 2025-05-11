@@ -152,8 +152,14 @@ header{
     padding: 1% 0 0 0;
 }
 
+.testing__wrapper {
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
 .main__wrapper__testing__list {
-    width: 91%;
+    width: 75%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -168,7 +174,7 @@ header{
     font-size: 1.5rem;
     font-weight: 700;
     color: #000000;
-    padding: 1% 0 0 0;
+    padding: 1% 0;
 }
 
 .testing__list{
