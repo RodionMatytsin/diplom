@@ -165,7 +165,7 @@ function create_questions_for_dom(data) {
 
         const scores = document.createElement('div');
         scores.classList.add('scores');
-        scores.textContent = `Выставите оценку вопросу: `;
+        scores.textContent = `Выставите оценку этому вопросу: `;
         for (let i = 1; i <= item.amount_of_points; i++) {
             const score = document.createElement('div');
             score.classList.add('score');
@@ -183,7 +183,7 @@ function create_questions_for_dom(data) {
         }
 
         const commentTextarea = document.createElement('textarea');
-        commentTextarea.placeholder = 'Введите комментарий';
+        commentTextarea.placeholder = 'При необходимости введите комментарий к этому вопросу';
         commentTextarea.classList.add('comment_textarea');
 
         questionContainer.appendChild(questionTitle);
