@@ -109,7 +109,7 @@ async def accept_changes_for_test(test_guid: UUID | str, user_guid: UUID | str) 
             for test in tests:
                 await update_test(test_guid=test.guid, user_guid=test.user_guid, is_accepted=False)
 
-        return "Вы успешно приняли изменения для последующего формирования рекомендации по тесту!"
+        return "Вы успешно приняли изменения для последующего формирования рекомендации по этому тесту!"
 
 
 async def add_test_to_schoolchildren(score_test: ScoreTestAdd, user_guid: UUID | str) -> str:
