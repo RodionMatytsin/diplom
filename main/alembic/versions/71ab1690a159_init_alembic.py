@@ -85,6 +85,33 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint('id')
     )
 
+    op.execute('insert into questions (name, amount_of_points) values (\'Какой предмет или область знаний вам наиболее интересна? '
+               'Оцените свой интерес по шкале от 1 до 10, где 1 — неинтересно, а 10 — очень интересно.\', 10)')
+    op.execute('insert into questions (name, amount_of_points) values (\'Насколько вы мотивированы учиться и достигать своих целей? '
+               'Оцените свою внутреннюю мотивацию по шкале от 1 до 10.\', 10)')
+    op.execute('insert into questions (name, amount_of_points) values (\'Насколько вы уверены в своих учебных целях и планах на будущее? '
+               'Оцените свою определенность по шкале от 1 до 10.\', 10)')
+    op.execute('insert into questions (name, amount_of_points) values (\'Как вы оцениваете условия, в которых учитесь? Оцените качество '
+               'комфорта в учебной среде по шкале от 1 до 5.\', 5)')
+    op.execute('insert into questions (name, amount_of_points) values (\'Как вы оцениваете свои финансовые возможности для дополнительных '
+               'занятий и кружков? Оцените по шкале от 1 до 5, где 1 — очень ограниченные возможности.\', 5)')
+    op.execute('insert into questions (name, amount_of_points) values (\'Как вы оцениваете свои отношения с преподавателями и одноклассниками? '
+               'Оцените по шкале от 1 до 5, где 1 — плохие отношения.\', 5)')
+    op.execute('insert into questions (name, amount_of_points) values (\'Как вы оцениваете качество преподавания в вашей школе? Оцените по шкале '
+               'от 1 до 10, где 1 — очень плохо, 10 — отлично.\', 10)')
+    op.execute('insert into questions (name, amount_of_points) values (\'Как вы оцениваете качество учебных материалов и методик, используемых '
+               'в школе? Оцените по шкале от 1 до 10.\', 10)')
+    op.execute('insert into questions (name, amount_of_points) values (\'Как вы оцениваете наличие необходимого оборудования и материалов для '
+               'обучения? Оцените по шкале от 1 до 5.\', 5)')
+    op.execute('insert into questions (name, amount_of_points) values (\'Как вы оцениваете престиж вашей школы или учебной программы? '
+               'Оцените по шкале от 1 до 5, где 1 — низкий престиж.\', 5)')
+    op.execute('insert into questions (name, amount_of_points) values (\'Как вы оцениваете свои возможности участия в дополнительных занятиях '
+               'или кружках? Оцените по шкале от 1 до 10.\', 10)')
+    op.execute('insert into questions (name, amount_of_points) values (\'Как вы оцениваете свои личные таланты и способности? '
+               'Оцените по шкале от 1 до 10, где 1 — низкие способности.\', 10)')
+    op.execute('insert into questions (name, amount_of_points) values (\'Как вы оцениваете свои цели и планы на будущее? Оцените по шкале '
+               'от 1 до 5, где 1 — нет четких целей.\', 5)')
+
     op.create_table(
         'users',
         sa.Column(
