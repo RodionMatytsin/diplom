@@ -176,6 +176,7 @@ function create_questions_for_dom(data) {
                 const allScores = scores.querySelectorAll('.score');
                 allScores.forEach(s => s.classList.remove('selected'));
                 this.classList.add('selected');
+                scores.setAttribute('data-selected-score', this.getAttribute('data-value'));
             });
 
             scores.appendChild(score);
@@ -202,34 +203,30 @@ function add_test_to_schoolchildren() {
         const question_id = item.querySelector('.name_question').id;
         const scores = item.querySelector('.scores');
         const comment = item.querySelector('.comment_textarea').value;
-
-        const score = scores.querySelectorAll('.score.selected').length;
-
+        const score = scores.getAttribute('data-selected-score') || 0;
         details.push({
             question_id: parseInt(question_id),
-            score: score,
+            score: parseInt(score),
             comment: comment
         });
     });
 
-    console.log('details', details);
-
-    // sendRequest(
-    //     'POST',
-    //     '/api/tests',
-    //     true,
-    //     {
-    //         "details": details,
-    //     },
-    //     function (data) {
-    //         console.log(data);
-    //         show_error(data.message, 'Оповещение');
-    //     },
-    //     function (data) {
-    //         console.log(data);
-    //         show_error(data.message, 'Ошибка');
-    //     }
-    // )
+    sendRequest(
+        'POST',
+        '/api/tests',
+        true,
+        {
+            "details": details,
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Оповещение');
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Ошибка');
+        }
+    )
 }
 
 function create_achievement() {
