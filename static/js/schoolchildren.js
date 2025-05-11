@@ -153,14 +153,14 @@ function create_questions_for_dom(data) {
     let testing__list = document.getElementById('testing__list');
     testing__list.innerHTML = '';
 
-    data.forEach((item) => {
+    data.forEach((item, index) => {
         const questionContainer = document.createElement('div');
         questionContainer.classList.add('question_item');
 
         const questionTitle = document.createElement('div');
         questionTitle.id = item.question_id;
         questionTitle.classList.add('name_question');
-        questionTitle.textContent = `Вопрос: ${item.name}`;
+        questionTitle.textContent = `Вопрос ${index + 1}: ${item.name}`;
 
         const scores = document.createElement('div');
         scores.classList.add('scores');
