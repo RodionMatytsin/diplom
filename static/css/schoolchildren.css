@@ -266,6 +266,7 @@ header{
     font-weight: 700;
     color: #000000;
     text-align: center;
+    margin: 0 0 1.5% 0;
 }
 
 .input_label {

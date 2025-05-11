@@ -170,6 +170,7 @@ header{
     font-weight: 700;
     color: #000000;
     text-align: center;
+    margin: 0 0 1.7% 0;
 }
 
 .input_label {
@@ -343,7 +344,7 @@ header{
 .teacher_class_with_schoolchildren_for_admin_name_class {
     font-weight: 500;
     font-size: 1.75rem;
-    margin: 2% 0;
+    margin: 1% 0 2% 0;
     display: flex;
     justify-content: center;
     align-items: center;
