@@ -8,6 +8,22 @@
     </head>
     <body style="min-height: auto">
 
+        <div class="notification_content" id="notification_content" style="display: none">
+            <div class="notification_header">Уведомление</div>
+            <div class="notification_message">Вы точно хотите удалить?</div>
+            <div class="notification_close">
+                <div class="close_icon" id="close_icon">+</div>
+            </div>
+            <div class="notification_actions">
+                <div class="action_button btn_no" id="btn_no">
+                    <div class="button_text">Нет</div>
+                </div>
+                <div class="action_button btn_yes" id="btn_yes">
+                    <div class="button_text">Да</div>
+                </div>
+            </div>
+        </div>
+
         <div class="alert" id="alert" style="display: none;" onclick="this.style.display = 'none';">
             <div class="notice" id="notice">
                 <p class="hello" style="text-align: center; color: black;" id="notice_title">Ошибка</p>
@@ -52,7 +68,7 @@
                                     <option value="" disabled selected>Выберите из списка преподавателя</option>
                                 </select>
                             </div>
-                            <button class="btn_for_admin_del_teacher" onclick="del_user_to_class();">Удалить преподавателя</button>
+                            <button class="btn_for_admin_del_teacher" id="btn_for_admin_del_teacher">Удалить преподавателя</button>
                         </div>
                     </div>
                 </div>

@@ -51,6 +51,22 @@ document.getElementById("close_positions_wrapper_teacher_class_with_schoolchildr
     document.getElementById("positions_popup_teacher_class_with_schoolchildren_for_admin").style.display = 'none';
 });
 
+document.getElementById("close_icon").addEventListener('click', () => {
+    document.getElementById("notification_content").style.display = 'none';
+});
+
+document.getElementById("btn_no").addEventListener('click', () => {
+    document.getElementById("notification_content").style.display = 'none';
+});
+
+document.getElementById("btn_for_admin_del_teacher").addEventListener('click', () => {
+    document.getElementById("notification_content").style.display = 'flex';
+    document.getElementById("btn_yes").onclick = function() {
+        del_user_to_class();
+        document.getElementById("notification_content").style.display = 'none';
+    };
+});
+
 function add_class() {
     sendRequest(
         'POST',
@@ -315,11 +331,15 @@ function get_teacher_class_with_schoolchildren_for_admin(class_guid) {
                     div_schoolchildren_for_admin_about.appendChild(btn_for_admin_del_schoolchildren);
                     btn_for_admin_del_schoolchildren.className = 'btn_for_admin_del_schoolchildren';
                     btn_for_admin_del_schoolchildren.textContent = 'Удалить школьника';
-                    btn_for_admin_del_schoolchildren.onclick = function() {
-                        del_schoolchildren(
-                            teacher_class_with_schoolchildren_for_admin.class_guid,
-                            schoolchildren_for_admin[j].schoolchildren_class_guid
-                        );
+                    btn_for_admin_del_schoolchildren.onclick = function () {
+                        document.getElementById("notification_content").style.display = 'flex';
+                        document.getElementById("btn_yes").onclick = function() {
+                            del_schoolchildren(
+                                teacher_class_with_schoolchildren_for_admin.class_guid,
+                                schoolchildren_for_admin[j].schoolchildren_class_guid
+                            );
+                            document.getElementById("notification_content").style.display = 'none';
+                        };
                     };
 
                     div_teacher_class_with_schoolchildren_for_admin_about.appendChild(div_schoolchildren_for_admin_about);
@@ -362,7 +382,11 @@ function create_class_for_dom(
    div_del_class.className = 'del_class';
    div_del_class.innerHTML = '+';
    div_del_class.onclick = function () {
-       del_class(class_guid);
+       document.getElementById("notification_content").style.display = 'flex';
+       document.getElementById("btn_yes").onclick = function() {
+           del_class(class_guid);
+           document.getElementById("notification_content").style.display = 'none';
+       };
    };
 
    return div_class
