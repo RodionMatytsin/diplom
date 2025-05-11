@@ -140,6 +140,7 @@ function get_questions() {
         {},
         function (data) {
             console.log(data);
+            create_questions_for_dom(data.data);
         },
         function (data) {
             console.log(data);
@@ -147,6 +148,88 @@ function get_questions() {
         }
     );
 
+}
+
+function create_questions_for_dom(data) {
+    let testing__list = document.getElementById('testing__list');
+    testing__list.innerHTML = '';
+
+    data.forEach((item) => {
+        const questionContainer = document.createElement('div');
+        questionContainer.classList.add('question_item');
+
+        const questionTitle = document.createElement('div');
+        questionTitle.id = item.question_id;
+        questionTitle.classList.add('name_question');
+        questionTitle.textContent = `Вопрос: ${item.name}`;
+
+        const scores = document.createElement('div');
+        scores.classList.add('scores');
+        scores.textContent = `Выставите оценку вопросу: `;
+        for (let i = 1; i <= item.amount_of_points; i++) {
+            const score = document.createElement('div');
+            score.classList.add('score');
+            score.setAttribute('data-value', i);
+            score.textContent = i;
+
+            score.addEventListener('click', function() {
+                const allScores = scores.querySelectorAll('.score');
+                allScores.forEach(s => s.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+
+            scores.appendChild(score);
+        }
+
+        const commentTextarea = document.createElement('textarea');
+        commentTextarea.placeholder = 'Введите комментарий';
+        commentTextarea.classList.add('comment_textarea');
+
+        questionContainer.appendChild(questionTitle);
+        questionContainer.appendChild(scores);
+        questionContainer.appendChild(commentTextarea);
+
+        testing__list.appendChild(questionContainer);
+    })
+}
+
+function add_test_to_schoolchildren() {
+
+    const details = [];
+    const question_items = document.querySelectorAll('.question_item');
+
+    question_items.forEach(item => {
+        const question_id = item.querySelector('.name_question').id;
+        const scores = item.querySelector('.scores');
+        const comment = item.querySelector('.comment_textarea').value;
+
+        const score = scores.querySelectorAll('.score.selected').length;
+
+        details.push({
+            question_id: parseInt(question_id),
+            score: score,
+            comment: comment
+        });
+    });
+
+    console.log('details', details);
+
+    // sendRequest(
+    //     'POST',
+    //     '/api/tests',
+    //     true,
+    //     {
+    //         "details": details,
+    //     },
+    //     function (data) {
+    //         console.log(data);
+    //         show_error(data.message, 'Оповещение');
+    //     },
+    //     function (data) {
+    //         console.log(data);
+    //         show_error(data.message, 'Ошибка');
+    //     }
+    // )
 }
 
 function create_achievement() {
