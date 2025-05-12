@@ -1,5 +1,5 @@
 from main.models import Questions
-from main.schemas.tests import QuestionRegular, TestRegular, ScoreTestAdd, TestDetails
+from main.schemas.tests import QuestionRegular, TestRegular, ScoreTestAdd
 from uuid import UUID
 
 
@@ -35,7 +35,8 @@ async def get_questions() -> tuple[QuestionRegular] | tuple:
 
 
 async def get_tests(user_guid: UUID | str) -> tuple[TestRegular] | tuple:
-    from main.models import engine, Tests, CRUD, SessionHandler
+    from main.models import engine, Tests, AnswersTests, Questions, CRUD, SessionHandler
+    from main.schemas.tests import TestDetails
 
     tests: tuple[Tests] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Questions
@@ -61,14 +62,45 @@ async def get_tests(user_guid: UUID | str) -> tuple[TestRegular] | tuple:
     number_test = 1
 
     for test in tests:
+        test_details: tuple[AnswersTests] | object | None = await CRUD(
+            session=SessionHandler.create(engine=engine), model=AnswersTests
+        ).extended_query(
+            _select=[
+                AnswersTests.question_id,
+                Questions.name.label('question_name'),
+                Questions.amount_of_points.label('question_amount_of_points'),
+                AnswersTests.score,
+                AnswersTests.comment
+            ],
+            _join=[
+                [Tests, AnswersTests.test_guid == Tests.guid],
+                [Questions, AnswersTests.question_id == Questions.id]
+            ],
+            _where=[
+                AnswersTests.test_guid == test.guid
+            ],
+            _group_by=[],
+            _order_by=[AnswersTests.datetime_create],
+            _all=True
+        )
+
         result.append(
             TestRegular(
                 test_guid=test.guid,
                 name_test=f"Тест №{number_test}",
-                datetime_create=f"{test.datetime_create.strftime('%d.%m.%Y')} в "
-                                f"{test.datetime_create.strftime('%H:%M')}",
+                datetime_create=test.datetime_create.strftime('%d.%m.%Y в %H:%M'),
                 is_accepted=test.is_accepted,
-                test_details=tuple()
+                test_details=tuple([
+                    TestDetails(
+                        question=QuestionRegular(
+                            question_id=test_detail.question_id,
+                            name=test_detail.question_name,
+                            amount_of_points=test_detail.question_amount_of_points
+                        ),
+                        score=test_detail.score,
+                        comment=test_detail.comment
+                    ) for test_detail in test_details
+                ])
             )
         )
         number_test += 1

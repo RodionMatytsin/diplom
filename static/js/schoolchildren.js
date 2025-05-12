@@ -201,7 +201,7 @@ function add_test_to_schoolchildren() {
     question_items.forEach(item => {
         const question_id = item.querySelector('.name_question').id;
         const scores = item.querySelector('.scores');
-        const comment = item.querySelector('.comment_textarea').value;
+        const comment = item.querySelector('.comment_textarea').value.trim();
         const score = scores.getAttribute('data-selected-score') || 0;
         details.push({
             question_id: parseInt(question_id),
