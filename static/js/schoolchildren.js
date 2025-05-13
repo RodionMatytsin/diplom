@@ -137,7 +137,7 @@ function get_questions() {
         'GET',
         `/api/questions`,
         true,
-        {},
+        null,
         function (data) {
             console.log(data);
             create_questions_for_dom(data.data);
