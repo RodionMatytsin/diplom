@@ -74,6 +74,7 @@ header{
 }
 
 .close_icon:hover {
+    color: #FF7272;
     scale: 1.15;
 }
 
@@ -425,6 +426,7 @@ header{
 }
 
 .close_positions_wrapper_teacher_class_with_schoolchildren_for_admin:hover {
+    color: #FF7272;
     scale: 1.15;
 }
 

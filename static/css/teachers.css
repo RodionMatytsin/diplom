@@ -261,6 +261,7 @@ header{
 }
 
 .close_positions_wrapper_teacher_class_with_schoolchildren:hover {
+    color: #FF7272;
     scale: 1.15;
 }
 
