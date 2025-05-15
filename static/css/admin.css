@@ -393,12 +393,14 @@ header{
     background-color: rgba(70, 199, 63, 0.05);
 }
 
-#positions_popup_teacher_class_with_schoolchildren_for_admin {
+#positions_popup_teacher_class_with_schoolchildren_for_admin,
+#positions_popup_schoolchildren_by_user_guid_for_admin {
     top: 0;
     left: 0;
 }
 
-#positions_wrapper_teacher_class_with_schoolchildren_for_admin {
+#positions_wrapper_teacher_class_with_schoolchildren_for_admin,
+#positions_wrapper_schoolchildren_by_user_guid_for_admin {
     background-color: #e9ecef;
     margin-top: 3%;
     width: 100%;
@@ -408,7 +410,8 @@ header{
     flex-direction: column;
 }
 
-.close_positions_wrapper_teacher_class_with_schoolchildren_for_admin {
+.close_positions_wrapper_teacher_class_with_schoolchildren_for_admin,
+.close_positions_wrapper_schoolchildren_by_user_guid_for_admin {
     position: absolute;
     top: 1.5%;
     right: 1.5%;
@@ -425,7 +428,8 @@ header{
     cursor: pointer;
 }
 
-.close_positions_wrapper_teacher_class_with_schoolchildren_for_admin:hover {
+.close_positions_wrapper_teacher_class_with_schoolchildren_for_admin:hover,
+.close_positions_wrapper_schoolchildren_by_user_guid_for_admin:hover {
     color: #FF7272;
     scale: 1.15;
 }
@@ -438,12 +442,14 @@ header{
     align-items: flex-start;
 }
 
-.teacher_class_with_schoolchildren_for_admin_list {
+.teacher_class_with_schoolchildren_for_admin_list,
+.schoolchildren_by_user_guid_for_admin_list {
     width: 95%;
     margin-top: 1.5%;
 }
 
-.teacher_class_with_schoolchildren_for_admin_about {
+.teacher_class_with_schoolchildren_for_admin_about,
+.schoolchildren_by_user_guid_for_admin_about {
     margin-bottom: 1.25rem;
     padding: 1rem;
     border-radius: 1rem;

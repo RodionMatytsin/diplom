@@ -43,6 +43,10 @@ name_class.addEventListener('input', function() {
     }
 });
 
+document.getElementById("close_positions_wrapper_schoolchildren_by_user_guid_for_admin").addEventListener('click', () => {
+    document.getElementById("positions_popup_schoolchildren_by_user_guid_for_admin").style.display = 'none';
+});
+
 document.getElementById("close_positions_wrapper_teacher_class_with_schoolchildren_for_admin").addEventListener('click', () => {
     sessionStorage.removeItem("class_guid");
     document.getElementById('schoolchildren_add').selectedIndex = 0;
@@ -270,6 +274,35 @@ function del_schoolchildren(
     )
 }
 
+function get_schoolchildren_by_user_guid_for_admin(
+    class_guid,
+    schoolchildren_class_guid
+) {
+    let positions_popup_schoolchildren_by_user_guid_for_admin = document.getElementById("positions_popup_schoolchildren_by_user_guid_for_admin");
+    let schoolchildren_by_user_guid_for_admin_list = document.getElementById("schoolchildren_by_user_guid_for_admin_list");
+    schoolchildren_by_user_guid_for_admin_list.innerHTML = "";
+    sendRequest(
+        'GET',
+        `/api/admin/classes/${class_guid}/schoolchildren/${schoolchildren_class_guid}?key=${key}`,
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            let schoolchildren_by_user_guid_for_admin = data.data;
+
+            let div_schoolchildren_by_user_guid_for_admin_about = document.createElement('div');
+            div_schoolchildren_by_user_guid_for_admin_about.innerHTML = schoolchildren_class_guid;
+            div_schoolchildren_by_user_guid_for_admin_about.className = 'schoolchildren_by_user_guid_for_admin_about';
+
+            schoolchildren_by_user_guid_for_admin_list.appendChild(div_schoolchildren_by_user_guid_for_admin_about);
+            positions_popup_schoolchildren_by_user_guid_for_admin.style.display = 'flex';
+        },
+        function (data) {
+            console.log(data);
+        }
+    )
+}
+
 function get_teacher_class_with_schoolchildren_for_admin(class_guid) {
     let positions_popup_teacher_class_with_schoolchildren_for_admin = document.getElementById("positions_popup_teacher_class_with_schoolchildren_for_admin");
     let teacher_class_with_schoolchildren_for_admin_list = document.getElementById("teacher_class_with_schoolchildren_for_admin_list");
@@ -329,7 +362,10 @@ function get_teacher_class_with_schoolchildren_for_admin(class_guid) {
                     btn_for_admin_detail_about_to_schoolchildren.className = 'btn_for_admin_detail_about_to_schoolchildren';
                     btn_for_admin_detail_about_to_schoolchildren.textContent = 'Подробнее о школьнике';
                     btn_for_admin_detail_about_to_schoolchildren.onclick = function() {
-                        show_error(schoolchildren_for_admin[j].schoolchildren_class_guid, "Оповещение");
+                        get_schoolchildren_by_user_guid_for_admin(
+                            teacher_class_with_schoolchildren_for_admin.class_guid,
+                            schoolchildren_for_admin[j].schoolchildren_class_guid
+                        );
                     };
 
                     div_schoolchildren_for_admin_about.appendChild(btn_for_admin_del_schoolchildren);
