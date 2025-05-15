@@ -291,8 +291,73 @@ function get_schoolchildren_by_user_guid_for_admin(
             let schoolchildren_by_user_guid_for_admin = data.data;
 
             let div_schoolchildren_by_user_guid_for_admin_about = document.createElement('div');
-            div_schoolchildren_by_user_guid_for_admin_about.innerHTML = schoolchildren_class_guid;
             div_schoolchildren_by_user_guid_for_admin_about.className = 'schoolchildren_by_user_guid_for_admin_about';
+
+            let div_personal_data_schoolchildren = document.createElement('div'),
+                div_user_about = document.createElement('div');
+            div_personal_data_schoolchildren.innerHTML = 'Личные данные школьника';
+            div_personal_data_schoolchildren.className = 'personal_data_schoolchildren';
+            div_user_about.id = schoolchildren_by_user_guid_for_admin.user.guid;
+            div_user_about.className = 'user_about';
+
+            div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_personal_data_schoolchildren);
+            div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_user_about);
+
+            let columnsDiv = document.createElement('div');
+            columnsDiv.className = 'user_columns';
+
+            let column1 = document.createElement('div');
+            column1.className = 'user_column';
+
+            let div_login = document.createElement('div'),
+                div_phone_number = document.createElement('div');
+
+            div_login.className = 'user_login';
+            div_login.innerHTML = '<b>Логин: </b>' + schoolchildren_by_user_guid_for_admin.user.login;
+            div_phone_number.innerHTML = '<b>Номер телефона: </b>' + schoolchildren_by_user_guid_for_admin.user.phone_number;
+
+            column1.appendChild(div_login);
+            column1.appendChild(div_phone_number);
+
+            let column2 = document.createElement('div');
+            column2.className = 'user_column';
+
+            let div_fio = document.createElement('div'),
+                div_birthday = document.createElement('div');
+
+            div_fio.className = 'user_fio';
+            div_fio.innerHTML = '<b>ФИО: </b>' + schoolchildren_by_user_guid_for_admin.user.fio;
+            let birthday = schoolchildren_by_user_guid_for_admin.user.birthday;
+            div_birthday.innerHTML = '<b>День рождения: </b>' + birthday.day + '.' + birthday.month + '.' + birthday.year;
+
+            column2.appendChild(div_fio);
+            column2.appendChild(div_birthday);
+
+            let column3 = document.createElement('div');
+            column3.className = 'user_column';
+
+            let div_datetime_create = document.createElement('div'),
+                div_gender = document.createElement('div');
+
+            div_datetime_create.className = 'user_datetime_create';
+            div_datetime_create.innerHTML = '<b>Дата и время регистрации: </b>' + schoolchildren_by_user_guid_for_admin.user.datetime_create;
+            div_gender.innerHTML = '<b>Пол: </b>' + schoolchildren_by_user_guid_for_admin.user.gender;
+
+            column3.appendChild(div_datetime_create);
+            column3.appendChild(div_gender);
+
+            columnsDiv.appendChild(column1);
+            columnsDiv.appendChild(column2);
+            columnsDiv.appendChild(column3);
+
+            div_user_about.appendChild(columnsDiv);
+
+            let div_personal_achievements_schoolchildren = document.createElement('div');
+            div_personal_achievements_schoolchildren.innerHTML = 'Личные достижения школьника';
+            div_personal_achievements_schoolchildren.style.margin = '1.5% 0 1% 0';
+            div_personal_achievements_schoolchildren.className = 'personal_achievements_schoolchildren';
+
+            div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_personal_achievements_schoolchildren);
 
             schoolchildren_by_user_guid_for_admin_list.appendChild(div_schoolchildren_by_user_guid_for_admin_about);
             positions_popup_schoolchildren_by_user_guid_for_admin.style.display = 'flex';
