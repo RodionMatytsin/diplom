@@ -323,14 +323,19 @@ function create_personal_achievement_suggested_for_dom(
     schoolchildren_class_guid,
     class_guid
 ) {
-    let div_achievement_suggested_about = document.createElement('div'),
+    let div_achievement_suggested = document.createElement('div'),
+        div_achievement_suggested_about = document.createElement('div'),
         div_description_suggested = document.createElement('div'),
         div_datetime_create_suggested = document.createElement('div'),
         btn_achievement_accept = document.createElement('button'),
         btn_achievement_reject = document.createElement('button');
 
-    div_achievement_suggested_about.id = achievement_guid;
+    div_achievement_suggested.id = achievement_guid;
+    div_achievement_suggested.className = 'achievement_suggested';
+
+    div_achievement_suggested.appendChild(div_achievement_suggested_about);
     div_achievement_suggested_about.className = 'achievement_suggested_about';
+    div_achievement_suggested_about.style.margin = '0';
 
     div_achievement_suggested_about.appendChild(div_datetime_create_suggested);
     div_datetime_create_suggested.className = 'achievement_datetime_create_suggested';
@@ -340,21 +345,21 @@ function create_personal_achievement_suggested_for_dom(
     div_description_suggested.className = 'achievement_description_suggested';
     div_description_suggested.innerHTML = '<b>Описание достижения: </b>' + description;
 
-    div_achievement_suggested_about.appendChild(btn_achievement_reject);
+    div_achievement_suggested.appendChild(btn_achievement_reject);
     btn_achievement_reject.className = 'btn_achievement_reject';
     btn_achievement_reject.textContent = 'Отклонить достижение';
     btn_achievement_reject.onclick = function() {
         reject_achievement(achievement_guid, schoolchildren_class_guid, class_guid);
     };
 
-    div_achievement_suggested_about.appendChild(btn_achievement_accept);
+    div_achievement_suggested.appendChild(btn_achievement_accept);
     btn_achievement_accept.className = 'btn_achievement_accept';
     btn_achievement_accept.textContent = 'Принять достижение';
     btn_achievement_accept.onclick = function() {
         accept_achievement(achievement_guid, schoolchildren_class_guid, class_guid);
     };
 
-    return div_achievement_suggested_about
+    return div_achievement_suggested
 }
 
 function create_personal_achievement_for_dom(

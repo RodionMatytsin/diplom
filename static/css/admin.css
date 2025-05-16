@@ -270,6 +270,28 @@ header{
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 }
 
+.achievement_suggested {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 1%;
+    gap: 1%;
+}
+
+.achievement_suggested_about {
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 0.9rem;
+    padding: 0.8rem;
+    border-radius: 1rem;
+    background: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    gap: 1%;
+}
+
 .achievement_about {
     padding: 0.5%;
     width: 45%;
@@ -279,7 +301,8 @@ header{
     margin: 1%;
 }
 
-.achievement_datetime_create {
+.achievement_datetime_create,
+.achievement_datetime_create_suggested {
     display: flex;
     justify-content: flex-end;
     font-size: 0.7vw;
@@ -287,7 +310,8 @@ header{
     gap: 0.25%;
 }
 
-.achievement_description {
+.achievement_description,
+.achievement_description_suggested {
     font-size: 0.85vw;
     color: #424242;
     margin-top: 1%;
@@ -531,7 +555,9 @@ header{
 .schoolchildren_div_for_admin_estimation,
 .schoolchildren_for_admin_datetime_estimation_update,
 .btn_for_admin_detail_about_to_schoolchildren,
-.btn_for_admin_del_schoolchildren
+.btn_for_admin_del_schoolchildren,
+.btn_achievement_reject,
+.btn_achievement_accept
 {
     flex: 1;
     text-align: center;
@@ -548,6 +574,23 @@ header{
 
 .schoolchildren_for_admin_datetime_estimation_update {
     font-size: 1rem;
+}
+
+.btn_achievement_accept {
+    background-color: rgba(70, 199, 63, 0.25);
+    color: #46C73F;
+    border: none;
+    border-radius: 15px;
+    padding: 0.8rem 1.6rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: 700;
+}
+
+.btn_achievement_accept:hover {
+    background-color: rgba(70, 199, 63, 0.35);
+    scale: 1.03;
 }
 
 .btn_for_admin_detail_about_to_schoolchildren {
@@ -567,7 +610,8 @@ header{
     scale: 1.03;
 }
 
-.btn_for_admin_del_schoolchildren {
+.btn_for_admin_del_schoolchildren,
+.btn_achievement_reject {
     background-color: rgba(255, 114, 114, 0.25);
     color: #FF7272;
     border: none;
@@ -579,7 +623,8 @@ header{
     font-weight: 700;
 }
 
-.btn_for_admin_del_schoolchildren:hover {
+.btn_for_admin_del_schoolchildren:hover,
+.btn_achievement_reject:hover {
     background-color: rgba(255, 114, 114, 0.35);
     scale: 1.03;
 }
