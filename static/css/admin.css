@@ -493,7 +493,7 @@ header{
 .teacher_class_with_schoolchildren_for_admin_list,
 .schoolchildren_by_user_guid_for_admin_list {
     width: 95%;
-    margin-top: 1.5%;
+    margin: 1.5% 0 2.5% 0;
 }
 
 .teacher_class_with_schoolchildren_for_admin_about,
