@@ -322,6 +322,7 @@ function get_schoolchildren_by_user_guid_for_admin(
             div_personal_data_schoolchildren.className = 'personal_data_schoolchildren';
             div_user_about.id = schoolchildren_by_user_guid_for_admin.user.guid;
             div_user_about.className = 'user_about';
+            div_user_about.style.width = '98%';
 
             div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_personal_data_schoolchildren);
             div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_user_about);
