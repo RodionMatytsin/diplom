@@ -45,6 +45,7 @@ name_class.addEventListener('input', function() {
 
 document.getElementById("close_positions_wrapper_schoolchildren_by_user_guid_for_admin").addEventListener('click', () => {
     document.getElementById("positions_popup_schoolchildren_by_user_guid_for_admin").style.display = 'none';
+    document.getElementById("schoolchildren_by_user_guid_for_admin_list").innerText = '';
 });
 
 document.getElementById("close_positions_wrapper_teacher_class_with_schoolchildren_for_admin").addEventListener('click', () => {
@@ -52,6 +53,7 @@ document.getElementById("close_positions_wrapper_teacher_class_with_schoolchildr
     document.getElementById('schoolchildren_add').selectedIndex = 0;
     document.getElementById('teacher_add').selectedIndex = 0;
     document.getElementById('teacher_del').selectedIndex = 0;
+    document.getElementById("teacher_class_with_schoolchildren_for_admin_list").innerText = '';
     document.getElementById("positions_popup_teacher_class_with_schoolchildren_for_admin").style.display = 'none';
 });
 
