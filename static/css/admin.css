@@ -236,7 +236,8 @@ header{
 }
 
 .personal_data_schoolchildren,
-.personal_achievements_schoolchildren {
+.personal_achievements_schoolchildren,
+.personal_achievements_schoolchildren_suggested {
     font-size: 1.75rem;
     text-align: center;
     margin: 0.5% 0 1.5% 0;
@@ -254,6 +255,44 @@ header{
     background: #f9f9f9;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     font-size: 1.1rem;
+}
+
+.personal_achievements_schoolchildren_list,
+.personal_achievements_schoolchildren_suggested_list {
+    width: 97%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    border-radius: 1.5rem;
+    background: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.achievement_about {
+    padding: 0.5%;
+    width: 45%;
+    border-radius: 0.8rem;
+    background: #ffffff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin: 1%;
+}
+
+.achievement_datetime_create {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.7vw;
+    color: #424242;
+    gap: 0.25%;
+}
+
+.achievement_description {
+    font-size: 0.85vw;
+    color: #424242;
+    margin-top: 1%;
+    text-align: justify;
+    width: 100%;
 }
 
 .user_columns {

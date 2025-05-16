@@ -274,6 +274,29 @@ function del_schoolchildren(
     )
 }
 
+function create_personal_achievement_for_dom(
+    achievement_guid,
+    description,
+    datetime_create
+) {
+    let div_achievement_about = document.createElement('div'),
+       div_description = document.createElement('div'),
+       div_datetime_create = document.createElement('div');
+
+   div_achievement_about.id = achievement_guid;
+   div_achievement_about.className = 'achievement_about';
+
+   div_achievement_about.appendChild(div_datetime_create);
+   div_datetime_create.className = 'achievement_datetime_create';
+   div_datetime_create.innerHTML = '<b>Дата/Время создания: </b>' + datetime_create;
+
+   div_achievement_about.appendChild(div_description);
+   div_description.className = 'achievement_description';
+   div_description.innerHTML = '<b>Описание достижения: </b>' + description;
+
+   return div_achievement_about
+}
+
 function get_schoolchildren_by_user_guid_for_admin(
     class_guid,
     schoolchildren_class_guid
@@ -352,12 +375,63 @@ function get_schoolchildren_by_user_guid_for_admin(
 
             div_user_about.appendChild(columnsDiv);
 
-            let div_personal_achievements_schoolchildren = document.createElement('div');
+            let div_personal_achievements_schoolchildren = document.createElement('div'),
+                div_personal_achievements_schoolchildren_list = document.createElement('div');
             div_personal_achievements_schoolchildren.innerHTML = 'Личные достижения школьника';
-            div_personal_achievements_schoolchildren.style.margin = '1.5% 0 1% 0';
+            div_personal_achievements_schoolchildren.style.margin = '1.5% 0';
             div_personal_achievements_schoolchildren.className = 'personal_achievements_schoolchildren';
+            div_personal_achievements_schoolchildren_list.className = 'personal_achievements_schoolchildren_list';
+
+            if (schoolchildren_by_user_guid_for_admin.achievements.length === 0) {
+                const achievementItem = document.createElement('div');
+                achievementItem.classList.add('none_data');
+                achievementItem.style.margin = '2.5% 0';
+                achievementItem.style.fontSize = '2vw';
+                achievementItem.innerHTML = 'Пока что у данного школьника нет личных достижений ! :(';
+                div_personal_achievements_schoolchildren_list.appendChild(achievementItem);
+            }else{
+                for (let i = 0; i < schoolchildren_by_user_guid_for_admin.achievements.length; i++) {
+                    div_personal_achievements_schoolchildren_list.appendChild(
+                        create_personal_achievement_for_dom(
+                            schoolchildren_by_user_guid_for_admin.achievements[i].achievement_guid,
+                            schoolchildren_by_user_guid_for_admin.achievements[i].description,
+                            schoolchildren_by_user_guid_for_admin.achievements[i].datetime_create
+                        )
+                    );
+                }
+            }
 
             div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_personal_achievements_schoolchildren);
+            div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_personal_achievements_schoolchildren_list);
+
+            let div_personal_achievements_schoolchildren_suggested = document.createElement('div'),
+                div_personal_achievements_schoolchildren_suggested_list = document.createElement('div');
+            div_personal_achievements_schoolchildren_suggested.innerHTML = 'Личные достижения школьника (предлагаемые)';
+            div_personal_achievements_schoolchildren_suggested.style.margin = '1.5% 0';
+            div_personal_achievements_schoolchildren_suggested.className = 'personal_achievements_schoolchildren_suggested';
+            div_personal_achievements_schoolchildren_suggested_list.className = 'personal_achievements_schoolchildren_suggested_list';
+
+            if (schoolchildren_by_user_guid_for_admin.pending_achievements.length === 0) {
+                const pendingAchievementItem = document.createElement('div');
+                pendingAchievementItem.classList.add('none_data');
+                pendingAchievementItem.style.margin = '2.5% 0';
+                pendingAchievementItem.style.fontSize = '2vw';
+                pendingAchievementItem.innerHTML = 'Пока что данный школьник не предложил своих личных достижений ! :(';
+                div_personal_achievements_schoolchildren_suggested_list.appendChild(pendingAchievementItem);
+            }else{
+                for (let i = 0; i < schoolchildren_by_user_guid_for_admin.pending_achievements.length; i++) {
+                    div_personal_achievements_schoolchildren_suggested_list.appendChild(
+                        create_personal_achievement_for_dom(
+                            schoolchildren_by_user_guid_for_admin.pending_achievements[i].achievement_guid,
+                            schoolchildren_by_user_guid_for_admin.pending_achievements[i].description,
+                            schoolchildren_by_user_guid_for_admin.pending_achievements[i].datetime_create
+                        )
+                    );
+                }
+            }
+
+            div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_personal_achievements_schoolchildren_suggested);
+            div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_personal_achievements_schoolchildren_suggested_list);
 
             schoolchildren_by_user_guid_for_admin_list.appendChild(div_schoolchildren_by_user_guid_for_admin_about);
             positions_popup_schoolchildren_by_user_guid_for_admin.style.display = 'flex';
