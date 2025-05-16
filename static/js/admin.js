@@ -274,6 +274,87 @@ function del_schoolchildren(
     )
 }
 
+function accept_achievement(achievement_guid, schoolchildren_class_guid, class_guid) {
+    sendRequest(
+        'POST',
+        `/api/admin/achievements/${achievement_guid}/accept?key=${key}`,
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            setTimeout(() => {
+                get_schoolchildren_by_user_guid_for_admin(class_guid, schoolchildren_class_guid);
+            }, 500);
+            show_error(data.message, 'Оповещение');
+        },
+        function (data) {
+            console.log(data)
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
+function reject_achievement(achievement_guid, schoolchildren_class_guid, class_guid) {
+    sendRequest(
+        'POST',
+        `/api/admin/achievements/${achievement_guid}/reject?key=${key}`,
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            setTimeout(() => {
+                get_schoolchildren_by_user_guid_for_admin(class_guid, schoolchildren_class_guid);
+            }, 500);
+            show_error(data.message, 'Оповещение');
+        },
+        function (data) {
+            console.log(data)
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
+function create_personal_achievement_suggested_for_dom(
+    achievement_guid,
+    description,
+    datetime_create,
+    schoolchildren_class_guid,
+    class_guid
+) {
+    let div_achievement_suggested_about = document.createElement('div'),
+        div_description_suggested = document.createElement('div'),
+        div_datetime_create_suggested = document.createElement('div'),
+        btn_achievement_accept = document.createElement('button'),
+        btn_achievement_reject = document.createElement('button');
+
+    div_achievement_suggested_about.id = achievement_guid;
+    div_achievement_suggested_about.className = 'achievement_suggested_about';
+
+    div_achievement_suggested_about.appendChild(div_datetime_create_suggested);
+    div_datetime_create_suggested.className = 'achievement_datetime_create_suggested';
+    div_datetime_create_suggested.innerHTML = '<b>Дата/Время создания: </b>' + datetime_create;
+
+    div_achievement_suggested_about.appendChild(div_description_suggested);
+    div_description_suggested.className = 'achievement_description_suggested';
+    div_description_suggested.innerHTML = '<b>Описание достижения: </b>' + description;
+
+    div_achievement_suggested_about.appendChild(btn_achievement_reject);
+    btn_achievement_reject.className = 'btn_achievement_reject';
+    btn_achievement_reject.textContent = 'Отклонить достижение';
+    btn_achievement_reject.onclick = function() {
+        reject_achievement(achievement_guid, schoolchildren_class_guid, class_guid);
+    };
+
+    div_achievement_suggested_about.appendChild(btn_achievement_accept);
+    btn_achievement_accept.className = 'btn_achievement_accept';
+    btn_achievement_accept.textContent = 'Принять достижение';
+    btn_achievement_accept.onclick = function() {
+        accept_achievement(achievement_guid, schoolchildren_class_guid, class_guid);
+    };
+
+    return div_achievement_suggested_about
+}
+
 function create_personal_achievement_for_dom(
     achievement_guid,
     description,
@@ -422,10 +503,12 @@ function get_schoolchildren_by_user_guid_for_admin(
             }else{
                 for (let i = 0; i < schoolchildren_by_user_guid_for_admin.pending_achievements.length; i++) {
                     div_personal_achievements_schoolchildren_suggested_list.appendChild(
-                        create_personal_achievement_for_dom(
+                        create_personal_achievement_suggested_for_dom(
                             schoolchildren_by_user_guid_for_admin.pending_achievements[i].achievement_guid,
                             schoolchildren_by_user_guid_for_admin.pending_achievements[i].description,
-                            schoolchildren_by_user_guid_for_admin.pending_achievements[i].datetime_create
+                            schoolchildren_by_user_guid_for_admin.pending_achievements[i].datetime_create,
+                            schoolchildren_by_user_guid_for_admin.schoolchildren_class_guid,
+                            class_guid
                         )
                     );
                 }
