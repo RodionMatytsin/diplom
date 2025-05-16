@@ -253,7 +253,7 @@ header{
     margin-bottom: 1rem;
     border-radius: 1.5rem;
     background: #f9f9f9;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
     font-size: 1.1rem;
 }
 
@@ -267,7 +267,7 @@ header{
     flex-wrap: wrap;
     border-radius: 1.5rem;
     background: #f9f9f9;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 }
 
 .achievement_about {
@@ -398,7 +398,7 @@ header{
     background: #fff;
     border-radius: 0.8rem;
     padding: 1%;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 }
 
 .class_:hover {
@@ -523,7 +523,7 @@ header{
     padding: 0.8rem;
     border-radius: 1rem;
     background: #f9f9f9;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
     gap: 1%;
 }
 
