@@ -359,7 +359,7 @@ function create_personal_achievement_suggested_for_dom(
         accept_achievement(achievement_guid, schoolchildren_class_guid, class_guid);
     };
 
-    return div_achievement_suggested
+    return div_achievement_suggested;
 }
 
 function create_personal_achievement_for_dom(
@@ -382,7 +382,7 @@ function create_personal_achievement_for_dom(
    div_description.className = 'achievement_description';
    div_description.innerHTML = '<b>Описание достижения: </b>' + description;
 
-   return div_achievement_about
+   return div_achievement_about;
 }
 
 function create_generated_recommendation_for_dom(
@@ -405,7 +405,7 @@ function create_generated_recommendation_for_dom(
    div_description.className = 'recommendation_description';
    div_description.innerHTML = '<b>Описание рекомендации: </b>' + description;
 
-   return div_recommendation_about
+   return div_recommendation_about;
 }
 
 function create_passed_test_for_dom(
@@ -760,7 +760,7 @@ function create_class_for_dom(
        };
    };
 
-   return div_class
+   return div_class;
 }
 
 function get_classes() {

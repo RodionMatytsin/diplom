@@ -273,7 +273,7 @@ function create_achievement_for_dom(
    div_description.className = 'achievement_description';
    div_description.innerHTML = '<b>Описание достижения: </b>' + description;
 
-   return div_achievement
+   return div_achievement;
 }
 
 function get_achievements() {
@@ -335,7 +335,7 @@ function create_schoolchildren_class_for_dom(
    div_estimation.className = 'schoolchildren_class_estimation';
    div_estimation.innerHTML = '<b>Успеваемость: </b>' + ((estimation) ? estimation : "-");
 
-   return div_schoolchildren_class
+   return div_schoolchildren_class;
 }
 
 function get_schoolchildren_classes() {
@@ -399,7 +399,7 @@ function create_recommendation_class_for_dom(
    div_description.className = 'recommendation_description';
    div_description.innerHTML = '<b>Описание рекомендации: </b>' + description;
 
-   return div_recommendation
+   return div_recommendation;
 }
 
 function get_recommendations() {

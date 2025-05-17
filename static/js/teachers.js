@@ -246,7 +246,7 @@ function create_teacher_class_for_dom(
        get_teacher_class_with_schoolchildren(class_guid);
    };
 
-   return div_teacher_class
+   return div_teacher_class;
 }
 
 function get_teacher_classes() {
