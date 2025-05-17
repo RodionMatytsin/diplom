@@ -307,19 +307,74 @@ header{
 }
 
 .test_about {
-    display: flex;
     padding: 2%;
     width: 90%;
     border-radius: 1rem;
     background: #ffffff;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     margin: 0.5% 0;
+}
+
+.test_content {
+    display: flex;
     gap: 4%;
 }
 
 .test_name,
 .test_datetime_create {
     font-size: 1.15rem;
+}
+
+.test_details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+}
+
+.test_detail_about {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 3vh;
+    padding: 2%;
+    margin: 1% 0;
+}
+
+.question_name{
+    font-size: 1.1vw;
+    margin: 1% 0 1.5% 0;
+    font-weight: bold;
+}
+
+.question_scores {
+    display: flex;
+    gap: 1.5%;
+    margin: 0 0 1.5% 0;
+    font-size: 0.95vw;
+    align-items: center;
+}
+
+.question_score {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.selected {
+    background-color: rgba(70, 199, 63, 0.25);
+    border: 1px solid #46C73F;
+    color: #46C73F;
+    font-weight: bold;
+}
+
+.question_comment {
+    font-size: 0.95vw;
 }
 
 .achievement_datetime_create,

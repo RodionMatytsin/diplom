@@ -408,19 +408,6 @@ function create_generated_recommendation_for_dom(
    return div_recommendation_about;
 }
 
-function create_test_detail_about_for_dom(
-    question_id,
-    question_name,
-    question_amount_of_points,
-    score,
-    comment
-) {
-    let div_test_detail_about = document.createElement('div');
-    div_test_detail_about.className = 'test_detail_about';
-
-    return div_test_detail_about;
-}
-
 function create_passed_test_for_dom(
     test_guid,
     name_test,
@@ -429,6 +416,7 @@ function create_passed_test_for_dom(
     test_details = []
 ) {
     let div_test_about = document.createElement('div'),
+        div_test_content = document.createElement('div'),
         div_name_test = document.createElement('div'),
         div_datetime_create = document.createElement('div'),
         div_test_details = document.createElement('div');
@@ -440,28 +428,52 @@ function create_passed_test_for_dom(
         div_test_about.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 5%)';
     }
 
-    div_test_about.appendChild(div_name_test);
+    div_test_about.appendChild(div_test_content);
+    div_test_content.className = 'test_content';
+
+    div_test_content.appendChild(div_name_test);
     div_name_test.className = 'test_name';
     div_name_test.innerHTML = `<b>${name_test}</b>`;
 
-    div_test_about.appendChild(div_datetime_create);
+    div_test_content.appendChild(div_datetime_create);
     div_datetime_create.className = 'test_datetime_create';
     div_datetime_create.innerHTML = '<b>Дата и время прохождения теста: </b>' + datetime_create;
 
     div_test_about.appendChild(div_test_details);
     div_test_details.className = 'test_details';
 
-    for (let i = 0; i < test_details.length; i++) {
-        div_test_details.appendChild(
-            create_test_detail_about_for_dom(
-                test_details[i].question.question_id,
-                test_details[i].question.name,
-                test_details[i].question.amount_of_points,
-                test_details[i].score,
-                test_details[i].comment
-            )
-        );
-    }
+    test_details.forEach((item, index) => {
+        const test_detail_about = document.createElement('div');
+        test_detail_about.classList.add('test_detail_about');
+
+        const questionName = document.createElement('div');
+        questionName.id = item.question.question_id;
+        questionName.classList.add('question_name');
+        questionName.textContent = `Вопрос ${index + 1}: ${item.question.name}`;
+
+        const questionScores = document.createElement('div');
+        questionScores.classList.add('question_scores');
+        questionScores.textContent = `Выставленная оценка к вопросу: `;
+        for (let i = 1; i <= item.question.amount_of_points; i++) {
+            const questionScore = document.createElement('div');
+            questionScore.classList.add('question_score');
+            questionScore.textContent = i;
+            if (i === item.score) {
+                questionScore.classList.add('selected');
+            }
+            questionScores.appendChild(questionScore);
+        }
+
+        const questionComment = document.createElement('div');
+        questionComment.classList.add('question_comment');
+        questionComment.textContent = `Комментарий к вопросу: ${(item.comment) ? item.comment : 'Школьник не оставил комментарий к данному вопросу'}`;
+
+        test_detail_about.appendChild(questionName);
+        test_detail_about.appendChild(questionScores);
+        test_detail_about.appendChild(questionComment);
+
+        div_test_details.appendChild(test_detail_about);
+    })
 
     return div_test_about;
 }
