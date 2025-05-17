@@ -416,8 +416,7 @@ function create_passed_test_for_dom(
     test_details = []
 ) {
     let div_test_about = document.createElement('div'),
-        div_row1 = document.createElement('div'),
-        div_row2 = document.createElement('div'),
+        div_test_header = document.createElement('div'),
         div_test_content = document.createElement('div'),
         div_name_test = document.createElement('div'),
         div_datetime_create = document.createElement('div'),
@@ -430,7 +429,7 @@ function create_passed_test_for_dom(
         div_test_about.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 5%)';
     }
 
-    div_row1.className = 'row1';
+    div_test_header.className = 'test_header';
     div_test_content.className = 'test_content';
 
     div_test_content.appendChild(div_name_test);
@@ -456,10 +455,9 @@ function create_passed_test_for_dom(
         btn_test.classList.toggle('flipped');
     };
 
-    div_row1.appendChild(div_test_content);
-    div_row1.appendChild(btn_test);
+    div_test_header.appendChild(div_test_content);
+    div_test_header.appendChild(btn_test);
 
-    div_row2.className = 'row2';
     div_test_details.className = 'test_details';
     div_test_details.style.display = 'none';
 
@@ -496,9 +494,8 @@ function create_passed_test_for_dom(
         div_test_details.appendChild(test_detail_about);
     })
 
-    div_test_about.appendChild(div_row1);
-    div_row2.appendChild(div_test_details);
-    div_test_about.appendChild(div_row2);
+    div_test_about.appendChild(div_test_header);
+    div_test_about.appendChild(div_test_details);
 
     return div_test_about;
 }
