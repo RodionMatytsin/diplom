@@ -315,9 +315,15 @@ header{
     margin: 0.5% 0;
 }
 
+.row1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .test_content {
     display: flex;
-    gap: 4%;
+    gap: 1%;
 }
 
 .test_name,
@@ -375,6 +381,26 @@ header{
 
 .question_comment {
     font-size: 0.95vw;
+}
+
+.btn_test {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.btn_test.flipped {
+    transform: rotate(180deg);
+}
+
+.btn_test:hover {
+    scale: 1.15;
 }
 
 .achievement_datetime_create,

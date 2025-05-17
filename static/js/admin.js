@@ -422,16 +422,15 @@ function create_passed_test_for_dom(
         div_name_test = document.createElement('div'),
         div_datetime_create = document.createElement('div'),
         div_test_details = document.createElement('div'),
-        btn_test = document.createElement('button');
+        btn_test = document.createElement('div');
 
-    div_test_about.id = test_guid;
     div_test_about.className = 'test_about';
 
     if (is_accepted === true) {
         div_test_about.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 5%)';
     }
 
-    div_test_about.appendChild(div_test_content);
+    div_row1.className = 'row1';
     div_test_content.className = 'test_content';
 
     div_test_content.appendChild(div_name_test);
@@ -442,19 +441,25 @@ function create_passed_test_for_dom(
     div_datetime_create.className = 'test_datetime_create';
     div_datetime_create.innerHTML = '<b>Дата и время прохождения теста: </b>' + datetime_create;
 
-    btn_test.innerHTML = '<';
+    btn_test.id = test_guid;
     btn_test.className = 'btn_test';
+    btn_test.style.backgroundImage = 'url(../static/img/dropDownIcons.svg)';
+    btn_test.style.backgroundSize = '50%';
+    btn_test.style.backgroundRepeat = 'no-repeat';
+    btn_test.style.backgroundPosition = 'center';
     btn_test.onclick = function() {
         if (div_test_details.style.display === 'none' || div_test_details.style.display === '') {
             div_test_details.style.display = 'flex';
         } else {
             div_test_details.style.display = 'none';
         }
+        btn_test.classList.toggle('flipped');
     };
 
-    div_test_about.appendChild(btn_test);
+    div_row1.appendChild(div_test_content);
+    div_row1.appendChild(btn_test);
 
-    div_test_about.appendChild(div_test_details);
+    div_row2.className = 'row2';
     div_test_details.className = 'test_details';
     div_test_details.style.display = 'none';
 
@@ -490,6 +495,10 @@ function create_passed_test_for_dom(
 
         div_test_details.appendChild(test_detail_about);
     })
+
+    div_test_about.appendChild(div_row1);
+    div_row2.appendChild(div_test_details);
+    div_test_about.appendChild(div_row2);
 
     return div_test_about;
 }
