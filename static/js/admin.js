@@ -385,6 +385,29 @@ function create_personal_achievement_for_dom(
    return div_achievement_about
 }
 
+function create_generated_recommendation_for_dom(
+    recommendation_guid,
+    description,
+    datetime_create
+) {
+    let div_recommendation_about = document.createElement('div'),
+       div_description = document.createElement('div'),
+       div_datetime_create = document.createElement('div');
+
+   div_recommendation_about.id = recommendation_guid;
+   div_recommendation_about.className = 'recommendation_about';
+
+   div_recommendation_about.appendChild(div_datetime_create);
+   div_datetime_create.className = 'recommendation_datetime_create';
+   div_datetime_create.innerHTML = '<b>Дата/Время создания: </b>' + datetime_create;
+
+   div_recommendation_about.appendChild(div_description);
+   div_description.className = 'recommendation_description';
+   div_description.innerHTML = '<b>Описание рекомендации: </b>' + description;
+
+   return div_recommendation_about
+}
+
 function get_schoolchildren_by_user_guid_for_admin(
     class_guid,
     schoolchildren_class_guid
@@ -523,6 +546,35 @@ function get_schoolchildren_by_user_guid_for_admin(
 
             div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_personal_achievements_schoolchildren_suggested);
             div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_personal_achievements_schoolchildren_suggested_list);
+
+            let div_generated_recommendations_schoolchildren = document.createElement('div'),
+                div_generated_recommendations_schoolchildren_list = document.createElement('div');
+            div_generated_recommendations_schoolchildren.innerHTML = 'Сформированные рекомендации для школьника';
+            div_generated_recommendations_schoolchildren.style.margin = '1.5% 0';
+            div_generated_recommendations_schoolchildren.className = 'generated_recommendations_schoolchildren';
+            div_generated_recommendations_schoolchildren_list.className = 'generated_recommendations_schoolchildren_list';
+
+            if (schoolchildren_by_user_guid_for_admin.recommendations.length === 0) {
+                const recommendationItem = document.createElement('div');
+                recommendationItem.classList.add('none_data');
+                recommendationItem.style.margin = '2.5% 0';
+                recommendationItem.style.fontSize = '2vw';
+                recommendationItem.innerHTML = 'Пока что у данного школьника нет сформированных рекомендаций ! :(';
+                div_generated_recommendations_schoolchildren_list.appendChild(recommendationItem);
+            }else{
+                for (let i = 0; i < schoolchildren_by_user_guid_for_admin.recommendations.length; i++) {
+                    div_generated_recommendations_schoolchildren_list.appendChild(
+                        create_generated_recommendation_for_dom(
+                            schoolchildren_by_user_guid_for_admin.recommendations[i].recommendation_guid,
+                            schoolchildren_by_user_guid_for_admin.recommendations[i].description,
+                            schoolchildren_by_user_guid_for_admin.recommendations[i].datetime_create
+                        )
+                    );
+                }
+            }
+
+            div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_generated_recommendations_schoolchildren);
+            div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_generated_recommendations_schoolchildren_list);
 
             schoolchildren_by_user_guid_for_admin_list.appendChild(div_schoolchildren_by_user_guid_for_admin_about);
             positions_popup_schoolchildren_by_user_guid_for_admin.style.display = 'flex';

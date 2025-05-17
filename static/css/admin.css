@@ -237,7 +237,8 @@ header{
 
 .personal_data_schoolchildren,
 .personal_achievements_schoolchildren,
-.personal_achievements_schoolchildren_suggested {
+.personal_achievements_schoolchildren_suggested,
+.generated_recommendations_schoolchildren {
     font-size: 1.75rem;
     text-align: center;
     margin: 0.5% 0 1.5% 0;
@@ -258,7 +259,8 @@ header{
 }
 
 .personal_achievements_schoolchildren_list,
-.personal_achievements_schoolchildren_suggested_list {
+.personal_achievements_schoolchildren_suggested_list,
+.generated_recommendations_schoolchildren_list {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -292,7 +294,8 @@ header{
     gap: 1%;
 }
 
-.achievement_about {
+.achievement_about,
+.recommendation_about {
     padding: 0.5%;
     width: 45%;
     border-radius: 0.8rem;
@@ -302,7 +305,8 @@ header{
 }
 
 .achievement_datetime_create,
-.achievement_datetime_create_suggested {
+.achievement_datetime_create_suggested,
+.recommendation_datetime_create {
     display: flex;
     justify-content: flex-end;
     font-size: 0.7vw;
@@ -311,7 +315,8 @@ header{
 }
 
 .achievement_description,
-.achievement_description_suggested {
+.achievement_description_suggested,
+.recommendation_description {
     font-size: 0.85vw;
     color: #424242;
     margin-top: 1%;
