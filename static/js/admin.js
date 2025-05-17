@@ -408,6 +408,22 @@ function create_generated_recommendation_for_dom(
    return div_recommendation_about
 }
 
+function create_passed_test_for_dom(
+    test_guid,
+    name_test,
+    datetime_create,
+    is_accepted,
+    test_details = []
+) {
+    let div_test_about = document.createElement('div');
+
+    div_test_about.id = test_guid;
+    div_test_about.innerText = test_guid;
+    div_test_about.className = 'test_about';
+
+    return div_test_about
+}
+
 function get_schoolchildren_by_user_guid_for_admin(
     class_guid,
     schoolchildren_class_guid
@@ -430,6 +446,7 @@ function get_schoolchildren_by_user_guid_for_admin(
             let div_personal_data_schoolchildren = document.createElement('div'),
                 div_user_about = document.createElement('div');
             div_personal_data_schoolchildren.innerHTML = 'Личные данные школьника';
+            div_personal_data_schoolchildren.style.margin = '1.5% 0';
             div_personal_data_schoolchildren.className = 'personal_data_schoolchildren';
             div_user_about.id = schoolchildren_by_user_guid_for_admin.user.guid;
             div_user_about.className = 'user_about';
@@ -490,7 +507,7 @@ function get_schoolchildren_by_user_guid_for_admin(
             let div_personal_achievements_schoolchildren = document.createElement('div'),
                 div_personal_achievements_schoolchildren_list = document.createElement('div');
             div_personal_achievements_schoolchildren.innerHTML = 'Личные достижения школьника';
-            div_personal_achievements_schoolchildren.style.margin = '1.5% 0';
+            div_personal_achievements_schoolchildren.style.margin = '3.5% 0 1.5% 0';
             div_personal_achievements_schoolchildren.className = 'personal_achievements_schoolchildren';
             div_personal_achievements_schoolchildren_list.className = 'personal_achievements_schoolchildren_list';
 
@@ -519,7 +536,7 @@ function get_schoolchildren_by_user_guid_for_admin(
             let div_personal_achievements_schoolchildren_suggested = document.createElement('div'),
                 div_personal_achievements_schoolchildren_suggested_list = document.createElement('div');
             div_personal_achievements_schoolchildren_suggested.innerHTML = 'Личные достижения школьника (предлагаемые)';
-            div_personal_achievements_schoolchildren_suggested.style.margin = '1.5% 0';
+            div_personal_achievements_schoolchildren_suggested.style.margin = '3.5% 0 1.5% 0';
             div_personal_achievements_schoolchildren_suggested.className = 'personal_achievements_schoolchildren_suggested';
             div_personal_achievements_schoolchildren_suggested_list.className = 'personal_achievements_schoolchildren_suggested_list';
 
@@ -550,7 +567,7 @@ function get_schoolchildren_by_user_guid_for_admin(
             let div_generated_recommendations_schoolchildren = document.createElement('div'),
                 div_generated_recommendations_schoolchildren_list = document.createElement('div');
             div_generated_recommendations_schoolchildren.innerHTML = 'Сформированные рекомендации для школьника';
-            div_generated_recommendations_schoolchildren.style.margin = '1.5% 0';
+            div_generated_recommendations_schoolchildren.style.margin = '3.5% 0 1.5% 0';
             div_generated_recommendations_schoolchildren.className = 'generated_recommendations_schoolchildren';
             div_generated_recommendations_schoolchildren_list.className = 'generated_recommendations_schoolchildren_list';
 
@@ -579,7 +596,7 @@ function get_schoolchildren_by_user_guid_for_admin(
             let div_passed_tests_schoolchildren = document.createElement('div'),
                 div_passed_tests_schoolchildren_list = document.createElement('div');
             div_passed_tests_schoolchildren.innerHTML = 'Все пройденные тесты школьника';
-            div_passed_tests_schoolchildren.style.margin = '1.5% 0';
+            div_passed_tests_schoolchildren.style.margin = '3.5% 0 1.5% 0';
             div_passed_tests_schoolchildren.className = 'passed_tests_schoolchildren';
             div_passed_tests_schoolchildren_list.className = 'passed_tests_schoolchildren_list';
             div_passed_tests_schoolchildren_list.style.marginBottom = '0.5%';
@@ -593,14 +610,15 @@ function get_schoolchildren_by_user_guid_for_admin(
                 div_passed_tests_schoolchildren_list.appendChild(testItem);
             }else{
                 for (let i = 0; i < schoolchildren_by_user_guid_for_admin.tests.length; i++) {
-                    console.log(schoolchildren_by_user_guid_for_admin.tests[i]);
-                    // div_passed_tests_schoolchildren_list.appendChild(
-                    //     create_generated_recommendation_for_dom(
-                    //         schoolchildren_by_user_guid_for_admin.tests[i].recommendation_guid,
-                    //         schoolchildren_by_user_guid_for_admin.tests[i].description,
-                    //         schoolchildren_by_user_guid_for_admin.tests[i].datetime_create
-                    //     )
-                    // );
+                    div_passed_tests_schoolchildren_list.appendChild(
+                        create_passed_test_for_dom(
+                            schoolchildren_by_user_guid_for_admin.tests[i].test_guid,
+                            schoolchildren_by_user_guid_for_admin.tests[i].name_test,
+                            schoolchildren_by_user_guid_for_admin.tests[i].datetime_create,
+                            schoolchildren_by_user_guid_for_admin.tests[i].is_accepted,
+                            schoolchildren_by_user_guid_for_admin.tests[i].test_details
+                        )
+                    );
                 }
             }
 

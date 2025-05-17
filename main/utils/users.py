@@ -9,7 +9,6 @@ def serialize_user(user: Users) -> UserRegular:
     return UserRegular(
         guid=user.guid,
         login=user.login,
-        password=user.password,
         phone_number=user.phone_number,
         fio=user.fio,
         birthday=BirthdayUser(

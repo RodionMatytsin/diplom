@@ -19,7 +19,6 @@ def serialize_user_for_admin(user: Users, classes: tuple[Classes] | None) -> Use
     return UserRegularAdmin(
         guid=user.guid,
         login=user.login,
-        password=user.password,
         phone_number=user.phone_number,
         fio=user.fio,
         birthday=BirthdayUser(
@@ -30,6 +29,7 @@ def serialize_user_for_admin(user: Users, classes: tuple[Classes] | None) -> Use
         gender=user.gender,
         datetime_create=f"{user.datetime_create.strftime('%d.%m.%Y')} в {user.datetime_create.strftime('%H:%M')}",
         is_teacher=user.is_teacher,
+        password=user.password,
         classes=tuple([serialize_class(class_=class_) for class_ in classes]) if classes is not None else tuple()
     )
 

@@ -71,6 +71,7 @@ class UsersToClassAdminDefault(DefaultResponse):
 
 
 class UserRegularAdmin(UserRegular):
+    password: str
     classes: tuple[ClassRegular] | tuple
 
 
