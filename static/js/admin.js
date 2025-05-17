@@ -416,10 +416,13 @@ function create_passed_test_for_dom(
     test_details = []
 ) {
     let div_test_about = document.createElement('div'),
+        div_row1 = document.createElement('div'),
+        div_row2 = document.createElement('div'),
         div_test_content = document.createElement('div'),
         div_name_test = document.createElement('div'),
         div_datetime_create = document.createElement('div'),
-        div_test_details = document.createElement('div');
+        div_test_details = document.createElement('div'),
+        btn_test = document.createElement('button');
 
     div_test_about.id = test_guid;
     div_test_about.className = 'test_about';
@@ -439,8 +442,21 @@ function create_passed_test_for_dom(
     div_datetime_create.className = 'test_datetime_create';
     div_datetime_create.innerHTML = '<b>Дата и время прохождения теста: </b>' + datetime_create;
 
+    btn_test.innerHTML = '<';
+    btn_test.className = 'btn_test';
+    btn_test.onclick = function() {
+        if (div_test_details.style.display === 'none' || div_test_details.style.display === '') {
+            div_test_details.style.display = 'flex';
+        } else {
+            div_test_details.style.display = 'none';
+        }
+    };
+
+    div_test_about.appendChild(btn_test);
+
     div_test_about.appendChild(div_test_details);
     div_test_details.className = 'test_details';
+    div_test_details.style.display = 'none';
 
     test_details.forEach((item, index) => {
         const test_detail_about = document.createElement('div');
