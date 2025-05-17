@@ -1,7 +1,9 @@
 from main import main
 from fastapi import Depends
+from main.schemas.responses import DefaultResponse
 from main.schemas.recommendations import RecommendationDefault
 from main.utils.users import get_current_user
+from uuid import UUID
 
 
 @main.get(
@@ -19,3 +21,41 @@ async def api_get_recommendations(current_user=Depends(get_current_user)):
     from main.utils.recommendations import get_recommendations
     await required_schoolchildren_access(current_user=current_user)
     return RecommendationDefault(data=await get_recommendations(user_guid=current_user.guid, is_accepted=True))
+
+
+@main.post(
+    '/api/recommendations/{recommendation_guid}/accept',
+    status_code=200,
+    tags=["Recommendations"],
+    response_model=DefaultResponse
+)
+async def api_teacher_accept_recommendation(
+        recommendation_guid: UUID | str,
+        current_user=Depends(get_current_user)
+):
+    """
+        Этот метод предназначен для преподавателя, с помощью которого можно
+        принять ранее сформированную рекомендацию, чтобы показывать школьнику, админу и себе.
+    """
+    from main.utils.teacher_classes import required_teacher_access, teacher_accept_recommendation
+    await required_teacher_access(current_user=current_user)
+    return DefaultResponse(message=await teacher_accept_recommendation(recommendation_guid=recommendation_guid))
+
+
+@main.post(
+    '/api/recommendations/{recommendation_guid}/reject',
+    status_code=200,
+    tags=["Recommendations"],
+    response_model=DefaultResponse
+)
+async def api_teacher_reject_recommendation(
+        recommendation_guid: UUID | str,
+        current_user=Depends(get_current_user)
+):
+    """
+        Этот метод предназначен для преподавателя, с помощью которого можно
+        отклонять ранее сформированную рекомендацию, чтобы не показывать школьнику, админу и себе.
+    """
+    from main.utils.teacher_classes import required_teacher_access, teacher_reject_recommendation
+    await required_teacher_access(current_user=current_user)
+    return DefaultResponse(message=await teacher_reject_recommendation(recommendation_guid=recommendation_guid))
