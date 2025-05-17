@@ -576,6 +576,37 @@ function get_schoolchildren_by_user_guid_for_admin(
             div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_generated_recommendations_schoolchildren);
             div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_generated_recommendations_schoolchildren_list);
 
+            let div_passed_tests_schoolchildren = document.createElement('div'),
+                div_passed_tests_schoolchildren_list = document.createElement('div');
+            div_passed_tests_schoolchildren.innerHTML = 'Все пройденные тесты школьника';
+            div_passed_tests_schoolchildren.style.margin = '1.5% 0';
+            div_passed_tests_schoolchildren.className = 'passed_tests_schoolchildren';
+            div_passed_tests_schoolchildren_list.className = 'passed_tests_schoolchildren_list';
+            div_passed_tests_schoolchildren_list.style.marginBottom = '0.5%';
+
+            if (schoolchildren_by_user_guid_for_admin.tests.length === 0) {
+                const testItem = document.createElement('div');
+                testItem.classList.add('none_data');
+                testItem.style.margin = '2.5% 0';
+                testItem.style.fontSize = '2vw';
+                testItem.innerHTML = 'Пока что данный школьник еще не проходил ни одного тестирования ! :(';
+                div_passed_tests_schoolchildren_list.appendChild(testItem);
+            }else{
+                for (let i = 0; i < schoolchildren_by_user_guid_for_admin.tests.length; i++) {
+                    console.log(schoolchildren_by_user_guid_for_admin.tests[i]);
+                    // div_passed_tests_schoolchildren_list.appendChild(
+                    //     create_generated_recommendation_for_dom(
+                    //         schoolchildren_by_user_guid_for_admin.tests[i].recommendation_guid,
+                    //         schoolchildren_by_user_guid_for_admin.tests[i].description,
+                    //         schoolchildren_by_user_guid_for_admin.tests[i].datetime_create
+                    //     )
+                    // );
+                }
+            }
+
+            div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_passed_tests_schoolchildren);
+            div_schoolchildren_by_user_guid_for_admin_about.appendChild(div_passed_tests_schoolchildren_list);
+
             schoolchildren_by_user_guid_for_admin_list.appendChild(div_schoolchildren_by_user_guid_for_admin_about);
             positions_popup_schoolchildren_by_user_guid_for_admin.style.display = 'flex';
         },
