@@ -225,25 +225,3 @@ async def get_schoolchildren_by_user_guid(
         pending_recommendations=await get_recommendations(user_guid=current_user.guid, is_accepted=False),
         tests=await get_tests(user_guid=current_user.guid)
     )
-
-
-async def teacher_accept_recommendation(recommendation_guid: UUID | str) -> str:
-    from main.models import engine, Recommendations, CRUD, SessionHandler
-    await CRUD(
-        session=SessionHandler.create(engine=engine), model=Recommendations
-    ).update(
-        _where=[Recommendations.guid == recommendation_guid],
-        _values=dict(is_accepted=True)
-    )
-    return "Вы успешно приняли сформированную рекомендацию для школьника!"
-
-
-async def teacher_reject_recommendation(recommendation_guid: UUID | str) -> str:
-    from main.models import engine, Recommendations, CRUD, SessionHandler
-    await CRUD(
-        session=SessionHandler.create(engine=engine), model=Recommendations
-    ).update(
-        _where=[Recommendations.guid == recommendation_guid],
-        _values=dict(is_deleted=True)
-    )
-    return "Вы успешно отклонили сформированную рекомендацию для школьника!"

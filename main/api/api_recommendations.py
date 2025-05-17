@@ -29,7 +29,7 @@ async def api_get_recommendations(current_user=Depends(get_current_user)):
     tags=["Recommendations"],
     response_model=DefaultResponse
 )
-async def api_teacher_accept_recommendation(
+async def api_recommendation_accept(
         recommendation_guid: UUID | str,
         current_user=Depends(get_current_user)
 ):
@@ -37,9 +37,10 @@ async def api_teacher_accept_recommendation(
         Этот метод предназначен для преподавателя, с помощью которого можно
         принять ранее сформированную рекомендацию, чтобы показывать школьнику, админу и себе.
     """
-    from main.utils.teacher_classes import required_teacher_access, teacher_accept_recommendation
+    from main.utils.teacher_classes import required_teacher_access
     await required_teacher_access(current_user=current_user)
-    return DefaultResponse(message=await teacher_accept_recommendation(recommendation_guid=recommendation_guid))
+    from main.utils.recommendations import recommendation_accept
+    return DefaultResponse(message=await recommendation_accept(recommendation_guid=recommendation_guid))
 
 
 @main.post(
@@ -48,7 +49,7 @@ async def api_teacher_accept_recommendation(
     tags=["Recommendations"],
     response_model=DefaultResponse
 )
-async def api_teacher_reject_recommendation(
+async def api_recommendation_reject(
         recommendation_guid: UUID | str,
         current_user=Depends(get_current_user)
 ):
@@ -56,6 +57,7 @@ async def api_teacher_reject_recommendation(
         Этот метод предназначен для преподавателя, с помощью которого можно
         отклонять ранее сформированную рекомендацию, чтобы не показывать школьнику, админу и себе.
     """
-    from main.utils.teacher_classes import required_teacher_access, teacher_reject_recommendation
+    from main.utils.teacher_classes import required_teacher_access
     await required_teacher_access(current_user=current_user)
-    return DefaultResponse(message=await teacher_reject_recommendation(recommendation_guid=recommendation_guid))
+    from main.utils.recommendations import recommendation_reject
+    return DefaultResponse(message=await recommendation_reject(recommendation_guid=recommendation_guid))

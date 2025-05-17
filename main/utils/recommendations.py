@@ -53,3 +53,25 @@ async def get_recommendations(
     if recommendations is None or recommendations == []:
         return tuple()
     return tuple(serialize_recommendation(recommendation=recommendation) for recommendation in recommendations)
+
+
+async def recommendation_accept(recommendation_guid: UUID | str) -> str:
+    from main.models import engine, Recommendations, CRUD, SessionHandler
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=Recommendations
+    ).update(
+        _where=[Recommendations.guid == recommendation_guid],
+        _values=dict(is_accepted=True)
+    )
+    return "Вы успешно приняли сформированную рекомендацию для школьника!"
+
+
+async def recommendation_reject(recommendation_guid: UUID | str) -> str:
+    from main.models import engine, Recommendations, CRUD, SessionHandler
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=Recommendations
+    ).update(
+        _where=[Recommendations.guid == recommendation_guid],
+        _values=dict(is_deleted=True)
+    )
+    return "Вы успешно отклонили сформированную рекомендацию для школьника!"
