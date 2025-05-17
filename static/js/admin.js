@@ -436,6 +436,10 @@ function create_passed_test_for_dom(
     div_test_about.id = test_guid;
     div_test_about.className = 'test_about';
 
+    if (is_accepted === true) {
+        div_test_about.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 5%)';
+    }
+
     div_test_about.appendChild(div_name_test);
     div_name_test.className = 'test_name';
     div_name_test.innerHTML = `<b>${name_test}</b>`;
