@@ -408,6 +408,19 @@ function create_generated_recommendation_for_dom(
    return div_recommendation_about;
 }
 
+function create_test_detail_about_for_dom(
+    question_id,
+    question_name,
+    question_amount_of_points,
+    score,
+    comment
+) {
+    let div_test_detail_about = document.createElement('div');
+    div_test_detail_about.className = 'test_detail_about';
+
+    return div_test_detail_about;
+}
+
 function create_passed_test_for_dom(
     test_guid,
     name_test,
@@ -415,13 +428,38 @@ function create_passed_test_for_dom(
     is_accepted,
     test_details = []
 ) {
-    let div_test_about = document.createElement('div');
+    let div_test_about = document.createElement('div'),
+        div_name_test = document.createElement('div'),
+        div_datetime_create = document.createElement('div'),
+        div_test_details = document.createElement('div');
 
     div_test_about.id = test_guid;
-    div_test_about.innerText = test_guid;
     div_test_about.className = 'test_about';
 
-    return div_test_about
+    div_test_about.appendChild(div_name_test);
+    div_name_test.className = 'test_name';
+    div_name_test.innerHTML = `<b>${name_test}</b>`;
+
+    div_test_about.appendChild(div_datetime_create);
+    div_datetime_create.className = 'test_datetime_create';
+    div_datetime_create.innerHTML = '<b>Дата и время прохождения теста: </b>' + datetime_create;
+
+    div_test_about.appendChild(div_test_details);
+    div_test_details.className = 'test_details';
+
+    for (let i = 0; i < test_details.length; i++) {
+        div_test_details.appendChild(
+            create_test_detail_about_for_dom(
+                test_details[i].question.question_id,
+                test_details[i].question.name,
+                test_details[i].question.amount_of_points,
+                test_details[i].score,
+                test_details[i].comment
+            )
+        );
+    }
+
+    return div_test_about;
 }
 
 function get_schoolchildren_by_user_guid_for_admin(
