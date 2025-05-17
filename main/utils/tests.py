@@ -37,6 +37,7 @@ async def get_questions() -> tuple[QuestionRegular] | tuple:
 async def get_tests(user_guid: UUID | str) -> tuple[TestRegular] | tuple:
     from main.models import engine, Tests, AnswersTests, Questions, CRUD, SessionHandler
     from main.schemas.tests import TestDetails
+    from sqlalchemy import desc
 
     tests: tuple[Tests] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Questions
@@ -51,7 +52,7 @@ async def get_tests(user_guid: UUID | str) -> tuple[TestRegular] | tuple:
             Tests.user_guid == user_guid
         ],
         _group_by=[],
-        _order_by=[Tests.datetime_create],
+        _order_by=[desc(Tests.datetime_create)],
         _all=True
     )
 

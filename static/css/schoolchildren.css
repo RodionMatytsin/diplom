@@ -194,7 +194,7 @@ header{
     flex-direction: column;
     background-color: #ffffff;
     box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 3.5vh;
+    border-radius: 3vh;
     padding: 1.5%;
 }
 

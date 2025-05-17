@@ -480,6 +480,7 @@ function get_schoolchildren_by_user_guid_for_admin(
 
             let div_schoolchildren_by_user_guid_for_admin_about = document.createElement('div');
             div_schoolchildren_by_user_guid_for_admin_about.className = 'schoolchildren_by_user_guid_for_admin_about';
+            div_schoolchildren_by_user_guid_for_admin_about.style.borderRadius = '1.5rem';
 
             let div_personal_data_schoolchildren = document.createElement('div'),
                 div_user_about = document.createElement('div');
@@ -637,7 +638,7 @@ function get_schoolchildren_by_user_guid_for_admin(
             div_passed_tests_schoolchildren.style.margin = '3.5% 0 1.5% 0';
             div_passed_tests_schoolchildren.className = 'passed_tests_schoolchildren';
             div_passed_tests_schoolchildren_list.className = 'passed_tests_schoolchildren_list';
-            div_passed_tests_schoolchildren_list.style.marginBottom = '0.5%';
+            div_passed_tests_schoolchildren_list.style.padding = '0.5% 0';
 
             if (schoolchildren_by_user_guid_for_admin.tests.length === 0) {
                 const testItem = document.createElement('div');
