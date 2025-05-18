@@ -119,7 +119,7 @@ async def generated_recommendation_schoolchildren(
             }
         )
 
-    answers_test: list[AnswersTests] | object | None = await CRUD(
+    current_answers_test: list[AnswersTests] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=AnswersTests
     ).extended_query(
         _select=[
@@ -139,13 +139,78 @@ async def generated_recommendation_schoolchildren(
         _all=True
     )
 
+    def calculate_recommendation(
+            schoolchildren_class: SchoolchildrenClasses,
+            answers_test: list[AnswersTests]
+    ) -> float:
+        def normalize(value: int, min_value: int, max_value: int):
+            return (value - min_value) / (max_value - min_value)
+
+        normalized_grade = normalize(int(schoolchildren_class.estimation), 2, 5) * 0.1
+        normalized_interest = normalize(int(answers_test[0].score), 1, 10) * 0.15
+        normalized_motivation = normalize(int(answers_test[1].score), 1, 10) * 0.1
+        normalized_definiteness = normalize(int(answers_test[2].score), 1, 10) * 0.05
+        normalized_comfort = normalize(int(answers_test[3].score), 1, 5) * 0.05
+        normalized_financial = normalize(int(answers_test[4].score), 1, 5) * 0.05
+        normalized_relationships = normalize(int(answers_test[5].score), 1, 5) * 0.05
+        normalized_teaching_quality = normalize(int(answers_test[6].score), 1, 10) * 0.05
+        normalized_methodical_quality = normalize(int(answers_test[7].score), 1, 10) * 0.05
+        normalized_material_quality = normalize(int(answers_test[8].score), 1, 5) * 0.05
+        normalized_prestige = normalize(int(answers_test[9].score), 1, 5) * 0.05
+        normalized_extracurricular = normalize(int(answers_test[10].score), 1, 10) * 0.1
+        normalized_personal_capabilities = normalize(int(answers_test[11].score), 1, 10) * 0.1
+        normalized_goals = normalize(int(answers_test[12].score), 1, 5) * 0.05
+
+        target_function = (
+                normalized_grade + normalized_interest + normalized_motivation - normalized_definiteness +
+                normalized_comfort + normalized_financial + normalized_relationships + normalized_teaching_quality +
+                normalized_methodical_quality + normalized_material_quality + normalized_prestige -
+                normalized_extracurricular + normalized_personal_capabilities + normalized_goals
+        )
+
+        return target_function
+
+    def generate_recommendation_text(target_function: float) -> str:
+        import random
+        if target_function > 0.7:
+            recommendations = [
+                "У вас высокий интерес к учебе. Рекомендуем рассмотреть карьеру в программировании или дизайне.",
+                "Ваши достижения впечатляют! Возможно, вам стоит рассмотреть изучение наук или технологий.",
+                "Вы проявляете большой интерес к учебе. Рекомендуем обратить внимание на курсы по "
+                "математике или информатике."
+            ]
+            description_recommendation = random.choice(recommendations)
+        elif target_function > 0.5:
+            recommendations = [
+                "Ваши результаты показывают средний интерес. Возможно, стоит обратить внимание на "
+                "дополнительные занятия в области искусства или технологий.",
+                "Вы на правильном пути! Рекомендуем рассмотреть занятия по графическому дизайну или музыке.",
+                "Ваши результаты неплохие. Попробуйте уделить больше времени на изучение языков или истории."
+            ]
+            description_recommendation = random.choice(recommendations)
+        else:
+            recommendations = [
+                "Вам стоит обратить внимание на развитие ваших интересов. Рекомендуем попробовать "
+                "занятия по рукоделию или спорту.",
+                "Не отчаивайтесь! Возможно, стоит попробовать что-то новое, например, занятия по театру или танцам.",
+                "Рекомендуем обратить внимание на хобби, которые могут вас заинтересовать, например, "
+                "рисование или спорт."
+            ]
+            description_recommendation = random.choice(recommendations)
+        return description_recommendation
+
     await CRUD(
         session=SessionHandler.create(engine=engine), model=Recommendations
     ).create(
         _values=dict(
             test_guid=current_test.guid,
             schoolchildren_class_guid=current_schoolchildren_class.guid,
-            description="фвыфвы фы ф фы выфв фывыфвфыыфв ф вфвфвфвф фвфв фв фвфв ф вфв фв фв фывфв фыывфвфвфф вф"
+            description=generate_recommendation_text(
+                target_function=calculate_recommendation(
+                    schoolchildren_class=current_schoolchildren_class,
+                    answers_test=current_answers_test
+                )
+            )
         )
     )
 
