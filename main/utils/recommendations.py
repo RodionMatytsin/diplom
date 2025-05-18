@@ -81,8 +81,7 @@ async def generated_recommendation_schoolchildren(
         test_guid: UUID | str,
         schoolchildren_class_guid: UUID | str
 ) -> str:
-    from main.models import engine, Tests, AnswersTests, SchoolchildrenClasses, Recommendations, Questions,\
-        CRUD, SessionHandler
+    from main.models import engine, Tests, AnswersTests, SchoolchildrenClasses, Questions, CRUD, SessionHandler
     from fastapi import HTTPException
 
     current_schoolchildren_class: SchoolchildrenClasses | object | None = await CRUD(
