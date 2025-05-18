@@ -192,3 +192,78 @@ async def add_test_to_schoolchildren(score_test: ScoreTestAdd, user_guid: UUID |
         )
 
     return "Вы успешно отправили данные с оцененными ответами на вопросы этого теста!"
+
+
+async def generated_recommendation_schoolchildren(
+        test_guid: UUID | str,
+        schoolchildren_class_guid: UUID | str
+) -> str:
+    from main.models import engine, Tests, AnswersTests, SchoolchildrenClasses, Recommendations, CRUD, SessionHandler
+    from fastapi import HTTPException
+
+    current_schoolchildren_class: SchoolchildrenClasses | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
+    ).read(
+        _where=[
+            SchoolchildrenClasses.guid == schoolchildren_class_guid,
+            SchoolchildrenClasses.is_deleted == False
+        ], _all=False
+    )
+    if current_schoolchildren_class.estimation is None:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                'result': False,
+                'message': f'Извините, но у данного школьника не проставлена оценка за успеваемость в этом классе, '
+                           f'и по этой причине мы не можем продолжать формировать для него/нее рекомендацию!',
+                'data': {}
+            }
+        )
+
+    current_test: Tests | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=Tests
+    ).read(
+        _where=[Tests.guid == test_guid], _all=False
+    )
+    if current_test is None:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                'result': False,
+                'message': f'Извините, но этот тест не был найден для дальнейшего формирования рекомендации '
+                           f'для школьника!',
+                'data': {}
+            }
+        )
+
+    answers_test: list[AnswersTests] | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=AnswersTests
+    ).extended_query(
+        _select=[
+            Questions.id.label('question_id'),
+            Questions.name.label('question_name'),
+            AnswersTests.score,
+            AnswersTests.comment
+        ],
+        _join=[
+            [Questions, AnswersTests.question_id == Questions.id]
+        ],
+        _where=[
+            AnswersTests.test_guid == current_test.guid
+        ],
+        _group_by=[],
+        _order_by=[],
+        _all=True
+    )
+
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=Recommendations
+    ).create(
+        _values=dict(
+            test_guid=current_test.guid,
+            schoolchildren_class_guid=current_schoolchildren_class.guid,
+            description="фвыфвы фы ф фы выфв фывыфвфыыфв ф вфвфвфвф фвфв фв фвфв ф вфв фв фв фывфв фыывфвфвфф вф"
+        )
+    )
+
+    return "Вы успешно сформировали рекомендацию для школьника!"

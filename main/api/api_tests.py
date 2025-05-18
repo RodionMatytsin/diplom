@@ -63,4 +63,10 @@ async def api_generated_recommendation_schoolchildren(
     """
     from main.utils.teacher_classes import required_teacher_access
     await required_teacher_access(current_user=current_user)
-    return DefaultResponse(message=f"test_guid: {test_guid}, schoolchildren_class_guid: {schoolchildren_class_guid}")
+    from main.utils.tests import generated_recommendation_schoolchildren
+    return DefaultResponse(
+        message=await generated_recommendation_schoolchildren(
+            test_guid=test_guid,
+            schoolchildren_class_guid=schoolchildren_class_guid
+        )
+    )

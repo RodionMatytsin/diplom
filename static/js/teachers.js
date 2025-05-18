@@ -306,7 +306,7 @@ function generated_recommendation_schoolchildren(
         function (data) {
             console.log(data);
             setTimeout(() => {
-                // get_schoolchildren_by_user_guid_for_teacher(class_guid, schoolchildren_class_guid);
+                get_schoolchildren_by_user_guid_for_teacher(class_guid, schoolchildren_class_guid);
             }, 500);
             show_error(data.message, 'Оповещение');
         },

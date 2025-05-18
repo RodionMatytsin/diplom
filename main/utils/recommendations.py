@@ -20,7 +20,7 @@ async def get_recommendations(
 
     from main.models import engine, Tests, CRUD, SessionHandler
     from datetime import timedelta
-    from sqlalchemy import func
+    from sqlalchemy import func, desc
 
     where_ = [
         Recommendations.is_deleted == False,
@@ -46,7 +46,7 @@ async def get_recommendations(
         ],
         _where=where_,
         _group_by=[],
-        _order_by=[Recommendations.datetime_create],
+        _order_by=[desc(Recommendations.datetime_create)],
         _all=True
     )
 
