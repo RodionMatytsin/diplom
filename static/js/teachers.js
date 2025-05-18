@@ -268,12 +268,64 @@ function create_generated_recommendation_suggested_for_teacher(
     return div_recommendation_suggested;
 }
 
+function accept_changes_for_test(
+    test_guid,
+    user_guid,
+    schoolchildren_class_guid,
+    class_guid
+) {
+    sendRequest(
+        'PATCH',
+        `/api/tests/${test_guid}/users/${user_guid}`,
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            setTimeout(() => {
+                get_schoolchildren_by_user_guid_for_teacher(class_guid, schoolchildren_class_guid);
+            }, 500);
+            show_error(data.message, 'Оповещение');
+        },
+        function (data) {
+            console.log(data)
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
+function generated_recommendation_schoolchildren(
+    test_guid,
+    schoolchildren_class_guid,
+    class_guid
+) {
+    sendRequest(
+        'POST',
+        `/api/tests/${test_guid}/schoolchildren_class_guid/${schoolchildren_class_guid}`,
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            setTimeout(() => {
+                // get_schoolchildren_by_user_guid_for_teacher(class_guid, schoolchildren_class_guid);
+            }, 500);
+            show_error(data.message, 'Оповещение');
+        },
+        function (data) {
+            console.log(data)
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
 function create_passed_test_for_teacher(
     test_guid,
     name_test,
     datetime_create,
     is_accepted,
-    test_details = []
+    test_details = [],
+    user_guid,
+    schoolchildren_class_guid,
+    class_guid
 ) {
     let div_test_about = document.createElement('div'),
         div_test_header = document.createElement('div'),
@@ -281,7 +333,9 @@ function create_passed_test_for_teacher(
         div_name_test = document.createElement('div'),
         div_datetime_create = document.createElement('div'),
         div_test_details = document.createElement('div'),
-        btn_test = document.createElement('div');
+        btn_test = document.createElement('div'),
+        btn_generated_recommendation = document.createElement('div'),
+        btn_accept_changes = document.createElement('div');
 
     div_test_about.className = 'test_about';
 
@@ -353,6 +407,31 @@ function create_passed_test_for_teacher(
 
         div_test_details.appendChild(test_detail_about);
     })
+
+    if (is_accepted === true) {
+        div_test_details.appendChild(btn_generated_recommendation);
+        btn_generated_recommendation.className = 'btn_generated_recommendation';
+        btn_generated_recommendation.textContent = 'Сформировать рекомендацию для школьника';
+        btn_generated_recommendation.onclick = function() {
+            generated_recommendation_schoolchildren(
+                test_guid,
+                schoolchildren_class_guid,
+                class_guid
+            );
+        };
+    } else {
+        div_test_details.appendChild(btn_accept_changes);
+        btn_accept_changes.className = 'btn_accept_changes';
+        btn_accept_changes.textContent = 'Принять изменения для формирования рекомендации';
+        btn_accept_changes.onclick = function() {
+            accept_changes_for_test(
+                test_guid,
+                user_guid,
+                schoolchildren_class_guid,
+                class_guid
+            );
+        };
+    }
 
     div_test_about.appendChild(div_test_header);
     div_test_about.appendChild(div_test_details);
@@ -553,7 +632,10 @@ function get_schoolchildren_by_user_guid_for_teacher(
                             schoolchildren_by_user_guid.tests[i].name_test,
                             schoolchildren_by_user_guid.tests[i].datetime_create,
                             schoolchildren_by_user_guid.tests[i].is_accepted,
-                            schoolchildren_by_user_guid.tests[i].test_details
+                            schoolchildren_by_user_guid.tests[i].test_details,
+                            schoolchildren_by_user_guid.user.guid,
+                            schoolchildren_by_user_guid.schoolchildren_class_guid,
+                            class_guid
                         )
                     );
                 }

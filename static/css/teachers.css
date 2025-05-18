@@ -617,6 +617,28 @@ header{
     scale: 1.03;
 }
 
+.btn_generated_recommendation,
+.btn_accept_changes {
+    width: 100%;
+    text-align: center;
+    padding: 1.5% 2%;
+    font-size: 1.35rem;
+    margin-top: 0.5%;
+    border-radius: 1.25rem;
+    background-color: rgba(70, 199, 63, 0.25);
+    color: #46C73F;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: 700;
+}
+
+.btn_generated_recommendation:hover,
+.btn_accept_changes:hover {
+    background-color: rgba(70, 199, 63, 0.35);
+    scale: 1.01;
+}
+
 .none_data {
     text-align: center;
     margin: 6% 0 3% 0;
