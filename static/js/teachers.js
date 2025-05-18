@@ -625,6 +625,10 @@ function get_schoolchildren_by_user_guid_for_teacher(
                 testItem.innerHTML = 'Пока что данный школьник еще не проходил ни одного тестирования ! :(';
                 div_passed_tests_schoolchildren_list.appendChild(testItem);
             }else{
+                div_passed_tests_schoolchildren_list.style.marginTop = '-1%';
+                div_passed_tests_schoolchildren_list.style.borderRadius = '0rem';
+                div_passed_tests_schoolchildren_list.style.background = 'white';
+                div_passed_tests_schoolchildren_list.style.boxShadow = '0 0 0px rgba(0, 0, 0, 0)';
                 for (let i = 0; i < schoolchildren_by_user_guid.tests.length; i++) {
                     div_passed_tests_schoolchildren_list.appendChild(
                         create_passed_test_for_teacher(
