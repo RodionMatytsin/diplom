@@ -228,12 +228,14 @@ header{
     font-size: 1vw;
 }
 
-#positions_popup_teacher_class_with_schoolchildren {
+#positions_popup_teacher_class_with_schoolchildren,
+#positions_popup_schoolchildren_by_user_guid {
     top: 0;
     left: 0;
 }
 
-#positions_wrapper_teacher_class_with_schoolchildren {
+#positions_wrapper_teacher_class_with_schoolchildren,
+#positions_wrapper_schoolchildren_by_user_guid {
     background-color: #e9ecef;
     margin-top: 3%;
     width: 100%;
@@ -243,7 +245,8 @@ header{
     align-items: flex-start;
 }
 
-.close_positions_wrapper_teacher_class_with_schoolchildren {
+.close_positions_wrapper_teacher_class_with_schoolchildren,
+.close_positions_wrapper_schoolchildren_by_user_guid {
     position: absolute;
     top: 1.5%;
     right: 1.5%;
@@ -260,20 +263,23 @@ header{
     cursor: pointer;
 }
 
-.close_positions_wrapper_teacher_class_with_schoolchildren:hover {
+.close_positions_wrapper_teacher_class_with_schoolchildren:hover,
+.close_positions_wrapper_schoolchildren_by_user_guid:hover {
     color: #FF7272;
     scale: 1.15;
 }
 
-.teacher_class_with_schoolchildren_list {
+.teacher_class_with_schoolchildren_list,
+.schoolchildren_by_user_guid_list {
     width: 95%;
     margin-top: 4%;
 }
 
-.teacher_class_with_schoolchildren_about {
+.teacher_class_with_schoolchildren_about,
+.schoolchildren_by_user_guid_about {
     margin-bottom: 1.25rem;
     padding: 1rem;
-    border-radius: 1rem;
+    border-radius: 1.5rem;
     background: #ffffff;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
@@ -300,14 +306,255 @@ header{
     gap: 1%;
 }
 
+.personal_data_schoolchildren,
+.personal_achievements_schoolchildren,
+.generated_recommendations_schoolchildren,
+.generated_recommendations_schoolchildren_suggested,
+.passed_tests_schoolchildren {
+    font-size: 1.75rem;
+    text-align: center;
+    margin: 0.5% 0 1.5% 0;
+    color: #000000;
+    font-weight: bold;
+}
+
+.personal_achievements_schoolchildren_list,
+.generated_recommendations_schoolchildren_list,
+.generated_recommendations_schoolchildren_suggested_list,
+.passed_tests_schoolchildren_list {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    border-radius: 1.5rem;
+    background: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+
+.test_about {
+    padding: 2%;
+    width: 90%;
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin: 0.5% 0;
+}
+
+.test_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.test_content {
+    display: flex;
+    gap: 6%;
+}
+
+.test_name,
+.test_datetime_create {
+    font-size: 1.15rem;
+    white-space: nowrap;
+}
+
+.btn_test {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);;
+    cursor: pointer;
+}
+
+.btn_test.flipped {
+    transform: rotate(180deg);
+}
+
+.btn_test:hover {
+    scale: 1.15;
+}
+
+.test_details {
+    margin: 1.5% 4.8% 0 4.8%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+}
+
+.test_detail_about {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 3vh;
+    padding: 2%;
+    margin: 1% 0;
+}
+
+.question_name{
+    font-size: 1.1vw;
+    margin: 1% 0 1.5% 0;
+    font-weight: bold;
+}
+
+.question_scores {
+    display: flex;
+    gap: 1.5%;
+    margin: 0 0 1.5% 0;
+    font-size: 0.95vw;
+    align-items: center;
+}
+
+.question_score {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.selected {
+    background-color: rgba(70, 199, 63, 0.25);
+    border: 1px solid #46C73F;
+    color: #46C73F;
+    font-weight: bold;
+}
+
+.question_comment {
+    font-size: 0.95vw;
+}
+
+.recommendation_suggested {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 1%;
+    gap: 1%;
+}
+
+.recommendation_suggested_about {
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 0.9rem;
+    padding: 0.8rem;
+    border-radius: 1rem;
+    background: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    gap: 1%;
+}
+
+.user_about {
+    width: 97.5%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 1.5rem;
+    background: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    font-size: 1.1rem;
+}
+
+.user_columns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.user_column {
+    flex: 1;
+    box-sizing: border-box;
+}
+
+.user_login, .user_password, .user_fio, .user_birthday, .user_datetime_create, .user_role{
+    margin-bottom: 0.5vh;
+}
+
+.achievement_about,
+.recommendation_about {
+    padding: 0.5%;
+    width: 45%;
+    border-radius: 0.8rem;
+    background: #ffffff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin: 1%;
+}
+
+.achievement_datetime_create,
+.recommendation_datetime_create,
+.recommendation_datetime_create_suggested {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.7vw;
+    color: #424242;
+    gap: 0.25%;
+}
+
+.achievement_description,
+.recommendation_description,
+.recommendation_description_suggested {
+    font-size: 0.85vw;
+    color: #424242;
+    margin-top: 1%;
+    text-align: justify;
+    width: 100%;
+}
+
 .schoolchildren_user_fio,
 .schoolchildren_label_estimation,
 .schoolchildren_datetime_estimation_update,
 .btn_detail_about_to_schoolchildren,
-.btn_update_estimation_to_schoolchildren
-{
+.btn_update_estimation_to_schoolchildren,
+.btn_recommendation_reject,
+.btn_recommendation_accept {
     flex: 1;
     text-align: center;
+}
+
+.btn_recommendation_reject {
+    background-color: rgba(255, 114, 114, 0.25);
+    color: #FF7272;
+    border: none;
+    border-radius: 15px;
+    padding: 0.8rem 1.6rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: 700;
+}
+
+.btn_recommendation_reject:hover {
+    background-color: rgba(255, 114, 114, 0.35);
+    scale: 1.03;
+}
+
+.btn_recommendation_accept {
+    background-color: rgba(70, 199, 63, 0.25);
+    color: #46C73F;
+    border: none;
+    border-radius: 15px;
+    padding: 0.8rem 1.6rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: 700;
+}
+
+.btn_recommendation_accept:hover {
+    background-color: rgba(70, 199, 63, 0.35);
+    scale: 1.03;
 }
 
 .schoolchildren_user_fio {
