@@ -370,6 +370,7 @@ header{
     align-items: center;
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
 .btn_test.flipped {
@@ -377,7 +378,7 @@ header{
 }
 
 .btn_test:hover {
-    scale: 1.15;
+    transform: scale(1.15);
 }
 
 .test_details {
