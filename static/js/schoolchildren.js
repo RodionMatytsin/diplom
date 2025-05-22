@@ -334,26 +334,37 @@ function create_achievement_for_dom(
     description,
     datetime_create
 ) {
-   let div_achievement = document.createElement('div'),
-       div_achievement_about = document.createElement('div'),
-       div_description = document.createElement('div'),
-       div_datetime_create = document.createElement('div');
+    let div_achievement = document.createElement('div'),
+        div_achievement_about = document.createElement('div'),
+        div_description = document.createElement('div'),
+        div_datetime_create = document.createElement('div'),
+        img_attachment_guid = document.createElement('img'),
+        div_content_achievement = document.createElement('div');
 
-   div_achievement.id = achievement_guid;
-   div_achievement.className = 'achievement';
-   div_achievement.appendChild(div_achievement_about);
+    div_achievement.id = achievement_guid;
+    div_achievement.className = 'achievement';
+    div_achievement.appendChild(div_achievement_about);
 
-   div_achievement_about.className = 'achievement_about';
+    div_achievement_about.className = 'achievement_about';
 
-   div_achievement_about.appendChild(div_datetime_create);
-   div_datetime_create.className = 'achievement_datetime_create';
-   div_datetime_create.innerHTML = '<b>Дата/Время создания: </b>' + datetime_create;
+    div_achievement_about.appendChild(div_datetime_create);
+    div_datetime_create.className = 'achievement_datetime_create';
+    div_datetime_create.innerHTML = '<b>Дата/Время создания: </b>' + datetime_create;
 
-   div_achievement_about.appendChild(div_description);
-   div_description.className = 'achievement_description';
-   div_description.innerHTML = '<b>Описание достижения: </b>' + description;
+    div_achievement_about.appendChild(div_content_achievement);
+    div_content_achievement.className = 'content_achievement';
 
-   return div_achievement;
+    div_content_achievement.appendChild(div_description);
+    div_description.className = 'achievement_description';
+    div_description.innerHTML = '<b>Описание достижения: </b>' + description;
+
+    div_content_achievement.appendChild(img_attachment_guid);
+    img_attachment_guid.className = 'wrappers__container__achievement__icon';
+    img_attachment_guid.id="profiled_photo";
+    img_attachment_guid.src = `/api/attachments/${attachment_guid}` || '../static/img/addMedia.svg';
+    img_attachment_guid.setAttribute('data-full', `/api/attachments/${attachment_guid}` || '../static/img/addMedia.svg');
+
+    return div_achievement;
 }
 
 function get_achievements() {
