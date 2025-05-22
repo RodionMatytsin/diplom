@@ -360,7 +360,7 @@ function create_achievement_for_dom(
 
     div_content_achievement.appendChild(img_attachment_guid);
     img_attachment_guid.className = 'wrappers__container__achievement__icon';
-    img_attachment_guid.id="profiled_photo";
+    img_attachment_guid.id = 'profiled_photo';
     img_attachment_guid.src = `/api/attachments/${attachment_guid}` || '../static/img/addMedia.svg';
     img_attachment_guid.setAttribute('data-full', `/api/attachments/${attachment_guid}` || '../static/img/addMedia.svg');
 
