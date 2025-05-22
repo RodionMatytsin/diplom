@@ -15,3 +15,14 @@ DATABASE_USER = os.getenv('DATABASE_USER', 'postgres')
 DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD', 'root')
 
 SECRET_KEY = 'kAlu7NqZwoWx7MaRwoXv9Qc4woZnAp=='
+
+API_MEDIA = os.getenv('API_MEDIA', f'/api/attachments/')
+# 1 * 1024 * 1024 * 1024 -- 1Gb
+MAX_FILE_SIZE = os.getenv('MAX_FILE_SIZE', 1 * 1024 * 1024 * 1024)
+
+PHOTO_FORMAT = ['image/jpeg', 'image/png', 'image/webp']
+VIDEO_FORMAT = ['video/quicktime', 'video/mp4']
+MAIN_PATH = os.path.dirname(os.path.realpath(__file__))[:-5]
+MEDIA_FOLDER = os.path.join(MAIN_PATH, 'media_heap')
+PROD = True
+FFMPEG = '/home/dev/bin/'

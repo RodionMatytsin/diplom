@@ -114,7 +114,7 @@ class LoggingMiddleware:
                 uri=str(request.url),
                 path=request.url.path,
                 query=str(request.query_params),
-                body=request_body,
+                body=str(request_body),
                 size=int(request_headers.get('content-length', 0)),
                 headers=json.dumps(request_headers),
                 cookie=json.dumps(request.cookies),

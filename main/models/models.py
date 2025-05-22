@@ -38,6 +38,30 @@ class Users(Base):
     is_teacher = Column(Boolean, default=False, nullable=False, server_default=text('False'))
 
 
+# Таблица вложений, где хранятся фотки, изображения достижений школьников
+class Attachments(Base):
+    __tablename__ = 'attachments'
+    guid = Column(
+        UUID(as_uuid=False),
+        unique=True,
+        nullable=False,
+        index=True,
+        server_default=text('uuid7()'),
+        primary_key=True,
+        autoincrement=False
+    )
+    type = Column(String(length=100), nullable=False)
+    url = Column(String(length=255), nullable=False)
+    path = Column(String(length=255), nullable=False)
+    datetime_create = Column(
+        DateTime,
+        default=func.now(),
+        server_default=text('(now() AT TIME ZONE \'Asia/Novosibirsk\')'),
+        nullable=False
+    )
+    is_deleted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
+
+
 # Таблица достижений школьников
 class Achievements(Base):
     __tablename__ = 'achievements'
@@ -51,6 +75,13 @@ class Achievements(Base):
         autoincrement=False
     )
     user_guid = Column(UUID(as_uuid=False), ForeignKey(Users.guid), index=True, nullable=False)
+    attachment_guid = Column(
+        UUID(as_uuid=False),
+        nullable=True,
+        server_default=text('uuid(\'00000000-0000-0000-0000-000000000000\')'),
+        autoincrement=False,
+        default='00000000-0000-0000-0000-000000000000'
+    )
     description = Column(Text, nullable=False)
     datetime_create = Column(
         DateTime,
@@ -213,6 +244,7 @@ class Recommendations(Base):
         nullable=False,
         index=True
     )
+    is_neural = Column(Boolean, default=False, nullable=False, server_default=text('False'))
     is_accepted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
     is_deleted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
 

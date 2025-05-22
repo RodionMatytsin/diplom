@@ -1,3 +1,6 @@
 .idea
 /venv/
+media_heap/*
+!media_heap/default.png
+!media_heap/test
 /main/config.py
