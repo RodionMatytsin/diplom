@@ -59,7 +59,6 @@ profile_settings.addEventListener('click', () => {
     attachment_guid = null;
     const preview = document.getElementById('preview');
     preview.src = "../static/img/addMedia.svg";
-    preview.classList.add("img_addMedia", "upload_label_img_modifier");
 });
 
 logoExit.addEventListener('mouseover', function() {
@@ -285,7 +284,6 @@ function onloadProfiledPhoto() {
         function(data) {
             attachment_guid = data.data.guid;
             console.log(attachment_guid);
-            preview.classList.remove("img_addMedia", "upload_label_img_modifier");
         },
         function(data) {
             show_error(data.message, 'Ошибка');
@@ -317,7 +315,6 @@ function create_achievement() {
                 attachment_guid = null;
 
                 preview.src = "../static/img/addMedia.svg";
-                preview.classList.add("img_addMedia", "upload_label_img_modifier");
                 preview.style.padding = "10%";
             },
             function (data) {
@@ -364,7 +361,16 @@ function create_achievement_for_dom(
     img_attachment_guid.src = `/api/attachments/${attachment_guid}` || '../static/img/addMedia.svg';
     img_attachment_guid.setAttribute('data-full', `/api/attachments/${attachment_guid}` || '../static/img/addMedia.svg');
 
+    img_attachment_guid.onclick = function() {
+        openModal(this.src);
+    };
+
     return div_achievement;
+}
+
+function openModal(src) {
+    document.getElementById("modal").style.display = "flex";
+    document.getElementById("modal_img").src = src;
 }
 
 function get_achievements() {
