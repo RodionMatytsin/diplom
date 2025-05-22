@@ -6,6 +6,7 @@ from uuid import UUID
 def serialize_achievement(achievement: Achievements) -> AchievementRegular:
     return AchievementRegular(
         achievement_guid=achievement.guid,
+        attachment_guid=achievement.attachment_guid,
         description=achievement.description,
         datetime_create=f"{achievement.datetime_create.strftime('%d.%m.%Y')} в "
                         f"{achievement.datetime_create.strftime('%H:%M')}"
@@ -33,6 +34,7 @@ async def get_achievements(
     ).extended_query(
         _select=[
             Achievements.guid,
+            Achievements.attachment_guid,
             Achievements.description,
             Achievements.datetime_create
         ],
@@ -51,13 +53,15 @@ async def get_achievements(
     return serialize_achievement(achievement=achievements)
 
 
-async def add_achievement(description: str, user_guid: UUID | str) -> str:
+async def add_achievement(attachment_guid: UUID | str, description: str, user_guid: UUID | str) -> str:
     from main.models import engine, CRUD, SessionHandler
+    from main.utils.files import get_attachment
 
+    current_attachment = await get_attachment(attachment_guid=attachment_guid)
     await CRUD(
         session=SessionHandler.create(engine=engine), model=Achievements
     ).create(
-        _values=dict(user_guid=user_guid, description=description)
+        _values=dict(user_guid=user_guid, attachment_guid=current_attachment.guid, description=description)
     )
 
     return "Вы успешно отправили свое новое достижение на модерацию!"
