@@ -235,6 +235,7 @@ function create_achievement() {
         '/api/achievements',
         true,
         {
+            "attachment_guid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
             "description": achievement.value.trim()
         },
         function (data) {
@@ -251,6 +252,7 @@ function create_achievement() {
 
 function create_achievement_for_dom(
     achievement_guid,
+    attachment_guid,
     description,
     datetime_create
 ) {
@@ -297,6 +299,7 @@ function get_achievements() {
                     achievements_list.appendChild(
                         create_achievement_for_dom(
                             achievements[i].achievement_guid,
+                            achievements[i].attachment_guid,
                             achievements[i].description,
                             achievements[i].datetime_create,
                         )
