@@ -138,25 +138,42 @@ function update_estimation_to_schoolchildren(schoolchildren_class_guid, estimati
 
 function create_personal_achievement_for_teacher(
     achievement_guid,
+    attachment_guid,
     description,
     datetime_create
 ) {
     let div_achievement_about = document.createElement('div'),
-       div_description = document.createElement('div'),
-       div_datetime_create = document.createElement('div');
+        div_description = document.createElement('div'),
+        div_datetime_create = document.createElement('div'),
+        img_attachment_guid = document.createElement('img'),
+        div_content_achievement = document.createElement('div');
 
-   div_achievement_about.id = achievement_guid;
-   div_achievement_about.className = 'achievement_about';
+    div_achievement_about.id = achievement_guid;
+    div_achievement_about.className = 'achievement_about';
 
-   div_achievement_about.appendChild(div_datetime_create);
-   div_datetime_create.className = 'achievement_datetime_create';
-   div_datetime_create.innerHTML = '<b>Дата/Время создания: </b>' + datetime_create;
+    div_achievement_about.appendChild(div_datetime_create);
+    div_datetime_create.className = 'achievement_datetime_create';
+    div_datetime_create.innerHTML = '<b>Дата/Время создания: </b>' + datetime_create;
 
-   div_achievement_about.appendChild(div_description);
-   div_description.className = 'achievement_description';
-   div_description.innerHTML = '<b>Описание достижения: </b>' + description;
+    div_achievement_about.appendChild(div_content_achievement);
+    div_content_achievement.className = 'content_achievement';
 
-   return div_achievement_about;
+    div_content_achievement.appendChild(div_description);
+    div_description.className = 'achievement_description';
+    div_description.style.marginRight = '1%';
+    div_description.innerHTML = '<b>Описание достижения: </b>' + description;
+
+    div_content_achievement.appendChild(img_attachment_guid);
+    img_attachment_guid.className = 'wrappers__container__achievement__icon';
+    img_attachment_guid.id = 'profiled_photo';
+    img_attachment_guid.src = `/api/attachments/${attachment_guid}` || '../static/img/addMedia.svg';
+    img_attachment_guid.setAttribute('data-full', `/api/attachments/${attachment_guid}` || '../static/img/addMedia.svg');
+
+    img_attachment_guid.onclick = function() {
+        openModal(this.src);
+    };
+
+    return div_achievement_about;
 }
 
 function create_generated_recommendation_for_teacher(
@@ -539,6 +556,7 @@ function get_schoolchildren_by_user_guid_for_teacher(
                     div_personal_achievements_schoolchildren_list.appendChild(
                         create_personal_achievement_for_teacher(
                             schoolchildren_by_user_guid.achievements[i].achievement_guid,
+                            schoolchildren_by_user_guid.achievements[i].attachment_guid,
                             schoolchildren_by_user_guid.achievements[i].description,
                             schoolchildren_by_user_guid.achievements[i].datetime_create
                         )

@@ -368,11 +368,6 @@ function create_achievement_for_dom(
     return div_achievement;
 }
 
-function openModal(src) {
-    document.getElementById("modal").style.display = "flex";
-    document.getElementById("modal_img").src = src;
-}
-
 function get_achievements() {
     let achievements_list = document.getElementById('achievements_list');
     achievements_list.innerHTML = '';

@@ -94,3 +94,8 @@ function sendRequest(method, url, async=true, responses_data, onsuccess, onerror
         request.send();
     }
 }
+
+function openModal(src) {
+    document.getElementById("modal").style.display = "flex";
+    document.getElementById("modal_img").src = src;
+}

@@ -19,6 +19,25 @@ header{
     padding: 0.8vh;
 }
 
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 300000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal_content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
 .notification_content {
     z-index: 200000;
     display: flex;
@@ -418,6 +437,14 @@ header{
     gap: 0.25%;
 }
 
+.content_achievement_suggested,
+.content_achievement {
+    margin: 1% 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .achievement_description,
 .achievement_description_suggested,
 .recommendation_description {
@@ -426,6 +453,16 @@ header{
     margin-top: 1%;
     text-align: justify;
     width: 100%;
+}
+
+.wrappers__container__achievement__suggested__icon,
+.wrappers__container__achievement__icon {
+    border-radius: 50%;
+    width: 6vw;
+    height: 6vw;
+    object-fit: contain;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
 }
 
 .user_columns {
