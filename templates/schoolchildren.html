@@ -139,9 +139,25 @@
             <div class="form-container" style="padding: 1% 1% 0.25% 1%;">
                 <div id="personalAchievementsForm">
                     <h2>Личные достижения</h2>
-                    <div class="input_field" style="margin-bottom: 1.5%;">
-                        <label class="input_label" for="achievement">Наименование достижения</label>
-                        <textarea class="login" style="resize: none; padding: 3% 2.5%; height: 8rem" id="achievement" placeholder="Введите свое личное достижение" required></textarea>
+                    <div class="input_field" style="display: flex; margin-bottom: 1.5%; align-items: center;">
+                        <div style="display: flex; width: 100%; flex-direction: column; margin-right: 2%;">
+                            <label class="input_label" for="achievement">Наименование достижения</label>
+                            <textarea class="login" style="resize: none; padding: 3% 2.5%; height: 7rem; width: 100%" id="achievement" placeholder="Введите свое личное достижение" required></textarea>
+                        </div>
+                        <div style="margin-top: 3%">
+                            <div class="circle-upload">
+                                <input class="wrappers__container__achievement__icon"
+                                       id="profiled_photo"
+                                       type="file"
+                                       accept="image/png, image/jpg, image/jpeg, video/mp4, image/webp, video/quicktime"
+                                       multiple="true"
+                                       onchange="onloadProfiledPhoto();"
+                                       style="display: none;">
+                                <label for="profiled_photo" class="upload-label">
+                                    <img id="preview"  src="../static/img/addMedia.svg"/>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <button class="button" onclick="create_achievement()">Добавить достижение</button>
                     <div id="achievements_list" class="achievements_list"></div>

@@ -13,6 +13,7 @@ let phoneNumber = document.getElementById('phoneNumber'),
     month = document.getElementById('month'),
     year = document.getElementById('year'),
     gender = document.getElementById('gender');
+let attachment_guid ;
 
 fio.addEventListener('input', function() {
     if (!/^[А-Яа-яЁё\s]*$/.test(fio.value)) {
@@ -55,6 +56,10 @@ profile_settings.addEventListener('click', () => {
     main__wrapper__testing__list.style.display = 'none';
     profile__settings__wrapper.style.display = 'flex';
     get_achievements();
+    attachment_guid = null;
+    const preview = document.getElementById('preview');
+    preview.src = "../static/img/addMedia.svg";
+    preview.classList.add("img_addMedia", "upload_label_img_modifier");
 });
 
 logoExit.addEventListener('mouseover', function() {
@@ -228,26 +233,96 @@ function add_test_to_schoolchildren() {
     )
 }
 
-function create_achievement() {
-    let achievement = document.getElementById('achievement');
-    sendRequest(
+function sendRequestProfiledPhoto(method, url, async, data, onSuccess, onError) {
+    const xhr = new XMLHttpRequest();
+    xhr.open(method, url, async);
+
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            const responseData = JSON.parse(xhr.responseText);
+            onSuccess(responseData);
+        } else {
+            const errorData = JSON.parse(xhr.responseText);
+            onError(errorData);
+        }
+    };
+
+    xhr.onerror = function() {
+        console.error("Ошибка сети");
+        onError({ message: "Ошибка сети" });
+    };
+
+    xhr.send(data); // Отправляем данные
+}
+
+function onloadProfiledPhoto() {
+    const fileInput = document.getElementById('profiled_photo');
+    const preview = document.getElementById('preview');
+
+    const file = fileInput.files[0];
+    console.log("Выбранный файл:", file);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // Предварительный просмотр изображения (если это изображение)
+    if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    sendRequestProfiledPhoto(
         'POST',
-        '/api/achievements',
+        `/api/attachments?compress=true`,
         true,
-        {
-            "attachment_guid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "description": achievement.value.trim()
+        formData,
+        function(data) {
+            attachment_guid = data.data.guid;
+            console.log(attachment_guid);
+            preview.classList.remove("img_addMedia", "upload_label_img_modifier");
         },
-        function (data) {
-            console.log(data);
-            show_error(data.message, 'Оповещение');
-            achievement.value = '';
-        },
-        function (data) {
-            console.log(data);
+        function(data) {
             show_error(data.message, 'Ошибка');
         }
-    )
+    );
+}
+
+function create_achievement() {
+    if  (attachment_guid === null){
+        show_error(`Загрузите фото своего достижения`,"Уведомление");
+    } else {
+        sendRequest(
+            'POST',
+            '/api/achievements',
+            true,
+            {
+                "attachment_guid": attachment_guid,
+                "description": document.getElementById('achievement').value.trim()
+            },
+            function (data) {
+                console.log(data);
+                show_error(data.message, 'Оповещение');
+                document.getElementById('achievement').value = '';
+
+                const fileInput = document.getElementById('profiled_photo');
+                const preview = document.getElementById('preview');
+
+                fileInput.value = '';
+                attachment_guid = null;
+
+                preview.src = "../static/img/addMedia.svg";
+                preview.classList.add("img_addMedia", "upload_label_img_modifier");
+                preview.style.padding = "10%";
+            },
+            function (data) {
+                console.log(data);
+                show_error(data.message, 'Ошибка');
+            }
+        )
+    }
 }
 
 function create_achievement_for_dom(
@@ -292,6 +367,7 @@ function get_achievements() {
             if (achievements.length === 0) {
                 const achievementItem = document.createElement('div');
                 achievementItem.classList.add('none_data');
+                achievementItem.style.margin = '4% 0 3% 0';
                 achievementItem.innerHTML = 'У Тебя сейчас нет никаких достижений ! :(';
                 achievements_list.appendChild(achievementItem);
             }else{
