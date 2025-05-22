@@ -5,6 +5,7 @@ from main.schemas.responses import DefaultResponse
 
 
 class AchievementAdd(BaseModel):
+    attachment_guid: UUID | str
     description: str
 
     @field_validator('description')
@@ -19,6 +20,7 @@ class AchievementAdd(BaseModel):
 
 class AchievementRegular(BaseModel):
     achievement_guid: UUID | str
+    attachment_guid: UUID | str
     description: str
     datetime_create: str
 

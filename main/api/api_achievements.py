@@ -26,6 +26,7 @@ async def api_create_achievement(achievement: AchievementAdd, current_user=Depen
     from main.utils.achievements import add_achievement
     return DefaultResponse(
         message=await add_achievement(
+            attachment_guid=achievement.attachment_guid,
             description=achievement.description,
             user_guid=current_user.guid
         )
