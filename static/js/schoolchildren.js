@@ -260,7 +260,10 @@ function onloadProfiledPhoto() {
     const preview = document.getElementById('preview');
 
     const file = fileInput.files[0];
-    console.log("Выбранный файл:", file);
+    if (!(file instanceof File)) {
+        console.error("Выбранный элемент не является файлом:", file);
+        return;
+    }
 
     const formData = new FormData();
     formData.append("file", file);
