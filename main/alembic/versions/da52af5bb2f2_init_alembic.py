@@ -219,16 +219,28 @@ def upgrade() -> None:
     op.create_index(op.f('ix_achievements_guid'), 'achievements', ['guid'], unique=True)
     op.create_index(op.f('ix_achievements_user_guid'), 'achievements', ['user_guid'], unique=False)
 
-    op.create_table('recommendations',
-    sa.Column('guid', sa.UUID(as_uuid=False), server_default=sa.text('uuid7()'), autoincrement=False, nullable=False),
-    sa.Column('user_guid', sa.UUID(as_uuid=False), nullable=False),
-    sa.Column('description', sa.Text(), nullable=False),
-    sa.Column('datetime_create', sa.DateTime(), server_default=sa.text("(now() AT TIME ZONE 'Asia/Novosibirsk')"), nullable=False),
-    sa.Column('is_neural', sa.Boolean(), server_default=sa.text('False'), nullable=False),
-    sa.Column('is_accepted', sa.Boolean(), server_default=sa.text('False'), nullable=False),
-    sa.Column('is_deleted', sa.Boolean(), server_default=sa.text('False'), nullable=False),
-    sa.ForeignKeyConstraint(['user_guid'], ['users.guid'], ),
-    sa.PrimaryKeyConstraint('guid')
+    op.create_table(
+        'recommendations',
+        sa.Column(
+            'guid',
+            sa.UUID(as_uuid=False),
+            server_default=sa.text('uuid7()'),
+            autoincrement=False,
+            nullable=False
+        ),
+        sa.Column('user_guid', sa.UUID(as_uuid=False), nullable=False),
+        sa.Column('description', sa.Text(), nullable=False),
+        sa.Column(
+            'datetime_create',
+            sa.DateTime(),
+            server_default=sa.text("(now() AT TIME ZONE 'Asia/Novosibirsk')"),
+            nullable=False
+        ),
+        sa.Column('is_neural', sa.Boolean(), server_default=sa.text('False'), nullable=False),
+        sa.Column('is_accepted', sa.Boolean(), server_default=sa.text('False'), nullable=False),
+        sa.Column('is_deleted', sa.Boolean(), server_default=sa.text('False'), nullable=False),
+        sa.ForeignKeyConstraint(['user_guid'], ['users.guid'], ),
+        sa.PrimaryKeyConstraint('guid')
     )
     op.create_index(op.f('ix_recommendations_datetime_create'), 'recommendations', ['datetime_create'], unique=False)
     op.create_index(op.f('ix_recommendations_guid'), 'recommendations', ['guid'], unique=True)
