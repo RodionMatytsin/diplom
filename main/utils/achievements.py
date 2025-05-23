@@ -9,7 +9,8 @@ def serialize_achievement(achievement: Achievements) -> AchievementRegular:
         attachment_guid=achievement.attachment_guid,
         description=achievement.description,
         datetime_create=f"{achievement.datetime_create.strftime('%d.%m.%Y')} в "
-                        f"{achievement.datetime_create.strftime('%H:%M')}"
+                        f"{achievement.datetime_create.strftime('%H:%M')}",
+        is_accepted=achievement.is_accepted
     )
 
 
@@ -36,7 +37,8 @@ async def get_achievements(
             Achievements.guid,
             Achievements.attachment_guid,
             Achievements.description,
-            Achievements.datetime_create
+            Achievements.datetime_create,
+            Achievements.is_accepted
         ],
         _join=[],
         _where=where_,

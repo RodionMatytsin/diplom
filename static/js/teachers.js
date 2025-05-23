@@ -141,7 +141,8 @@ function create_personal_achievement_for_teacher(
     achievement_guid,
     attachment_guid,
     description,
-    datetime_create
+    datetime_create,
+    is_accepted = false
 ) {
     let div_achievement_about = document.createElement('div'),
         div_description = document.createElement('div'),
@@ -151,6 +152,9 @@ function create_personal_achievement_for_teacher(
 
     div_achievement_about.id = achievement_guid;
     div_achievement_about.className = 'achievement_about';
+    if (is_accepted === true) {
+        div_achievement_about.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 35%)';
+    }
 
     div_achievement_about.appendChild(div_datetime_create);
     div_datetime_create.className = 'achievement_datetime_create';
@@ -360,7 +364,7 @@ function create_passed_test_for_teacher(
     div_test_about.className = 'test_about';
 
     if (is_accepted === true) {
-        div_test_about.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 5%)';
+        div_test_about.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 35%)';
     }
 
     div_test_header.className = 'test_header';
@@ -561,7 +565,8 @@ function get_schoolchildren_by_user_guid_for_teacher(
                             schoolchildren_by_user_guid.achievements[i].achievement_guid,
                             schoolchildren_by_user_guid.achievements[i].attachment_guid,
                             schoolchildren_by_user_guid.achievements[i].description,
-                            schoolchildren_by_user_guid.achievements[i].datetime_create
+                            schoolchildren_by_user_guid.achievements[i].datetime_create,
+                            schoolchildren_by_user_guid.achievements[i].is_accepted
                         )
                     );
                 }

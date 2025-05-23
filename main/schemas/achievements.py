@@ -32,6 +32,7 @@ class AchievementRegular(BaseModel):
     attachment_guid: UUID | str
     description: str
     datetime_create: str
+    is_accepted: bool
 
 
 class AchievementDefault(DefaultResponse):

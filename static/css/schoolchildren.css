@@ -335,7 +335,6 @@ header{
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.12);
 }
 
@@ -348,6 +347,11 @@ header{
     cursor: pointer;
 }
 
+.circle_upload:hover,
+.wrappers__container__achievement__icon:hover {
+    scale: 1.03;
+}
+
 .upload_label {
     position: absolute;
     width: 100%;
@@ -355,6 +359,7 @@ header{
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 #preview {

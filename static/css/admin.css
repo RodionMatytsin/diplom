@@ -465,6 +465,11 @@ header{
     cursor: pointer;
 }
 
+.wrappers__container__achievement__suggested__icon:hover,
+.wrappers__container__achievement__icon:hover {
+    scale: 1.03;
+}
+
 .user_columns {
     display: flex;
     justify-content: space-between;

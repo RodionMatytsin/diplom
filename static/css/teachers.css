@@ -538,6 +538,10 @@ header{
     cursor: pointer;
 }
 
+.wrappers__container__achievement__icon:hover {
+    scale: 1.03;
+}
+
 .achievement_description,
 .recommendation_description,
 .recommendation_description_suggested {

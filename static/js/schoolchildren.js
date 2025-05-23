@@ -330,7 +330,8 @@ function create_achievement_for_dom(
     achievement_guid,
     attachment_guid,
     description,
-    datetime_create
+    datetime_create,
+    is_accepted = false
 ) {
     let div_achievement = document.createElement('div'),
         div_achievement_about = document.createElement('div'),
@@ -341,9 +342,13 @@ function create_achievement_for_dom(
 
     div_achievement.id = achievement_guid;
     div_achievement.className = 'achievement';
+    if (is_accepted === true) {
+        div_achievement_about.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 35%)';
+    }
+
     div_achievement.appendChild(div_achievement_about);
 
-    div_achievement_about.className = 'achievement_about';
+    div_achievement_about.className = 'achievement';
 
     div_achievement_about.appendChild(div_datetime_create);
     div_datetime_create.className = 'achievement_datetime_create';
@@ -394,6 +399,7 @@ function get_achievements() {
                             achievements[i].attachment_guid,
                             achievements[i].description,
                             achievements[i].datetime_create,
+                            achievements[i].is_accepted
                         )
                     );
                 }
