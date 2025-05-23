@@ -294,7 +294,7 @@ function onloadProfiledPhoto() {
 
 function create_achievement() {
     if  (attachment_guid === null){
-        show_error(`Загрузите фото своего достижения`,"Уведомление");
+        show_error(`Загрузите свое достижение в формате изображения с расширением .png, .jpg, .jpeg или .webp!`,"Уведомление");
     } else {
         sendRequest(
             'POST',
