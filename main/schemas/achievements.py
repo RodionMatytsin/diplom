@@ -15,6 +15,15 @@ class AchievementAdd(BaseModel):
                 status_code=400,
                 detail={'result': False, 'message': 'Поле «Наименование достижения» должно быть не пустым!', 'data': {}}
             )
+        if not (12 <= len(description_) <= 250):
+            raise HTTPException(
+                status_code=400,
+                detail={
+                    'result': False,
+                    'message': 'Поле «Наименование достижения» должно содержать от 8 до 250 символов!',
+                    'data': {}
+                }
+            )
         return description_
 
 
