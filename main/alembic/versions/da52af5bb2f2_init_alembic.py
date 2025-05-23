@@ -1,8 +1,8 @@
 """init alembic
 
-Revision ID: ec1a2c3f6ece
+Revision ID: da52af5bb2f2
 Revises: 
-Create Date: 2025-05-22 02:24:28.655396
+Create Date: 2025-05-23 23:51:56.476532
 
 """
 from typing import Sequence, Union
@@ -11,7 +11,7 @@ from alembic import op
 import sqlalchemy as sa
 
 
-revision: str = 'ec1a2c3f6ece'
+revision: str = 'da52af5bb2f2'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -219,6 +219,21 @@ def upgrade() -> None:
     op.create_index(op.f('ix_achievements_guid'), 'achievements', ['guid'], unique=True)
     op.create_index(op.f('ix_achievements_user_guid'), 'achievements', ['user_guid'], unique=False)
 
+    op.create_table('recommendations',
+    sa.Column('guid', sa.UUID(as_uuid=False), server_default=sa.text('uuid7()'), autoincrement=False, nullable=False),
+    sa.Column('user_guid', sa.UUID(as_uuid=False), nullable=False),
+    sa.Column('description', sa.Text(), nullable=False),
+    sa.Column('datetime_create', sa.DateTime(), server_default=sa.text("(now() AT TIME ZONE 'Asia/Novosibirsk')"), nullable=False),
+    sa.Column('is_neural', sa.Boolean(), server_default=sa.text('False'), nullable=False),
+    sa.Column('is_accepted', sa.Boolean(), server_default=sa.text('False'), nullable=False),
+    sa.Column('is_deleted', sa.Boolean(), server_default=sa.text('False'), nullable=False),
+    sa.ForeignKeyConstraint(['user_guid'], ['users.guid'], ),
+    sa.PrimaryKeyConstraint('guid')
+    )
+    op.create_index(op.f('ix_recommendations_datetime_create'), 'recommendations', ['datetime_create'], unique=False)
+    op.create_index(op.f('ix_recommendations_guid'), 'recommendations', ['guid'], unique=True)
+    op.create_index(op.f('ix_recommendations_user_guid'), 'recommendations', ['user_guid'], unique=False)
+
     op.create_table(
         'schoolchildren_classes',
         sa.Column(
@@ -325,49 +340,9 @@ def upgrade() -> None:
     op.create_index(op.f('ix_answers_tests_guid'), 'answers_tests', ['guid'], unique=True)
     op.create_index(op.f('ix_answers_tests_test_guid'), 'answers_tests', ['test_guid'], unique=False)
 
-    op.create_table(
-        'recommendations',
-        sa.Column(
-            'guid',
-            sa.UUID(as_uuid=False),
-            server_default=sa.text('uuid7()'),
-            autoincrement=False,
-            nullable=False
-        ),
-        sa.Column('test_guid', sa.UUID(as_uuid=False), nullable=False),
-        sa.Column('schoolchildren_class_guid', sa.UUID(as_uuid=False), nullable=False),
-        sa.Column('description', sa.Text(), nullable=False),
-        sa.Column(
-            'datetime_create',
-            sa.DateTime(),
-            server_default=sa.text("(now() AT TIME ZONE 'Asia/Novosibirsk')"),
-            nullable=False
-        ),
-        sa.Column('is_neural', sa.Boolean(), server_default=sa.text('False'), nullable=False),
-        sa.Column('is_accepted', sa.Boolean(), server_default=sa.text('False'), nullable=False),
-        sa.Column('is_deleted', sa.Boolean(), server_default=sa.text('False'), nullable=False),
-        sa.ForeignKeyConstraint(['schoolchildren_class_guid'], ['schoolchildren_classes.guid'], ),
-        sa.ForeignKeyConstraint(['test_guid'], ['tests.guid'], ),
-        sa.PrimaryKeyConstraint('guid')
-    )
-    op.create_index(op.f('ix_recommendations_datetime_create'), 'recommendations', ['datetime_create'], unique=False)
-    op.create_index(op.f('ix_recommendations_guid'), 'recommendations', ['guid'], unique=True)
-    op.create_index(
-        op.f('ix_recommendations_schoolchildren_class_guid'),
-        'recommendations',
-        ['schoolchildren_class_guid'],
-        unique=False
-    )
-    op.create_index(op.f('ix_recommendations_test_guid'), 'recommendations', ['test_guid'], unique=False)
-
 
 def downgrade() -> None:
     """Downgrade schema."""
-    op.drop_index(op.f('ix_recommendations_test_guid'), table_name='recommendations')
-    op.drop_index(op.f('ix_recommendations_schoolchildren_class_guid'), table_name='recommendations')
-    op.drop_index(op.f('ix_recommendations_guid'), table_name='recommendations')
-    op.drop_index(op.f('ix_recommendations_datetime_create'), table_name='recommendations')
-    op.drop_table('recommendations')
     op.drop_index(op.f('ix_answers_tests_test_guid'), table_name='answers_tests')
     op.drop_index(op.f('ix_answers_tests_guid'), table_name='answers_tests')
     op.drop_table('answers_tests')
@@ -383,6 +358,10 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_schoolchildren_classes_datetime_create'), table_name='schoolchildren_classes')
     op.drop_index(op.f('ix_schoolchildren_classes_class_guid'), table_name='schoolchildren_classes')
     op.drop_table('schoolchildren_classes')
+    op.drop_index(op.f('ix_recommendations_user_guid'), table_name='recommendations')
+    op.drop_index(op.f('ix_recommendations_guid'), table_name='recommendations')
+    op.drop_index(op.f('ix_recommendations_datetime_create'), table_name='recommendations')
+    op.drop_table('recommendations')
     op.drop_index(op.f('ix_achievements_user_guid'), table_name='achievements')
     op.drop_index(op.f('ix_achievements_guid'), table_name='achievements')
     op.drop_index(op.f('ix_achievements_datetime_create'), table_name='achievements')

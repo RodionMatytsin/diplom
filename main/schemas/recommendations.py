@@ -7,6 +7,7 @@ class RecommendationRegular(BaseModel):
     recommendation_guid: UUID | str
     description: str
     datetime_create: str
+    is_neural: bool
 
 
 class RecommendationDefault(DefaultResponse):

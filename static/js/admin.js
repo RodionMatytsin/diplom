@@ -422,7 +422,8 @@ function create_personal_achievement_for_dom(
 function create_generated_recommendation_for_dom(
     recommendation_guid,
     description,
-    datetime_create
+    datetime_create,
+    is_neural = false
 ) {
     let div_recommendation_about = document.createElement('div'),
        div_description = document.createElement('div'),
@@ -437,7 +438,7 @@ function create_generated_recommendation_for_dom(
 
    div_recommendation_about.appendChild(div_description);
    div_description.className = 'recommendation_description';
-   div_description.innerHTML = '<b>Описание рекомендации: </b>' + description;
+   div_description.innerHTML = '<b>Описание рекомендации: </b>' + description + ((is_neural) ? ' (Сделано при помощи ИИ)' : ' (Сделано преподавателем)');
 
    return div_recommendation_about;
 }
@@ -697,7 +698,8 @@ function get_schoolchildren_by_user_guid_for_admin(
                         create_generated_recommendation_for_dom(
                             schoolchildren_by_user_guid_for_admin.recommendations[i].recommendation_guid,
                             schoolchildren_by_user_guid_for_admin.recommendations[i].description,
-                            schoolchildren_by_user_guid_for_admin.recommendations[i].datetime_create
+                            schoolchildren_by_user_guid_for_admin.recommendations[i].datetime_create,
+                            schoolchildren_by_user_guid_for_admin.recommendations[i].is_neural
                         )
                     );
                 }

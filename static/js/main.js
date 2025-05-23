@@ -48,6 +48,7 @@ function sendRequest(method, url, async=true, responses_data, onsuccess, onerror
         let responseObj = JSON.parse(request.response);
         console.log(method, url, responseObj);
         if (request.status === 401) {
+            localStorage.removeItem("is_teacher");
             window.location.href = "/";
         } else if (request.status >= 400) {
             show_error(responseObj.message, 'Ошибка');

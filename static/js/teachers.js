@@ -180,7 +180,8 @@ function create_personal_achievement_for_teacher(
 function create_generated_recommendation_for_teacher(
     recommendation_guid,
     description,
-    datetime_create
+    datetime_create,
+    is_neural = false
 ) {
     let div_recommendation_about = document.createElement('div'),
        div_description = document.createElement('div'),
@@ -195,7 +196,7 @@ function create_generated_recommendation_for_teacher(
 
    div_recommendation_about.appendChild(div_description);
    div_description.className = 'recommendation_description';
-   div_description.innerHTML = '<b>Описание рекомендации: </b>' + description;
+   div_description.innerHTML = '<b>Описание рекомендации: </b>' + description + ((is_neural) ? ' (Сделано при помощи ИИ)' : ' (Сделано преподавателем)');
 
    return div_recommendation_about;
 }
@@ -244,6 +245,7 @@ function create_generated_recommendation_suggested_for_teacher(
     recommendation_guid,
     description,
     datetime_create,
+    is_neural = false,
     schoolchildren_class_guid,
     class_guid
 ) {
@@ -267,7 +269,7 @@ function create_generated_recommendation_suggested_for_teacher(
 
     div_recommendation_suggested_about.appendChild(div_description_suggested);
     div_description_suggested.className = 'recommendation_description_suggested';
-    div_description_suggested.innerHTML = '<b>Описание рекомендации: </b>' + description;
+    div_description_suggested.innerHTML = '<b>Описание рекомендации: </b>' + description  + ((is_neural) ? ' (Сделано при помощи ИИ)' : ' (Сделано преподавателем)');;
 
     div_recommendation_suggested.appendChild(btn_recommendation_reject);
     btn_recommendation_reject.className = 'btn_recommendation_reject';
@@ -588,7 +590,8 @@ function get_schoolchildren_by_user_guid_for_teacher(
                         create_generated_recommendation_for_teacher(
                             schoolchildren_by_user_guid.recommendations[i].recommendation_guid,
                             schoolchildren_by_user_guid.recommendations[i].description,
-                            schoolchildren_by_user_guid.recommendations[i].datetime_create
+                            schoolchildren_by_user_guid.recommendations[i].datetime_create,
+                            schoolchildren_by_user_guid.recommendations[i].is_neural
                         )
                     );
                 }
@@ -618,6 +621,7 @@ function get_schoolchildren_by_user_guid_for_teacher(
                             schoolchildren_by_user_guid.pending_recommendations[i].recommendation_guid,
                             schoolchildren_by_user_guid.pending_recommendations[i].description,
                             schoolchildren_by_user_guid.pending_recommendations[i].datetime_create,
+                            schoolchildren_by_user_guid.pending_recommendations[i].is_neural,
                             schoolchildren_by_user_guid.schoolchildren_class_guid,
                             class_guid
                         )

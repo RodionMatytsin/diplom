@@ -8,7 +8,8 @@ def serialize_recommendation(recommendation: Recommendations) -> RecommendationR
         recommendation_guid=recommendation.guid,
         description=recommendation.description,
         datetime_create=f"{recommendation.datetime_create.strftime('%d.%m.%Y')} в "
-                        f"{recommendation.datetime_create.strftime('%H:%M')}"
+                        f"{recommendation.datetime_create.strftime('%H:%M')}",
+        is_neural=recommendation.is_neural
     )
 
 
@@ -16,9 +17,9 @@ async def get_recommendations(
         recommendation_guid: UUID | str | None = None,
         user_guid: UUID | str | None = None,
         is_accepted: bool | None = None
-) -> tuple[RecommendationRegular] | tuple:
+) -> tuple[RecommendationRegular] | RecommendationRegular | tuple:
 
-    from main.models import engine, Tests, CRUD, SessionHandler
+    from main.models import engine, Users, CRUD, SessionHandler
     from datetime import timedelta
     from sqlalchemy import func, desc
 
@@ -29,30 +30,34 @@ async def get_recommendations(
     if recommendation_guid is not None:
         where_.append(Recommendations.guid == recommendation_guid)
     if user_guid is not None:
-        where_.append(Tests.user_guid == user_guid)
+        where_.append(Users.guid == user_guid)
     if is_accepted is not None:
         where_.append(Recommendations.is_accepted == is_accepted)
 
-    recommendations: tuple[Recommendations] | object | None = await CRUD(
+    recommendations: tuple[Recommendations] | Recommendations | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Recommendations
     ).extended_query(
         _select=[
             Recommendations.guid,
             Recommendations.description,
-            Recommendations.datetime_create
+            Recommendations.datetime_create,
+            Recommendations.is_neural
         ],
         _join=[
-            [Tests, Tests.guid == Recommendations.test_guid]
+            [Users, Users.guid == Recommendations.user_guid]
         ],
         _where=where_,
         _group_by=[],
         _order_by=[desc(Recommendations.datetime_create)],
-        _all=True
+        _all=recommendation_guid is None
     )
 
     if recommendations is None or recommendations == []:
         return tuple()
-    return tuple(serialize_recommendation(recommendation=recommendation) for recommendation in recommendations)
+
+    if recommendation_guid is None:
+        return tuple(serialize_recommendation(recommendation=recommendation) for recommendation in recommendations)
+    return serialize_recommendation(recommendation=recommendations)
 
 
 async def recommendation_accept(recommendation_guid: UUID | str) -> str:
@@ -203,14 +208,14 @@ async def generated_recommendation_schoolchildren(
         session=SessionHandler.create(engine=engine), model=Recommendations
     ).create(
         _values=dict(
-            test_guid=current_test.guid,
-            schoolchildren_class_guid=current_schoolchildren_class.guid,
+            user_guid=current_schoolchildren_class.user_guid,
             description=generate_recommendation_text(
                 target_function=calculate_recommendation(
                     schoolchildren_class=current_schoolchildren_class,
                     answers_test=current_answers_test
                 )
-            )
+            ),
+            is_neural=True
         )
     )
 

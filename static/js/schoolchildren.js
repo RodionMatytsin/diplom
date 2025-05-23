@@ -473,7 +473,8 @@ function get_schoolchildren_classes() {
 function create_recommendation_class_for_dom(
     recommendation_guid,
     description,
-    datetime_create
+    datetime_create,
+    is_neural = false
 ) {
     let div_recommendation = document.createElement('div'),
        div_recommendation_about = document.createElement('div'),
@@ -492,7 +493,7 @@ function create_recommendation_class_for_dom(
 
    div_recommendation_about.appendChild(div_description);
    div_description.className = 'recommendation_description';
-   div_description.innerHTML = '<b>Описание рекомендации: </b>' + description;
+   div_description.innerHTML = '<b>Описание рекомендации: </b>' + description + ((is_neural) ? ' (Сделано при помощи ИИ)' : ' (Сделано преподавателем)');
 
    return div_recommendation;
 }
@@ -522,6 +523,7 @@ function get_recommendations() {
                             recommendations[i].recommendation_guid,
                             recommendations[i].description,
                             recommendations[i].datetime_create,
+                            recommendations[i].is_neural
                         )
                     );
                 }
