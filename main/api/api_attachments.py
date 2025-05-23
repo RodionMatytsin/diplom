@@ -1,10 +1,11 @@
 from main import main
 from fastapi import UploadFile
 from main.schemas.responses import DefaultResponse
+from uuid import UUID
 
 
 @main.get('/api/attachments/{attachment_guid}', status_code=200, tags=["Attachments"], response_model=None)
-async def api_get_attachments(attachment_guid: str):
+async def api_get_attachments(attachment_guid: UUID | str):
     from main.utils.files import range_requests_response, get_attachment
     attachment = await get_attachment(attachment_guid=attachment_guid)
     return await range_requests_response(file_path=attachment.path, content_type=attachment.type)

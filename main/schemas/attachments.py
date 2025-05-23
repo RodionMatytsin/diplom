@@ -1,9 +1,10 @@
 from pydantic import BaseModel
 from datetime import datetime
+from uuid import UUID
 
 
 class AttachmentRegular(BaseModel):
-    guid: str
+    guid: UUID | str
     type: str
     url: str
     path: str
@@ -11,6 +12,6 @@ class AttachmentRegular(BaseModel):
 
 
 class AttachmentDefault(BaseModel):
-    guid: str
+    guid: UUID | str
     type: str
     url: str

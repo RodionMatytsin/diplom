@@ -3,21 +3,23 @@ from main.models import Attachments
 from fastapi.responses import StreamingResponse
 from main.schemas.attachments import AttachmentRegular, AttachmentDefault
 from fastapi import UploadFile
+from uuid import UUID
 
 
-async def serialize_attachment(attachment_: Attachments) -> AttachmentRegular:
+async def serialize_attachment(attachment: Attachments) -> AttachmentRegular:
     return AttachmentRegular(
-        guid=attachment_.guid,
-        type=attachment_.type,
-        url=attachment_.url,
-        path=attachment_.path
+        guid=attachment.guid,
+        type=attachment.type,
+        url=attachment.url,
+        path=attachment.path,
+        datetime=attachment.datetime_create
     )
 
 
-async def get_attachment(attachment_guid: str) -> Attachments:
+async def get_attachment(attachment_guid: UUID | str) -> Attachments:
 
     from main.models import engine, SessionHandler, CRUD
-    if attachment_guid is not None and len(attachment_guid) < 32:
+    if attachment_guid is not None and len(str(attachment_guid)) < 32:
         from fastapi import HTTPException
         raise HTTPException(
             status_code=400,
@@ -42,8 +44,8 @@ async def get_attachment(attachment_guid: str) -> Attachments:
     return attachment
 
 
-async def get_attachment_with_serialize(attachment_guid: str) -> AttachmentRegular:
-    return await serialize_attachment(attachment_=await get_attachment(attachment_guid=attachment_guid))
+async def get_attachment_with_serialize(attachment_guid: UUID | str) -> AttachmentRegular:
+    return await serialize_attachment(attachment=await get_attachment(attachment_guid=attachment_guid))
 
 
 def _get_range_header(range_header: str, file_size: int) -> tuple[int, int]:
