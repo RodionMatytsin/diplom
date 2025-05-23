@@ -77,11 +77,11 @@ function logout() {
         null,
         function (data) {
             console.log(data);
+            localStorage.removeItem("is_teacher");
             window.location.href = "/";
         },
         function (data) {
             console.log(data);
-            window.location.href = "/";
         }
     )
 }
@@ -94,7 +94,8 @@ function get_user() {
         null,
         function (data) {
             console.log(data);
-            if (data.data.is_teacher) {
+            let is_teacher = localStorage.getItem("is_teacher");
+            if (is_teacher === "true") {
                 window.location.href = "/";
             } else {
                 document.getElementById('name_user').innerText = data.data.fio;

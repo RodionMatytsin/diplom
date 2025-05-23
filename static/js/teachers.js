@@ -47,11 +47,11 @@ function logout() {
         null,
         function (data) {
             console.log(data);
+            localStorage.removeItem("is_teacher");
             window.location.href = "/";
         },
         function (data) {
             console.log(data);
-            window.location.href = "/";
         }
     )
 }
@@ -64,9 +64,8 @@ function get_user() {
         null,
         function (data) {
             console.log(data);
-            if (!data.data.is_teacher) {
-                window.location.href = "/";
-            } else {
+            let is_teacher = localStorage.getItem("is_teacher");
+            if (is_teacher === "true") {
                 document.getElementById('name_user').innerText = data.data.fio;
                 document.getElementById('phoneNumber').value = data.data.phone_number;
                 document.getElementById('fio').value = data.data.fio;
@@ -74,6 +73,8 @@ function get_user() {
                 document.getElementById('month').value = data.data.birthday.month;
                 document.getElementById('year').value = data.data.birthday.year;
                 document.getElementById('gender').value = data.data.gender;
+            } else {
+                window.location.href = "/";
             }
         },
         function (data) {

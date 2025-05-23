@@ -99,3 +99,17 @@ function openModal(src) {
     document.getElementById("modal").style.display = "flex";
     document.getElementById("modal_img").src = src;
 }
+
+function populateYearSelect() {
+    const select = document.getElementById('year');
+    const defaultYear = 2003;
+    for (let year = 1944; year <= 2025; year++) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        if (year === defaultYear) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    }
+}

@@ -73,7 +73,9 @@ function signup_user() {
             },
             function (data) {
                 console.log(data);
-                if (data.data.is_teacher) {
+                let is_teacher = data.data.is_teacher;
+                localStorage.setItem("is_teacher", is_teacher);
+                if (is_teacher) {
                     window.location.href = "/teachers";
                 } else {
                     window.location.href = "/schoolchildren";
@@ -100,8 +102,9 @@ function login_user() {
                 "password": password.value.trim()
             },
             function (data) {
-                console.log(data);
-                if (data.data.is_teacher) {
+                let is_teacher = data.data.is_teacher;
+                localStorage.setItem("is_teacher", is_teacher);
+                if (is_teacher) {
                     window.location.href = "/teachers";
                 } else {
                     window.location.href = "/schoolchildren";
@@ -112,5 +115,19 @@ function login_user() {
                 show_error(data.message, 'Ошибка');
             }
         )
+    }
+}
+
+function redirectUserByRole() {
+    let is_teacher = localStorage.getItem("is_teacher");
+    if (is_teacher === null) {
+        console.log("is_teacher", is_teacher);
+    } else {
+        console.log("is_teacher", is_teacher);
+        if (is_teacher === "true") {
+            window.location.href = "/teachers";
+        } else {
+            window.location.href = "/schoolchildren";
+        }
     }
 }
