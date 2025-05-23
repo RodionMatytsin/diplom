@@ -37,6 +37,7 @@ def serialize_user_for_admin(user: Users, classes: tuple[Classes] | None) -> Use
 async def get_users_for_admin(is_teacher: bool = False) -> tuple[UserRegularAdmin] | tuple:
 
     from main.models import engine, SchoolchildrenClasses, TeacherClasses, CRUD, SessionHandler
+    from sqlalchemy import desc
 
     classes_model = TeacherClasses if is_teacher else SchoolchildrenClasses
     where_ = []
@@ -60,7 +61,7 @@ async def get_users_for_admin(is_teacher: bool = False) -> tuple[UserRegularAdmi
         _join=[],
         _where=[Users.is_teacher == is_teacher],
         _group_by=[],
-        _order_by=[Users.datetime_create],
+        _order_by=[desc(Users.datetime_create)],
         _all=True
     )
 

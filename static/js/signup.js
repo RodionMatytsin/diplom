@@ -102,6 +102,7 @@ function login_user() {
                 "password": password.value.trim()
             },
             function (data) {
+                console.log(data);
                 let is_teacher = data.data.is_teacher;
                 localStorage.setItem("is_teacher", is_teacher);
                 if (is_teacher) {
@@ -123,7 +124,6 @@ function redirectUserByRole() {
     if (is_teacher === null) {
         console.log("is_teacher", is_teacher);
     } else {
-        console.log("is_teacher", is_teacher);
         if (is_teacher === "true") {
             window.location.href = "/teachers";
         } else {
