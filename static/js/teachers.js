@@ -137,6 +137,65 @@ function update_estimation_to_schoolchildren(schoolchildren_class_guid, estimati
     )
 }
 
+function add_recommendation_to_schoolchildren(
+    user_guid,
+    description,
+    schoolchildren_class_guid,
+    class_guid
+) {
+    sendRequest(
+        'POST',
+        '/api/recommendations/add_recommendation',
+        true,
+        {
+            "user_guid": user_guid,
+            "description": description.trim()
+        },
+        function (data) {
+            console.log(data);
+            setTimeout(() => {
+                get_schoolchildren_by_user_guid_for_teacher(class_guid, schoolchildren_class_guid);
+            }, 500);
+            show_error(data.message, 'Оповещение');
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
+function set_recommendation_to_schoolchildren(
+    user_guid,
+    description,
+    recommendation_guid,
+    schoolchildren_class_guid,
+    class_guid
+) {
+    sendRequest(
+        'PATCH',
+        '/api/recommendations/set_recommendation',
+        true,
+        {
+            "user_guid": user_guid,
+            "description": description.trim(),
+            "recommendation_guid": recommendation_guid
+        },
+        function (data) {
+            console.log(data);
+            document.getElementById('editRecommendationModal').style.display = 'none';
+            setTimeout(() => {
+                get_schoolchildren_by_user_guid_for_teacher(class_guid, schoolchildren_class_guid);
+            }, 500);
+            show_error(data.message, 'Оповещение');
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Ошибка');
+        }
+    )
+}
+
 function create_personal_achievement_for_teacher(
     achievement_guid,
     attachment_guid,
@@ -185,24 +244,28 @@ function create_generated_recommendation_for_teacher(
     recommendation_guid,
     description,
     datetime_create,
-    is_neural = false
+    is_neural = false,
+    is_accepted = false
 ) {
     let div_recommendation_about = document.createElement('div'),
        div_description = document.createElement('div'),
        div_datetime_create = document.createElement('div');
 
-   div_recommendation_about.id = recommendation_guid;
-   div_recommendation_about.className = 'recommendation_about';
+    div_recommendation_about.id = recommendation_guid;
+    div_recommendation_about.className = 'recommendation_about';
+    if (is_accepted === true) {
+        div_recommendation_about.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 35%)';
+    }
 
-   div_recommendation_about.appendChild(div_datetime_create);
-   div_datetime_create.className = 'recommendation_datetime_create';
-   div_datetime_create.innerHTML = '<b>Дата/Время создания: </b>' + datetime_create;
+    div_recommendation_about.appendChild(div_datetime_create);
+    div_datetime_create.className = 'recommendation_datetime_create';
+    div_datetime_create.innerHTML = '<b>Дата/Время создания: </b>' + datetime_create;
 
-   div_recommendation_about.appendChild(div_description);
-   div_description.className = 'recommendation_description';
-   div_description.innerHTML = '<b>Описание рекомендации: </b>' + description + ((is_neural) ? ' (Сделано при помощи ИИ)' : ' (Сделано преподавателем)');
+    div_recommendation_about.appendChild(div_description);
+    div_description.className = 'recommendation_description';
+    div_description.innerHTML = '<b>Описание рекомендации: </b>' + description + ((is_neural) ? ' (Сделано при помощи ИИ)' : ' (Сделано преподавателем)');
 
-   return div_recommendation_about;
+    return div_recommendation_about;
 }
 
 function recommendation_accept(recommendation_guid, schoolchildren_class_guid, class_guid) {
@@ -250,6 +313,7 @@ function create_generated_recommendation_suggested_for_teacher(
     description,
     datetime_create,
     is_neural = false,
+    user_guid,
     schoolchildren_class_guid,
     class_guid
 ) {
@@ -257,6 +321,7 @@ function create_generated_recommendation_suggested_for_teacher(
         div_recommendation_suggested_about = document.createElement('div'),
         div_description_suggested = document.createElement('div'),
         div_datetime_create_suggested = document.createElement('div'),
+        btn_recommendation_update = document.createElement('button'),
         btn_recommendation_accept = document.createElement('button'),
         btn_recommendation_reject = document.createElement('button');
 
@@ -273,7 +338,25 @@ function create_generated_recommendation_suggested_for_teacher(
 
     div_recommendation_suggested_about.appendChild(div_description_suggested);
     div_description_suggested.className = 'recommendation_description_suggested';
-    div_description_suggested.innerHTML = '<b>Описание рекомендации: </b>' + description  + ((is_neural) ? ' (Сделано при помощи ИИ)' : ' (Сделано преподавателем)');;
+    div_description_suggested.innerHTML = '<b>Описание рекомендации: </b>' + description  + ((is_neural) ? ' (Сделано при помощи ИИ)' : ' (Сделано преподавателем)');
+
+    div_recommendation_suggested_about.appendChild(btn_recommendation_update);
+    btn_recommendation_update.className = 'btn_recommendation_update';
+    btn_recommendation_update.style.marginTop = '1.5%';
+    btn_recommendation_update.textContent = 'Отредактировать описание рекомендации';
+    btn_recommendation_update.onclick = function() {
+        document.getElementById("editRecommendationModal").style.display = "flex";
+        document.getElementById("recommendation").value = description;
+        document.getElementById("saveRecommendation").onclick = function() {
+            set_recommendation_to_schoolchildren(
+                user_guid,
+                document.getElementById("recommendation").value,
+                recommendation_guid,
+                schoolchildren_class_guid,
+                class_guid
+            );
+        };
+    };
 
     div_recommendation_suggested.appendChild(btn_recommendation_reject);
     btn_recommendation_reject.className = 'btn_recommendation_reject';
@@ -291,6 +374,12 @@ function create_generated_recommendation_suggested_for_teacher(
 
     return div_recommendation_suggested;
 }
+
+document.getElementById('editRecommendationModal').addEventListener('click', function(event) {
+    if (event.target === document.getElementById('editRecommendationModal')) {
+        document.getElementById('editRecommendationModal').style.display = 'none';
+    }
+});
 
 function accept_changes_for_test(
     test_guid,
@@ -596,7 +685,8 @@ function get_schoolchildren_by_user_guid_for_teacher(
                             schoolchildren_by_user_guid.recommendations[i].recommendation_guid,
                             schoolchildren_by_user_guid.recommendations[i].description,
                             schoolchildren_by_user_guid.recommendations[i].datetime_create,
-                            schoolchildren_by_user_guid.recommendations[i].is_neural
+                            schoolchildren_by_user_guid.recommendations[i].is_neural,
+                            schoolchildren_by_user_guid.recommendations[i].is_accepted
                         )
                     );
                 }
@@ -627,6 +717,7 @@ function get_schoolchildren_by_user_guid_for_teacher(
                             schoolchildren_by_user_guid.pending_recommendations[i].description,
                             schoolchildren_by_user_guid.pending_recommendations[i].datetime_create,
                             schoolchildren_by_user_guid.pending_recommendations[i].is_neural,
+                            schoolchildren_by_user_guid.user.guid,
                             schoolchildren_by_user_guid.schoolchildren_class_guid,
                             class_guid
                         )

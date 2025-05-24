@@ -427,7 +427,8 @@ function create_generated_recommendation_for_dom(
     recommendation_guid,
     description,
     datetime_create,
-    is_neural = false
+    is_neural = false,
+    is_accepted = false
 ) {
     let div_recommendation_about = document.createElement('div'),
        div_description = document.createElement('div'),
@@ -435,6 +436,9 @@ function create_generated_recommendation_for_dom(
 
    div_recommendation_about.id = recommendation_guid;
    div_recommendation_about.className = 'recommendation_about';
+   if (is_accepted === true) {
+        div_recommendation_about.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 35%)';
+    }
 
    div_recommendation_about.appendChild(div_datetime_create);
    div_datetime_create.className = 'recommendation_datetime_create';
@@ -704,7 +708,8 @@ function get_schoolchildren_by_user_guid_for_admin(
                             schoolchildren_by_user_guid_for_admin.recommendations[i].recommendation_guid,
                             schoolchildren_by_user_guid_for_admin.recommendations[i].description,
                             schoolchildren_by_user_guid_for_admin.recommendations[i].datetime_create,
-                            schoolchildren_by_user_guid_for_admin.recommendations[i].is_neural
+                            schoolchildren_by_user_guid_for_admin.recommendations[i].is_neural,
+                            schoolchildren_by_user_guid_for_admin.recommendations[i].is_accepted
                         )
                     );
                 }

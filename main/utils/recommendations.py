@@ -1,5 +1,5 @@
 from main.models import Recommendations
-from main.schemas.recommendations import RecommendationRegular
+from main.schemas.recommendations import RecommendationRegular, RecommendationAdd, RecommendationUpdate
 from uuid import UUID
 
 
@@ -9,7 +9,8 @@ def serialize_recommendation(recommendation: Recommendations) -> RecommendationR
         description=recommendation.description,
         datetime_create=f"{recommendation.datetime_create.strftime('%d.%m.%Y')} в "
                         f"{recommendation.datetime_create.strftime('%H:%M')}",
-        is_neural=recommendation.is_neural
+        is_neural=recommendation.is_neural,
+        is_accepted=recommendation.is_accepted
     )
 
 
@@ -41,7 +42,8 @@ async def get_recommendations(
             Recommendations.guid,
             Recommendations.description,
             Recommendations.datetime_create,
-            Recommendations.is_neural
+            Recommendations.is_neural,
+            Recommendations.is_accepted
         ],
         _join=[
             [Users, Users.guid == Recommendations.user_guid]
@@ -80,6 +82,58 @@ async def recommendation_reject(recommendation_guid: UUID | str) -> str:
         _values=dict(is_deleted=True)
     )
     return "Вы успешно отклонили сформированную рекомендацию для школьника!"
+
+
+async def add_recommendation(recommendation: RecommendationAdd) -> str:
+    from main.models import engine, CRUD, SessionHandler
+    from main.utils.users import get_users_with_serialize
+
+    current_user = await get_users_with_serialize(user_guid=recommendation.user_guid)
+
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=Recommendations
+    ).create(
+        _values=dict(
+            user_guid=current_user.guid,
+            description=recommendation.description
+        )
+    )
+
+    return "Вы успешно создали новую рекомендацию для школьника!"
+
+
+async def set_recommendation(recommendation: RecommendationUpdate) -> str:
+    from main.models import engine, CRUD, SessionHandler
+    from main.utils.users import get_users_with_serialize
+
+    current_user = await get_users_with_serialize(user_guid=recommendation.user_guid)
+    current_recommendation = await get_recommendations(
+        recommendation_guid=recommendation.recommendation_guid,
+        user_guid=current_user.guid,
+        is_accepted=False
+    )
+    if current_recommendation == tuple() or current_recommendation == []:
+        from fastapi import HTTPException
+        raise HTTPException(
+            status_code=409,
+            detail={
+                'result': False,
+                'message': f'Извините, но такой записи, по сформированной рекомендации для редактирование, нет!',
+                'data': {}
+            }
+        )
+
+    await CRUD(
+        session=SessionHandler.create(engine=engine), model=Recommendations
+    ).update(
+        _where=[Recommendations.guid == current_recommendation.recommendation_guid],
+        _values=dict(
+            user_guid=current_user.guid,
+            description=recommendation.description
+        )
+    )
+
+    return "Вы успешно отредактировали сформированную рекомендацию для школьника!"
 
 
 async def generated_recommendation_schoolchildren(

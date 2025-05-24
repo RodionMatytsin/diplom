@@ -12,6 +12,18 @@
             <img class="modal_content" id="modal_img">
         </div>
 
+        <div id="editRecommendationModal" class="modal" style="display: none;">
+            <div class="modal_content_recommendation">
+                <div class="input_field" style="display: flex; margin-bottom: 1.5%; align-items: center;">
+                    <div style="display: flex; width: 100%; flex-direction: column;">
+                        <label class="input_label" for="recommendation">Описание рекомендации</label>
+                        <textarea class="login" style="resize: none; padding: 2% 2%; height: 7rem; width: 100%" id="recommendation" placeholder="Введите описание рекомендации" required></textarea>
+                    </div>
+                </div>
+                <button class="btn_description_recommendation_update" style="font-size: 1.1rem;" id="saveRecommendation">Отредактировать описание рекомендации</button>
+            </div>
+        </div>
+
         <div class="alert" id="alert" style="display: none;" onclick="this.style.display = 'none';">
             <div class="notice" id="notice">
                 <p class="hello" style="text-align: center; color: black;" id="notice_title">Ошибка</p>

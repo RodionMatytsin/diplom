@@ -480,28 +480,33 @@ function create_recommendation_class_for_dom(
     recommendation_guid,
     description,
     datetime_create,
-    is_neural = false
+    is_neural = false,
+    is_accepted = false
 ) {
     let div_recommendation = document.createElement('div'),
        div_recommendation_about = document.createElement('div'),
        div_description = document.createElement('div'),
        div_datetime_create = document.createElement('div');
 
-   div_recommendation.id = recommendation_guid;
-   div_recommendation.className = 'recommendation';
-   div_recommendation.appendChild(div_recommendation_about);
+    div_recommendation.id = recommendation_guid;
+    div_recommendation.className = 'recommendation';
+    if (is_accepted === true) {
+        div_recommendation.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 35%)';
+    }
 
-   div_recommendation_about.className = 'recommendation_about';
+    div_recommendation.appendChild(div_recommendation_about);
 
-   div_recommendation_about.appendChild(div_datetime_create);
-   div_datetime_create.className = 'recommendation_datetime_create';
-   div_datetime_create.innerHTML = '<b>Дата/Время создания: </b>' + datetime_create;
+    div_recommendation_about.className = 'recommendation_about';
 
-   div_recommendation_about.appendChild(div_description);
-   div_description.className = 'recommendation_description';
-   div_description.innerHTML = '<b>Описание рекомендации: </b>' + description + ((is_neural) ? ' (Сделано при помощи ИИ)' : ' (Сделано преподавателем)');
+    div_recommendation_about.appendChild(div_datetime_create);
+    div_datetime_create.className = 'recommendation_datetime_create';
+    div_datetime_create.innerHTML = '<b>Дата/Время создания: </b>' + datetime_create;
 
-   return div_recommendation;
+    div_recommendation_about.appendChild(div_description);
+    div_description.className = 'recommendation_description';
+    div_description.innerHTML = '<b>Описание рекомендации: </b>' + description + ((is_neural) ? ' (Сделано при помощи ИИ)' : ' (Сделано преподавателем)');
+
+    return div_recommendation;
 }
 
 function get_recommendations() {
@@ -529,7 +534,8 @@ function get_recommendations() {
                             recommendations[i].recommendation_guid,
                             recommendations[i].description,
                             recommendations[i].datetime_create,
-                            recommendations[i].is_neural
+                            recommendations[i].is_neural,
+                            recommendations[i].is_accepted
                         )
                     );
                 }
