@@ -481,9 +481,9 @@ header{
     justify-content: center;
     flex-direction: column;
     margin-bottom: 0.9rem;
-    padding: 0.8rem;
+    padding: 0.5rem;
     border-radius: 1rem;
-    background: #f9f9f9;
+    background: #ffffff;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
     gap: 1%;
 }
@@ -612,12 +612,8 @@ header{
     scale: 1.03;
 }
 
+.btn_description_recommendation_update:hover,
 .btn_recommendation_update:hover {
-    background-color: rgba(70, 199, 63, 0.35);
-    scale: 1.02;
-}
-
-.btn_description_recommendation_update:hover {
     background-color: rgba(70, 199, 63, 0.35);
     scale: 1.01;
 }
