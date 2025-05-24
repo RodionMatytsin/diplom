@@ -341,12 +341,25 @@ header{
 .personal_achievements_schoolchildren,
 .generated_recommendations_schoolchildren,
 .generated_recommendations_schoolchildren_suggested,
+.generated_recommendations_schoolchildren_suggested_create_name,
 .passed_tests_schoolchildren {
     font-size: 1.75rem;
     text-align: center;
     margin: 0.5% 0 1.5% 0;
     color: #000000;
     font-weight: bold;
+}
+
+.generated_recommendations_schoolchildren_suggested_form_create_recommendation {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 1.5% 0 1.5% 20%;
+    padding: 0.8%;
+    border: 1px solid #ced4da;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    border-radius: 1.5rem;
+    width: 60%;
 }
 
 .personal_achievements_schoolchildren_list,
@@ -571,7 +584,8 @@ header{
 .btn_update_estimation_to_schoolchildren,
 .btn_recommendation_reject,
 .btn_recommendation_accept,
-.btn_recommendation_update {
+.btn_recommendation_update,
+.btn_recommendation_create {
     flex: 1;
     text-align: center;
 }
@@ -595,6 +609,7 @@ header{
 
 .btn_recommendation_accept,
 .btn_recommendation_update,
+.btn_recommendation_create,
 .btn_description_recommendation_update {
     background-color: rgba(70, 199, 63, 0.25);
     color: #46C73F;
@@ -613,7 +628,8 @@ header{
 }
 
 .btn_description_recommendation_update:hover,
-.btn_recommendation_update:hover {
+.btn_recommendation_update:hover,
+.btn_recommendation_create:hover {
     background-color: rgba(70, 199, 63, 0.35);
     scale: 1.01;
 }
