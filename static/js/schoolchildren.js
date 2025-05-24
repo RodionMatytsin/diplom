@@ -333,22 +333,17 @@ function create_achievement_for_dom(
     datetime_create,
     is_accepted = false
 ) {
-    let div_achievement = document.createElement('div'),
-        div_achievement_about = document.createElement('div'),
+    let div_achievement_about = document.createElement('div'),
         div_description = document.createElement('div'),
         div_datetime_create = document.createElement('div'),
         img_attachment_guid = document.createElement('img'),
         div_content_achievement = document.createElement('div');
 
-    div_achievement.id = achievement_guid;
-    div_achievement.className = 'achievement';
+    div_achievement_about.id = achievement_guid;
+    div_achievement_about.className = 'achievement_about';
     if (is_accepted === true) {
         div_achievement_about.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 35%)';
     }
-
-    div_achievement.appendChild(div_achievement_about);
-
-    div_achievement_about.className = 'achievement';
 
     div_achievement_about.appendChild(div_datetime_create);
     div_datetime_create.className = 'achievement_datetime_create';
@@ -371,7 +366,7 @@ function create_achievement_for_dom(
         openModal(this.src);
     };
 
-    return div_achievement;
+    return div_achievement_about;
 }
 
 function get_achievements() {
@@ -483,20 +478,15 @@ function create_recommendation_class_for_dom(
     is_neural = false,
     is_accepted = false
 ) {
-    let div_recommendation = document.createElement('div'),
-       div_recommendation_about = document.createElement('div'),
-       div_description = document.createElement('div'),
-       div_datetime_create = document.createElement('div');
+    let div_recommendation_about = document.createElement('div'),
+        div_description = document.createElement('div'),
+        div_datetime_create = document.createElement('div');
 
-    div_recommendation.id = recommendation_guid;
-    div_recommendation.className = 'recommendation';
-    if (is_accepted === true) {
-        div_recommendation.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 35%)';
-    }
-
-    div_recommendation.appendChild(div_recommendation_about);
-
+    div_recommendation_about.id = recommendation_guid;
     div_recommendation_about.className = 'recommendation_about';
+    if (is_accepted === true) {
+        div_recommendation_about.style.background = 'linear-gradient(127deg, rgba(70, 199, 63, 0.55) 0%, #ffffff 35%)';
+    }
 
     div_recommendation_about.appendChild(div_datetime_create);
     div_datetime_create.className = 'recommendation_datetime_create';
@@ -506,7 +496,7 @@ function create_recommendation_class_for_dom(
     div_description.className = 'recommendation_description';
     div_description.innerHTML = '<b>Описание рекомендации: </b>' + description + ((is_neural) ? ' (Сделано при помощи ИИ)' : ' (Сделано преподавателем)');
 
-    return div_recommendation;
+    return div_recommendation_about;
 }
 
 function get_recommendations() {

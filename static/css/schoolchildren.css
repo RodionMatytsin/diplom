@@ -388,20 +388,13 @@ header{
 }
 
 
-.recommendation {
-    margin: 0.25% 0;
-    background: #fff;
-    border-radius: 0.8rem;
-    padding: 0.5%;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    width: 45%;
-}
-
 .recommendation_about {
     display: flex;
     flex-direction: column;
     padding: 0.5%;
-    width: 100%;
+    width: 45%;
+    border-radius: 0.8rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .recommendation_datetime_create{
@@ -448,17 +441,12 @@ header{
     font-size: 1vw;
 }
 
-.achievement {
+.achievement_about {
     margin: 1.5vh 0;
     background: #fff;
     border-radius: 0.8rem;
-    padding: 1.5%;
+    padding: 1%;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.achievement_about {
-    padding: 0.5%;
-    width: 100%;
 }
 
 .achievement_datetime_create {
