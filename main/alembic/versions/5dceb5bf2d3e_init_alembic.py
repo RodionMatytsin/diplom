@@ -1,8 +1,8 @@
 """init alembic
 
-Revision ID: da52af5bb2f2
+Revision ID: 5dceb5bf2d3e
 Revises: 
-Create Date: 2025-05-23 23:51:56.476532
+Create Date: 2025-05-26 01:33:55.056330
 
 """
 from typing import Sequence, Union
@@ -11,7 +11,7 @@ from alembic import op
 import sqlalchemy as sa
 
 
-revision: str = 'da52af5bb2f2'
+revision: str = '5dceb5bf2d3e'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -105,58 +105,34 @@ def upgrade() -> None:
     op.create_index(op.f('ix_classes_guid'), 'classes', ['guid'], unique=True)
 
     op.create_table(
-        'questions',
+        'factors',
         sa.Column('id', sa.SmallInteger(), nullable=False),
         sa.Column('name', sa.String(length=255), nullable=False),
-        sa.Column('amount_of_points', sa.SmallInteger(), server_default=sa.text('1'), nullable=False),
+        sa.Column('weight_factor', sa.Float(), nullable=False),
         sa.Column(
             'datetime_create',
             sa.DateTime(),
             server_default=sa.text("(now() AT TIME ZONE 'Asia/Novosibirsk')"),
             nullable=False
         ),
+        sa.Column('for_the_teacher', sa.Boolean(), server_default=sa.text('False'), nullable=False),
         sa.PrimaryKeyConstraint('id')
     )
 
-    op.execute(
-        'insert into questions (name, amount_of_points) values (\'Какой предмет или область знаний вам наиболее интересна? '
-        'Оцените свой интерес по шкале от 1 до 10, где 1 — неинтересно, а 10 — очень интересно.\', 10)')
-    op.execute(
-        'insert into questions (name, amount_of_points) values (\'Насколько вы мотивированы учиться и достигать своих целей? '
-        'Оцените свою внутреннюю мотивацию по шкале от 1 до 10.\', 10)')
-    op.execute(
-        'insert into questions (name, amount_of_points) values (\'Насколько вы уверены в своих учебных целях и планах на будущее? '
-        'Оцените свою определенность по шкале от 1 до 10.\', 10)')
-    op.execute(
-        'insert into questions (name, amount_of_points) values (\'Как вы оцениваете условия, в которых учитесь? Оцените качество '
-        'комфорта в учебной среде по шкале от 1 до 5.\', 5)')
-    op.execute(
-        'insert into questions (name, amount_of_points) values (\'Как вы оцениваете свои финансовые возможности для дополнительных '
-        'занятий и кружков? Оцените по шкале от 1 до 5, где 1 — очень ограниченные возможности.\', 5)')
-    op.execute(
-        'insert into questions (name, amount_of_points) values (\'Как вы оцениваете свои отношения с преподавателями и одноклассниками? '
-        'Оцените по шкале от 1 до 5, где 1 — плохие отношения.\', 5)')
-    op.execute(
-        'insert into questions (name, amount_of_points) values (\'Как вы оцениваете качество преподавания в вашей школе? Оцените по шкале '
-        'от 1 до 10, где 1 — очень плохо, 10 — отлично.\', 10)')
-    op.execute(
-        'insert into questions (name, amount_of_points) values (\'Как вы оцениваете качество учебных материалов и методик, используемых '
-        'в школе? Оцените по шкале от 1 до 10.\', 10)')
-    op.execute(
-        'insert into questions (name, amount_of_points) values (\'Как вы оцениваете наличие необходимого оборудования и материалов для '
-        'обучения? Оцените по шкале от 1 до 5.\', 5)')
-    op.execute(
-        'insert into questions (name, amount_of_points) values (\'Как вы оцениваете престиж вашей школы или учебной программы? '
-        'Оцените по шкале от 1 до 5, где 1 — низкий престиж.\', 5)')
-    op.execute(
-        'insert into questions (name, amount_of_points) values (\'Как вы оцениваете свои возможности участия в дополнительных занятиях '
-        'или кружках? Оцените по шкале от 1 до 10.\', 10)')
-    op.execute(
-        'insert into questions (name, amount_of_points) values (\'Как вы оцениваете свои личные таланты и способности? '
-        'Оцените по шкале от 1 до 10, где 1 — низкие способности.\', 10)')
-    op.execute(
-        'insert into questions (name, amount_of_points) values (\'Как вы оцениваете свои цели и планы на будущее? Оцените по шкале '
-        'от 1 до 5, где 1 — нет четких целей.\', 5)')
+    op.execute('insert into factors (name, weight_factor) values (\'Успеваемость школьника\', 0.1)')
+    op.execute('insert into factors (name, weight_factor) values (\'Интерес школьника\', 0.15)')
+    op.execute('insert into factors (name, weight_factor) values (\'Внутренняя мотивация в работе\', 0.1)')
+    op.execute('insert into factors (name, weight_factor) values (\'Определенность\', 0.05)')
+    op.execute('insert into factors (name, weight_factor) values (\'Качество комфорта\', 0.05)')
+    op.execute('insert into factors (name, weight_factor) values (\'Финансовые возможности\', 0.05)')
+    op.execute('insert into factors (name, weight_factor) values (\'Взаимоотношения\', 0.05)')
+    op.execute('insert into factors (name, weight_factor) values (\'Качество преподавания\', 0.05)')
+    op.execute('insert into factors (name, weight_factor) values (\'Качество методического обеспечения занятий\', 0.05)')
+    op.execute('insert into factors (name, weight_factor) values (\'Качество материально-технического обеспечения\', 0.05)')
+    op.execute('insert into factors (name, weight_factor) values (\'Престиж\', 0.05)')
+    op.execute('insert into factors (name, weight_factor) values (\'Дополнительные занятия и кружки\', 0.1)')
+    op.execute('insert into factors (name, weight_factor) values (\'Персональные возможности\', 0.1)')
+    op.execute('insert into factors (name, weight_factor) values (\'Цели и планы школьника\', 0.05)')
 
     op.create_table(
         'users',
@@ -201,7 +177,7 @@ def upgrade() -> None:
             sa.UUID(as_uuid=False),
             server_default=sa.text("uuid('00000000-0000-0000-0000-000000000000')"),
             autoincrement=False,
-            nullable=True
+            nullable=False
         ),
         sa.Column('description', sa.Text(), nullable=False),
         sa.Column(
@@ -212,12 +188,60 @@ def upgrade() -> None:
         ),
         sa.Column('is_accepted', sa.Boolean(), server_default=sa.text('False'), nullable=False),
         sa.Column('is_deleted', sa.Boolean(), server_default=sa.text('False'), nullable=False),
+        sa.ForeignKeyConstraint(['attachment_guid'], ['attachments.guid'], ),
         sa.ForeignKeyConstraint(['user_guid'], ['users.guid'], ),
         sa.PrimaryKeyConstraint('guid')
     )
     op.create_index(op.f('ix_achievements_datetime_create'), 'achievements', ['datetime_create'], unique=False)
     op.create_index(op.f('ix_achievements_guid'), 'achievements', ['guid'], unique=True)
     op.create_index(op.f('ix_achievements_user_guid'), 'achievements', ['user_guid'], unique=False)
+
+    op.create_table(
+        'questions',
+        sa.Column('id', sa.SmallInteger(), nullable=False),
+        sa.Column('factor_id', sa.SmallInteger(), nullable=False),
+        sa.Column('name', sa.String(length=255), nullable=False),
+        sa.Column('amount_of_points', sa.SmallInteger(), server_default=sa.text('1'), nullable=False),
+        sa.Column(
+            'datetime_create',
+            sa.DateTime(),
+            server_default=sa.text("(now() AT TIME ZONE 'Asia/Novosibirsk')"),
+            nullable=False
+        ),
+        sa.ForeignKeyConstraint(['factor_id'], ['factors.id'], ),
+        sa.PrimaryKeyConstraint('id')
+    )
+
+    op.execute(
+        'insert into questions (factor_id, name, amount_of_points) values (4, \'Насколько вы уверены в своих учебных целях и планах на будущее? '
+        'Оцените свою определенность по шкале от 1 до 10.\', 10)')
+    op.execute(
+        'insert into questions (factor_id, name, amount_of_points) values (5, \'Как вы оцениваете условия, в которых учитесь? Оцените качество '
+        'комфорта в учебной среде по шкале от 1 до 5.\', 5)')
+    op.execute(
+        'insert into questions (factor_id, name, amount_of_points) values (6, \'Как вы оцениваете свои финансовые возможности для дополнительных '
+        'занятий и кружков? Оцените по шкале от 1 до 5, где 1 — очень ограниченные возможности.\', 5)')
+    op.execute(
+        'insert into questions (factor_id, name, amount_of_points) values (8, \'Как вы оцениваете качество преподавания в вашей школе? Оцените по шкале '
+        'от 1 до 10, где 1 — очень плохо, 10 — отлично.\', 10)')
+    op.execute(
+        'insert into questions (factor_id, name, amount_of_points) values (9, \'Как вы оцениваете качество учебных материалов и методик, используемых '
+        'в школе? Оцените по шкале от 1 до 10.\', 10)')
+    op.execute(
+        'insert into questions (factor_id, name, amount_of_points) values (10, \'Как вы оцениваете наличие необходимого оборудования и материалов для '
+        'обучения? Оцените по шкале от 1 до 5.\', 5)')
+    op.execute(
+        'insert into questions (factor_id, name, amount_of_points) values (11, \'Как вы оцениваете престиж вашей школы или учебной программы? '
+        'Оцените по шкале от 1 до 5, где 1 — низкий престиж.\', 5)')
+    op.execute(
+        'insert into questions (factor_id, name, amount_of_points) values (12, \'Как вы оцениваете свои возможности участия в дополнительных занятиях '
+        'или кружках? Оцените по шкале от 1 до 10.\', 10)')
+    op.execute(
+        'insert into questions (factor_id, name, amount_of_points) values (13, \'Как вы оцениваете свои личные таланты и способности? '
+        'Оцените по шкале от 1 до 10, где 1 — низкие способности.\', 10)')
+    op.execute(
+        'insert into questions (factor_id, name, amount_of_points) values (14, \'Как вы оцениваете свои цели и планы на будущее? Оцените по шкале '
+        'от 1 до 5, где 1 — нет четких целей.\', 5)')
 
     op.create_table(
         'recommendations',
@@ -374,6 +398,7 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_recommendations_guid'), table_name='recommendations')
     op.drop_index(op.f('ix_recommendations_datetime_create'), table_name='recommendations')
     op.drop_table('recommendations')
+    op.drop_table('questions')
     op.drop_index(op.f('ix_achievements_user_guid'), table_name='achievements')
     op.drop_index(op.f('ix_achievements_guid'), table_name='achievements')
     op.drop_index(op.f('ix_achievements_datetime_create'), table_name='achievements')
@@ -381,7 +406,7 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_users_guid'), table_name='users')
     op.drop_index(op.f('ix_users_datetime_create'), table_name='users')
     op.drop_table('users')
-    op.drop_table('questions')
+    op.drop_table('factors')
     op.drop_index(op.f('ix_classes_guid'), table_name='classes')
     op.drop_index(op.f('ix_classes_datetime_create'), table_name='classes')
     op.drop_table('classes')

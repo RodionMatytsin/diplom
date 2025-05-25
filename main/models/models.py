@@ -62,6 +62,21 @@ class Attachments(Base):
     is_deleted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
 
 
+# Таблица в которой хранятся наименования факторов и их весовые коэффициенты
+class Factors(Base):
+    __tablename__ = 'factors'
+    id = Column(SmallInteger, primary_key=True)
+    name = Column(String(length=255), nullable=False)
+    weight_factor = Column(Float, nullable=False)
+    datetime_create = Column(
+        DateTime,
+        default=func.now(),
+        server_default=text('(now() AT TIME ZONE \'Asia/Novosibirsk\')'),
+        nullable=False
+    )
+    for_the_teacher = Column(Boolean, default=False, nullable=False, server_default=text('False'))
+
+
 # Таблица достижений школьников
 class Achievements(Base):
     __tablename__ = 'achievements'
@@ -77,7 +92,8 @@ class Achievements(Base):
     user_guid = Column(UUID(as_uuid=False), ForeignKey(Users.guid), index=True, nullable=False)
     attachment_guid = Column(
         UUID(as_uuid=False),
-        nullable=True,
+        ForeignKey(Attachments.guid),
+        nullable=False,
         server_default=text('uuid(\'00000000-0000-0000-0000-000000000000\')'),
         autoincrement=False,
         default='00000000-0000-0000-0000-000000000000'
@@ -161,6 +177,7 @@ class TeacherClasses(Base):
 class Questions(Base):
     __tablename__ = 'questions'
     id = Column(SmallInteger, primary_key=True)
+    factor_id = Column(SmallInteger, ForeignKey(Factors.id), nullable=False)
     name = Column(String(length=255), nullable=False)
     amount_of_points = Column(SmallInteger, default=1, nullable=False, server_default=text('1'))
     datetime_create = Column(
