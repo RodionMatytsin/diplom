@@ -263,7 +263,7 @@ function create_generated_recommendation_for_teacher(
 
     div_recommendation_about.appendChild(div_description);
     div_description.className = 'recommendation_description';
-    div_description.innerHTML = '<b>Описание рекомендации: </b>' + description + ((is_neural) ? ' (Сделано при помощи ИИ)' : ' (Сделано преподавателем)');
+    div_description.innerHTML = '<b>Описание рекомендации: </b>' + description + ((is_neural) ? ' (Сделано при помощи GigaChat)' : ' (Сделано преподавателем)');
 
     return div_recommendation_about;
 }
@@ -338,7 +338,7 @@ function create_generated_recommendation_suggested_for_teacher(
 
     div_recommendation_suggested_about.appendChild(div_description_suggested);
     div_description_suggested.className = 'recommendation_description_suggested';
-    div_description_suggested.innerHTML = '<b>Описание рекомендации: </b>' + description  + ((is_neural) ? ' (Сделано при помощи ИИ)' : ' (Сделано преподавателем)');
+    div_description_suggested.innerHTML = '<b>Описание рекомендации: </b>' + description  + ((is_neural) ? ' (Сделано при помощи GigaChat)' : ' (Сделано преподавателем)');
 
     div_recommendation_suggested_about.appendChild(btn_recommendation_update);
     btn_recommendation_update.className = 'btn_recommendation_update';

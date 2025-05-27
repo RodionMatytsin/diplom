@@ -206,19 +206,19 @@ async def generated_recommendation_schoolchildren(
             return (value - min_value) / (max_value - min_value)
 
         normalized_grade = normalize(int(schoolchildren_class.estimation), 2, 5) * 0.1
-        normalized_interest = normalize(int(answers_test[0].score), 1, 10) * 0.15
-        normalized_motivation = normalize(int(answers_test[1].score), 1, 10) * 0.1
-        normalized_definiteness = normalize(int(answers_test[2].score), 1, 10) * 0.05
-        normalized_comfort = normalize(int(answers_test[3].score), 1, 5) * 0.05
-        normalized_financial = normalize(int(answers_test[4].score), 1, 5) * 0.05
-        normalized_relationships = normalize(int(answers_test[5].score), 1, 5) * 0.05
-        normalized_teaching_quality = normalize(int(answers_test[6].score), 1, 10) * 0.05
-        normalized_methodical_quality = normalize(int(answers_test[7].score), 1, 10) * 0.05
-        normalized_material_quality = normalize(int(answers_test[8].score), 1, 5) * 0.05
-        normalized_prestige = normalize(int(answers_test[9].score), 1, 5) * 0.05
-        normalized_extracurricular = normalize(int(answers_test[10].score), 1, 10) * 0.1
-        normalized_personal_capabilities = normalize(int(answers_test[11].score), 1, 10) * 0.1
-        normalized_goals = normalize(int(answers_test[12].score), 1, 5) * 0.05
+        normalized_interest = normalize(7, 1, 10) * 0.15
+        normalized_motivation = normalize(8, 1, 10) * 0.1
+        normalized_definiteness = normalize(int(answers_test[0].score), 1, 10) * 0.05
+        normalized_comfort = normalize(int(answers_test[1].score), 1, 5) * 0.05
+        normalized_financial = normalize(int(answers_test[2].score), 1, 5) * 0.05
+        normalized_relationships = normalize(8, 1, 5) * 0.05
+        normalized_teaching_quality = normalize(int(answers_test[3].score), 1, 10) * 0.05
+        normalized_methodical_quality = normalize(int(answers_test[4].score), 1, 10) * 0.05
+        normalized_material_quality = normalize(int(answers_test[5].score), 1, 5) * 0.05
+        normalized_prestige = normalize(int(answers_test[6].score), 1, 5) * 0.05
+        normalized_extracurricular = normalize(int(answers_test[7].score), 1, 10) * 0.1
+        normalized_personal_capabilities = normalize(int(answers_test[8].score), 1, 10) * 0.1
+        normalized_goals = normalize(int(answers_test[9].score), 1, 5) * 0.05
 
         target_function = (
                 normalized_grade + normalized_interest + normalized_motivation - normalized_definiteness +
