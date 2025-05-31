@@ -22,11 +22,12 @@ async def get_schoolchildren_classes(
         user_guid: UUID | str | None = None,
         class_guid: UUID | str | None = None
 ) -> tuple[SchoolchildrenClassRegular] | tuple:
-    from main.models import engine, Classes, CRUD, SessionHandler
+    from main.models import engine, Classes, SchoolchildrenScores, CRUD, SessionHandler
 
     where_ = [
         Classes.is_deleted == False,
         SchoolchildrenClasses.is_deleted == False,
+        SchoolchildrenScores.factor_id == 1
     ]
     if user_guid is not None:
         where_.append(SchoolchildrenClasses.user_guid == user_guid)
@@ -39,10 +40,11 @@ async def get_schoolchildren_classes(
         _select=[
             SchoolchildrenClasses.class_guid,
             Classes.name.label('name_class'),
-            SchoolchildrenClasses.estimation
+            SchoolchildrenScores.estimation
         ],
         _join=[
-            [Classes, Classes.guid == SchoolchildrenClasses.class_guid]
+            [Classes, Classes.guid == SchoolchildrenClasses.class_guid],
+            [SchoolchildrenScores, SchoolchildrenScores.schoolchildren_class_guid == SchoolchildrenClasses.guid]
         ],
         _where=where_,
         _group_by=[],
@@ -86,7 +88,7 @@ async def get_schoolboy(
         from fastapi import HTTPException
         raise HTTPException(
             status_code=409,
-            detail={'result': False, 'message': 'К сожалению, в этом классе нет такой записи об ученике!', 'data': {}}
+            detail={'result': False, 'message': 'К сожалению, в этом классе нет такой записи об школьнике!', 'data': {}}
         )
 
     return schoolchildren

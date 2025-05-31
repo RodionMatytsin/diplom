@@ -354,7 +354,7 @@ async def admin_add_user_to_class(
 
         return "Вы успешно назначили преподавателя для этого учебного класса!"
     else:
-        from main.models import SchoolchildrenClasses
+        from main.models import SchoolchildrenClasses, SchoolchildrenScores, Factors
         from main.utils.schoolchildren_classes import get_schoolboy
 
         if await get_schoolboy(class_guid=class_guid, user_guid=user_guid, with_exception=False) is not None:
@@ -368,11 +368,26 @@ async def admin_add_user_to_class(
                 }
             )
 
-        await CRUD(
+        current_schoolchildren_class: SchoolchildrenClasses | object | None = await CRUD(
             session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
         ).create(
             _values=dict(class_guid=class_guid, user_guid=user_guid)
         )
+
+        current_factors: list[Factors] | object | None = await CRUD(
+            session=SessionHandler.create(engine=engine), model=Factors
+        ).read(
+            _where=[Factors.for_the_teacher == True], _all=True
+        )
+        for factor in current_factors:
+            await CRUD(
+                session=SessionHandler.create(engine=engine), model=SchoolchildrenScores
+            ).create(
+                _values=dict(
+                    schoolchildren_class_guid=current_schoolchildren_class.guid,
+                    factor_id=factor.id
+                )
+            )
 
         return "Вы успешно добавили школьника в этот учебный класс!"
 

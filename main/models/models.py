@@ -148,8 +148,6 @@ class SchoolchildrenClasses(Base):
     )
     class_guid = Column(UUID(as_uuid=False), ForeignKey(Classes.guid), index=True, nullable=False)
     user_guid = Column(UUID(as_uuid=False), ForeignKey(Users.guid), index=True, nullable=False)
-    estimation = Column(Float, nullable=True)
-    datetime_estimation_update = Column(DateTime, nullable=True)
     datetime_create = Column(
         DateTime,
         default=func.now(),
@@ -158,6 +156,35 @@ class SchoolchildrenClasses(Base):
         index=True
     )
     is_deleted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
+
+
+# Таблица в которой хранятся баллы школьника по таким факторам как:
+class SchoolchildrenScores(Base):
+    __tablename__ = 'schoolchildren_scores'
+    guid = Column(
+        UUID(as_uuid=False),
+        unique=True,
+        nullable=False,
+        index=True,
+        server_default=text('uuid7()'),
+        primary_key=True,
+        autoincrement=False
+    )
+    schoolchildren_class_guid = Column(
+        UUID(as_uuid=False),
+        ForeignKey(SchoolchildrenClasses.guid),
+        index=True,
+        nullable=False
+    )
+    factor_id = Column(SmallInteger, ForeignKey(Factors.id), nullable=False)
+    estimation = Column(Float, nullable=True)
+    datetime_estimation_update = Column(DateTime, nullable=True)
+    datetime_create = Column(
+        DateTime,
+        default=func.now(),
+        server_default=text('(now() AT TIME ZONE \'Asia/Novosibirsk\')'),
+        nullable=False
+    )
 
 
 # Таблица в которой хранится инфа об классах, в которых состоят преподаватели

@@ -25,7 +25,9 @@ async def get_questions() -> tuple[QuestionRegular] | tuple:
         _join=[
             [Factors, Factors.id == Questions.factor_id]
         ],
-        _where=[],
+        _where=[
+            Factors.for_the_teacher == False
+        ],
         _group_by=[],
         _order_by=[Questions.id, Questions.datetime_create],
         _all=True
@@ -81,7 +83,8 @@ async def get_tests(user_guid: UUID | str) -> tuple[TestRegular] | tuple:
                 [Factors, Factors.id == Questions.factor_id]
             ],
             _where=[
-                AnswersTests.test_guid == test.guid
+                AnswersTests.test_guid == test.guid,
+                Factors.for_the_teacher == False
             ],
             _group_by=[],
             _order_by=[AnswersTests.datetime_create],

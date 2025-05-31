@@ -117,13 +117,14 @@ document.getElementById("close_positions_wrapper_teacher_class_with_schoolchildr
     document.getElementById("teacher_class_with_schoolchildren_list").innerText = '';
 });
 
-function update_estimation_to_schoolchildren(schoolchildren_class_guid, estimation) {
+function update_estimation_to_schoolchildren(schoolchildren_class_guid, schoolchildren_score_guid, estimation) {
     sendRequest(
         'PATCH',
         '/api/teacher_classes/estimation',
         true,
         {
             "schoolchildren_class_guid": schoolchildren_class_guid,
+            "schoolchildren_score_guid": schoolchildren_score_guid,
             "estimation": Number(estimation)
         },
         function (data) {
@@ -909,6 +910,7 @@ function get_teacher_class_with_schoolchildren(class_guid) {
                     btn_update_estimation_to_schoolchildren.onclick = function() {
                         update_estimation_to_schoolchildren(
                             schoolchildren[j].schoolchildren_class_guid,
+                            schoolchildren[j].schoolchildren_score_guid,
                             input_estimation.value
                         );
                     };

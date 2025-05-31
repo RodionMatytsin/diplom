@@ -18,6 +18,7 @@ class TeacherClassDefault(DefaultResponse):
 
 class Schoolchildren(BaseModel):
     schoolchildren_class_guid: UUID | str
+    schoolchildren_score_guid: UUID | str
     user_guid: UUID | str
     user_fio: str
     estimation: float | None
@@ -36,6 +37,7 @@ class TeacherClassWithSchoolchildrenDefault(DefaultResponse):
 
 class EstimationUpdate(BaseModel):
     schoolchildren_class_guid: UUID | str
+    schoolchildren_score_guid: UUID | str
     estimation: float | None
 
     @field_validator('estimation')

@@ -140,12 +140,20 @@ async def generated_recommendation_schoolchildren(
         test_guid: UUID | str,
         schoolchildren_class_guid: UUID | str
 ) -> str:
-    from main.models import engine, Tests, AnswersTests, SchoolchildrenClasses, Questions, CRUD, SessionHandler
+    from main.models import engine, Tests, AnswersTests, SchoolchildrenClasses, SchoolchildrenScores,  Questions, \
+        CRUD, SessionHandler
     from fastapi import HTTPException
 
     current_schoolchildren_class: SchoolchildrenClasses | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
-    ).read(
+    ).extended_query(
+        _select=[
+            SchoolchildrenClasses.user_guid,
+            SchoolchildrenScores.estimation
+        ],
+        _join=[
+            [SchoolchildrenScores, SchoolchildrenScores.schoolchildren_class_guid == SchoolchildrenClasses.guid]
+        ],
         _where=[
             SchoolchildrenClasses.guid == schoolchildren_class_guid,
             SchoolchildrenClasses.is_deleted == False

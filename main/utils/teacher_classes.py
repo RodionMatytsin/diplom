@@ -66,7 +66,7 @@ async def required_teacher_access(current_user: UserRegular):
 async def get_schoolchildren(
         class_guid: UUID | str
 ) -> tuple[SchoolchildrenClasses] | object | None:
-    from main.models import engine, Users, CRUD, SessionHandler
+    from main.models import engine, Users, SchoolchildrenScores, CRUD, SessionHandler
 
     schoolchildren: tuple[SchoolchildrenClasses] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
@@ -75,15 +75,18 @@ async def get_schoolchildren(
             SchoolchildrenClasses.guid,
             SchoolchildrenClasses.user_guid,
             Users.fio.label('user_fio'),
-            SchoolchildrenClasses.estimation,
-            SchoolchildrenClasses.datetime_estimation_update
+            SchoolchildrenScores.guid.label('schoolchildren_score_guid'),
+            SchoolchildrenScores.estimation,
+            SchoolchildrenScores.datetime_estimation_update
         ],
         _join=[
-            [Users, Users.guid == SchoolchildrenClasses.user_guid]
+            [Users, Users.guid == SchoolchildrenClasses.user_guid],
+            [SchoolchildrenScores, SchoolchildrenScores.schoolchildren_class_guid == SchoolchildrenClasses.guid]
         ],
         _where=[
             SchoolchildrenClasses.is_deleted == False,
-            SchoolchildrenClasses.class_guid == class_guid
+            SchoolchildrenClasses.class_guid == class_guid,
+            SchoolchildrenScores.factor_id == 1
         ],
         _group_by=[],
         _order_by=[Users.fio],
@@ -105,6 +108,7 @@ async def serialize_teacher_class_with_schoolchildren(
         schoolchildren=tuple(
             Schoolchildren(
                 schoolchildren_class_guid=i.guid,
+                schoolchildren_score_guid=i.schoolchildren_score_guid,
                 user_guid=i.user_guid,
                 user_fio=i.user_fio,
                 estimation=i.estimation,
@@ -161,7 +165,7 @@ async def get_teacher_class_with_schoolchildren(
 
 
 async def update_estimation_to_schoolchildren(estimation_update: EstimationUpdate) -> str:
-    from main.models import engine, CRUD, SessionHandler
+    from main.models import engine, CRUD, SchoolchildrenScores, SessionHandler
     from datetime import datetime
 
     schoolboy: SchoolchildrenClasses | object | None = await CRUD(
@@ -186,9 +190,12 @@ async def update_estimation_to_schoolchildren(estimation_update: EstimationUpdat
         )
 
     await CRUD(
-        session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
+        session=SessionHandler.create(engine=engine), model=SchoolchildrenScores
     ).update(
-        _where=[SchoolchildrenClasses.guid == schoolboy.guid],
+        _where=[
+            SchoolchildrenScores.guid == estimation_update.schoolchildren_score_guid,
+            SchoolchildrenScores.schoolchildren_class_guid == schoolboy.guid
+        ],
         _values=dict(
             estimation=estimation_update.estimation,
             datetime_estimation_update=datetime.now()

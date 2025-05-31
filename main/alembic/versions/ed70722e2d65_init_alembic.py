@@ -1,8 +1,8 @@
 """init alembic
 
-Revision ID: 5dceb5bf2d3e
+Revision ID: ed70722e2d65
 Revises: 
-Create Date: 2025-05-26 01:33:55.056330
+Create Date: 2025-05-31 14:10:07.718882
 
 """
 from typing import Sequence, Union
@@ -11,7 +11,7 @@ from alembic import op
 import sqlalchemy as sa
 
 
-revision: str = '5dceb5bf2d3e'
+revision: str = 'ed70722e2d65'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -120,20 +120,20 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint('id')
     )
 
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Успеваемость школьника\', 0.1, 5)')
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Интерес школьника\', 0.15, 10)')
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Внутренняя мотивация в работе\', 0.1, 10)')
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Определенность\', 0.05, 10)')
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Качество комфорта\', 0.05, 5)')
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Финансовые возможности\', 0.05, 5)')
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Взаимоотношения\', 0.05, 5)')
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Качество преподавания\', 0.05, 10)')
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Качество методического обеспечения занятий\', 0.05, 10)')
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Качество материально-технического обеспечения\', 0.05, 5)')
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Престиж\', 0.05, 5)')
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Дополнительные занятия и кружки\', 0.1, 10)')
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Персональные возможности\', 0.1, 10)')
-    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Цели и планы школьника\', 0.05, 5)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Успеваемость школьника\', 0.1, 5, true)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Интерес школьника\', 0.15, 10, true)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Внутренняя мотивация в работе\', 0.1, 10, true)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Определенность\', 0.05, 10, false)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Качество комфорта\', 0.05, 5, false)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Финансовые возможности\', 0.05, 5, false)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Взаимоотношения\', 0.05, 5, true)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Качество преподавания\', 0.05, 10, false)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Качество методического обеспечения занятий\', 0.05, 10, false)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Качество материально-технического обеспечения\', 0.05, 5, false)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Престиж\', 0.05, 5, false)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Дополнительные занятия и кружки\', 0.1, 10, false)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Персональные возможности\', 0.1, 10, false)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points, for_the_teacher) values (\'Цели и планы школьника\', 0.05, 5, false)')
 
     op.create_table(
         'users',
@@ -281,8 +281,6 @@ def upgrade() -> None:
         ),
         sa.Column('class_guid', sa.UUID(as_uuid=False), nullable=False),
         sa.Column('user_guid', sa.UUID(as_uuid=False), nullable=False),
-        sa.Column('estimation', sa.Float(), nullable=True),
-        sa.Column('datetime_estimation_update', sa.DateTime(), nullable=True),
         sa.Column(
             'datetime_create',
             sa.DateTime(),
@@ -295,16 +293,10 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint('guid')
     )
     op.create_index(
-        op.f('ix_schoolchildren_classes_class_guid'),
-        'schoolchildren_classes',
-        ['class_guid'],
-        unique=False
+        op.f('ix_schoolchildren_classes_class_guid'), 'schoolchildren_classes', ['class_guid'], unique=False
     )
     op.create_index(
-        op.f('ix_schoolchildren_classes_datetime_create'),
-        'schoolchildren_classes',
-        ['datetime_create'],
-        unique=False
+        op.f('ix_schoolchildren_classes_datetime_create'), 'schoolchildren_classes', ['datetime_create'], unique=False
     )
     op.create_index(op.f('ix_schoolchildren_classes_guid'), 'schoolchildren_classes', ['guid'], unique=True)
     op.create_index(op.f('ix_schoolchildren_classes_user_guid'), 'schoolchildren_classes', ['user_guid'], unique=False)
@@ -376,9 +368,43 @@ def upgrade() -> None:
     op.create_index(op.f('ix_answers_tests_guid'), 'answers_tests', ['guid'], unique=True)
     op.create_index(op.f('ix_answers_tests_test_guid'), 'answers_tests', ['test_guid'], unique=False)
 
+    op.create_table(
+        'schoolchildren_scores',
+        sa.Column(
+            'guid',
+            sa.UUID(as_uuid=False),
+            server_default=sa.text('uuid7()'),
+            autoincrement=False,
+            nullable=False
+        ),
+        sa.Column('schoolchildren_class_guid', sa.UUID(as_uuid=False), nullable=False),
+        sa.Column('factor_id', sa.SmallInteger(), nullable=False),
+        sa.Column('estimation', sa.Float(), nullable=True),
+        sa.Column('datetime_estimation_update', sa.DateTime(), nullable=True),
+        sa.Column(
+            'datetime_create',
+            sa.DateTime(),
+            server_default=sa.text("(now() AT TIME ZONE 'Asia/Novosibirsk')"),
+            nullable=False
+        ),
+        sa.ForeignKeyConstraint(['factor_id'], ['factors.id'], ),
+        sa.ForeignKeyConstraint(['schoolchildren_class_guid'], ['schoolchildren_classes.guid'], ),
+        sa.PrimaryKeyConstraint('guid')
+    )
+    op.create_index(op.f('ix_schoolchildren_scores_guid'), 'schoolchildren_scores', ['guid'], unique=True)
+    op.create_index(
+        op.f('ix_schoolchildren_scores_schoolchildren_class_guid'),
+        'schoolchildren_scores',
+        ['schoolchildren_class_guid'],
+        unique=False
+    )
+
 
 def downgrade() -> None:
     """Downgrade schema."""
+    op.drop_index(op.f('ix_schoolchildren_scores_schoolchildren_class_guid'), table_name='schoolchildren_scores')
+    op.drop_index(op.f('ix_schoolchildren_scores_guid'), table_name='schoolchildren_scores')
+    op.drop_table('schoolchildren_scores')
     op.drop_index(op.f('ix_answers_tests_test_guid'), table_name='answers_tests')
     op.drop_index(op.f('ix_answers_tests_guid'), table_name='answers_tests')
     op.drop_table('answers_tests')
