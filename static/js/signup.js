@@ -56,7 +56,7 @@ signupPasswordRepeat.addEventListener('input', function() {
 
 function signup_user() {
     if (signupPassword.value !== signupPasswordRepeat.value) {
-        show_error('Пароли не совпадают!', 'Ошибка');
+        show_error('Пароли не совпадают!', 'Уведомление');
     } else {
         sendRequest(
             'POST',
@@ -83,7 +83,7 @@ function signup_user() {
             },
             function (data) {
                 console.log(data)
-                show_error(data.message, 'Ошибка');
+                show_error(data.message, 'Уведомление');
             }
         )
     }
@@ -91,7 +91,7 @@ function signup_user() {
 
 function login_user() {
     if (password.value !== passwordRepeat.value) {
-        show_error('Пароли не совпадают!', 'Ошибка');
+        show_error('Пароли не совпадают!', 'Уведомление');
     } else {
         sendRequest(
             'POST',
@@ -113,7 +113,7 @@ function login_user() {
             },
             function (data) {
                 console.log(data)
-                show_error(data.message, 'Ошибка');
+                show_error(data.message, 'Уведомление');
             }
         )
     }

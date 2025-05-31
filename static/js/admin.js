@@ -67,7 +67,7 @@ document.getElementById("btn_no").addEventListener('click', () => {
 
 document.getElementById("btn_for_admin_del_teacher").addEventListener('click', () => {
     if (!document.getElementById('teacher_del').value) {
-        show_error('Пожалуйста, выберите из списка преподавателя!', 'Ошибка');
+        show_error('Пожалуйста, выберите из списка преподавателя!', 'Уведомление');
         return;
     }
     document.getElementById("notification_content").style.display = 'flex';
@@ -91,11 +91,11 @@ function add_class() {
                 get_classes();
                 name_class.value = '';
             }, 500);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
         },
         function (data) {
             console.log(data)
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -107,12 +107,12 @@ function add_user_to_class(is_teacher = false) {
 
     if (is_teacher === false) {
         if (!schoolchildren_add.value) {
-            show_error('Пожалуйста, выберите из списка школьника!', 'Ошибка');
+            show_error('Пожалуйста, выберите из списка школьника!', 'Уведомление');
             return;
         }
     } else {
         if (!teacher_add.value) {
-            show_error('Пожалуйста, выберите из списка преподавателя!', 'Ошибка');
+            show_error('Пожалуйста, выберите из списка преподавателя!', 'Уведомление');
             return;
         }
     }
@@ -132,14 +132,14 @@ function add_user_to_class(is_teacher = false) {
                     get_users_to_class_for_admin(class_guid);
                 }
             }, 500);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
             schoolchildren_add.selectedIndex = 0;
             teacher_add.selectedIndex = 0;
             document.getElementById('teacher_del').selectedIndex = 0;
         },
         function (data) {
             console.log(data)
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -149,7 +149,7 @@ function del_user_to_class() {
     let teacher_del = document.getElementById('teacher_del');
 
     if (!teacher_del.value) {
-        show_error('Пожалуйста, выберите из списка преподавателя!', 'Ошибка');
+        show_error('Пожалуйста, выберите из списка преподавателя!', 'Уведомление');
         return;
     }
 
@@ -163,14 +163,14 @@ function del_user_to_class() {
             setTimeout(() => {
                 get_users_to_class_for_admin(class_guid);
             }, 500);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
             document.getElementById('schoolchildren_add').selectedIndex = 0;
             document.getElementById('teacher_add').selectedIndex = 0;
             teacher_del.selectedIndex = 0;
         },
         function (data) {
             console.log(data)
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -186,11 +186,11 @@ function del_class(class_guid) {
             setTimeout(() => {
                 get_classes();
             }, 500);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -247,7 +247,7 @@ function get_users_to_class_for_admin(class_guid) {
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -267,11 +267,11 @@ function del_schoolchildren(
                 get_users_to_class_for_admin(class_guid);
                 get_teacher_class_with_schoolchildren_for_admin(class_guid);
             }, 500);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -287,11 +287,11 @@ function accept_achievement(achievement_guid, schoolchildren_class_guid, class_g
             setTimeout(() => {
                 get_schoolchildren_by_user_guid_for_admin(class_guid, schoolchildren_class_guid);
             }, 500);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
         },
         function (data) {
             console.log(data)
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -307,11 +307,11 @@ function reject_achievement(achievement_guid, schoolchildren_class_guid, class_g
             setTimeout(() => {
                 get_schoolchildren_by_user_guid_for_admin(class_guid, schoolchildren_class_guid);
             }, 500);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
         },
         function (data) {
             console.log(data)
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -850,7 +850,7 @@ function get_teacher_class_with_schoolchildren_for_admin(class_guid) {
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -923,7 +923,7 @@ function get_classes() {
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -1062,7 +1062,7 @@ function get_schoolchildren() {
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -1108,7 +1108,7 @@ function get_teachers() {
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }

@@ -100,7 +100,7 @@ function update_user() {
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -128,11 +128,11 @@ function update_estimation_to_schoolchildren(schoolchildren_class_guid, estimati
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -156,11 +156,11 @@ function add_recommendation_to_schoolchildren(
             setTimeout(() => {
                 get_schoolchildren_by_user_guid_for_teacher(class_guid, schoolchildren_class_guid);
             }, 500);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -187,11 +187,11 @@ function set_recommendation_to_schoolchildren(
             setTimeout(() => {
                 get_schoolchildren_by_user_guid_for_teacher(class_guid, schoolchildren_class_guid);
             }, 500);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -279,11 +279,11 @@ function recommendation_accept(recommendation_guid, schoolchildren_class_guid, c
             setTimeout(() => {
                 get_schoolchildren_by_user_guid_for_teacher(class_guid, schoolchildren_class_guid);
             }, 500);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
         },
         function (data) {
             console.log(data)
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -299,11 +299,11 @@ function recommendation_reject(recommendation_guid, schoolchildren_class_guid, c
             setTimeout(() => {
                 get_schoolchildren_by_user_guid_for_teacher(class_guid, schoolchildren_class_guid);
             }, 500);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
         },
         function (data) {
             console.log(data)
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -397,11 +397,11 @@ function accept_changes_for_test(
             setTimeout(() => {
                 get_schoolchildren_by_user_guid_for_teacher(class_guid, schoolchildren_class_guid);
             }, 500);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
         },
         function (data) {
             console.log(data)
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -421,11 +421,11 @@ function generated_recommendation_schoolchildren(
             setTimeout(() => {
                 get_schoolchildren_by_user_guid_for_teacher(class_guid, schoolchildren_class_guid);
             }, 500);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
         },
         function (data) {
             console.log(data)
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -921,7 +921,7 @@ function get_teacher_class_with_schoolchildren(class_guid) {
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -982,7 +982,7 @@ function get_teacher_classes() {
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }

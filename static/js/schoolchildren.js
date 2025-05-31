@@ -130,7 +130,7 @@ function update_user() {
         },
         function (data) {
             console.log(data)
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -149,7 +149,7 @@ function get_questions() {
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     );
 }
@@ -224,11 +224,11 @@ function add_test_to_schoolchildren() {
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Оповещение');
+            show_error(data.message, 'Уведомление');
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -287,7 +287,7 @@ function onloadProfiledPhoto() {
             console.log(attachment_guid);
         },
         function(data) {
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     );
 }
@@ -306,7 +306,7 @@ function create_achievement() {
             },
             function (data) {
                 console.log(data);
-                show_error(data.message, 'Оповещение');
+                show_error(data.message, 'Уведомление');
                 document.getElementById('achievement').value = '';
 
                 const fileInput = document.getElementById('profiled_photo');
@@ -320,7 +320,7 @@ function create_achievement() {
             },
             function (data) {
                 console.log(data);
-                show_error(data.message, 'Ошибка');
+                show_error(data.message, 'Уведомление');
             }
         )
     }
@@ -402,7 +402,7 @@ function get_achievements() {
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -466,7 +466,7 @@ function get_schoolchildren_classes() {
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }
@@ -533,7 +533,7 @@ function get_recommendations() {
         },
         function (data) {
             console.log(data);
-            show_error(data.message, 'Ошибка');
+            show_error(data.message, 'Уведомление');
         }
     )
 }

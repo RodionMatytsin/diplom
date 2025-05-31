@@ -51,7 +51,7 @@ function sendRequest(method, url, async=true, responses_data, onsuccess, onerror
             localStorage.removeItem("is_teacher");
             window.location.href = "/";
         } else if (request.status >= 400) {
-            show_error(responseObj.message, 'Ошибка');
+            show_error(responseObj.message, 'Уведомление');
         } else {
             if (responseObj.result === true) {
                 onsuccess(responseObj);
@@ -78,15 +78,15 @@ function sendRequest(method, url, async=true, responses_data, onsuccess, onerror
     };
 
     request.onerror = function () {
-        show_error('Не предвиденная ошибка, перезагрузите страницу', 'Ошибка');
+        show_error('Не предвиденная ошибка, перезагрузите страницу', 'Уведомление');
     };
 
     request.ontimeout = function () {
-        show_error('Не предвиденная ошибка, перезагрузите страницу', 'Ошибка');
+        show_error('Не предвиденная ошибка, перезагрузите страницу', 'Уведомление');
     };
 
     request.onabort = function () {
-        show_error('Не предвиденная ошибка, перезагрузите страницу', 'Ошибка');
+        show_error('Не предвиденная ошибка, перезагрузите страницу', 'Уведомление');
     };
 
     if (responses_data != null) {
