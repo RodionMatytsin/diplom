@@ -394,7 +394,7 @@ header{
     padding: 0.5%;
     width: 45%;
     border-radius: 0.8rem;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
 }
 
 .recommendation_datetime_create{
@@ -418,7 +418,7 @@ header{
     background: #fff;
     border-radius: 0.8rem;
     padding: 1.5%;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
 }
 
 .schoolchildren_class_about {
@@ -446,7 +446,7 @@ header{
     background: #fff;
     border-radius: 0.8rem;
     padding: 1.5%;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
 }
 
 .achievement_datetime_create {

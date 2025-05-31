@@ -238,7 +238,7 @@ header{
     background: #fff;
     border-radius: 0.8rem;
     padding: 1.5%;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
 }
 
 .teacher_class:hover {
@@ -356,8 +356,7 @@ header{
     align-items: stretch;
     margin: 1.5% 0 1.5% 20%;
     padding: 0.8%;
-    border: 1px solid #ced4da;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
     border-radius: 1.5rem;
     width: 60%;
 }
@@ -497,7 +496,7 @@ header{
     padding: 0.5rem;
     border-radius: 1rem;
     background: #ffffff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
     gap: 1%;
 }
 
@@ -533,7 +532,7 @@ header{
     width: 45%;
     border-radius: 0.8rem;
     background: #ffffff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
     margin: 1%;
 }
 

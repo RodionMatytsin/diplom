@@ -311,7 +311,7 @@ header{
     padding: 0.5rem;
     border-radius: 1rem;
     background: #fff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
     gap: 1%;
 }
 
@@ -321,7 +321,7 @@ header{
     width: 45%;
     border-radius: 0.8rem;
     background: #ffffff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
     margin: 1%;
 }
 
@@ -573,7 +573,7 @@ header{
     background: #fff;
     border-radius: 0.8rem;
     padding: 1%;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, 0.1);
 }
 
 .class_:hover {
