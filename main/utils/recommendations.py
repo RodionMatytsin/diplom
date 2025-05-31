@@ -141,31 +141,57 @@ async def generated_recommendation_schoolchildren(
         schoolchildren_class_guid: UUID | str
 ) -> str:
     from main.models import engine, Tests, AnswersTests, SchoolchildrenClasses, SchoolchildrenScores,  Questions, \
-        CRUD, SessionHandler
+        Factors, CRUD, SessionHandler
     from fastapi import HTTPException
 
     current_schoolchildren_class: SchoolchildrenClasses | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=SchoolchildrenClasses
-    ).extended_query(
-        _select=[
-            SchoolchildrenClasses.user_guid,
-            SchoolchildrenScores.estimation
-        ],
-        _join=[
-            [SchoolchildrenScores, SchoolchildrenScores.schoolchildren_class_guid == SchoolchildrenClasses.guid]
-        ],
+    ).read(
         _where=[
             SchoolchildrenClasses.guid == schoolchildren_class_guid,
             SchoolchildrenClasses.is_deleted == False
         ], _all=False
     )
-    if current_schoolchildren_class.estimation is None:
+    if current_schoolchildren_class is None:
+        raise HTTPException(
+            status_code=409,
+            detail={'result': False, 'message': f'Извините, но такой записи о школьнике не было найдено!', 'data': {}}
+        )
+
+    current_schoolchildren_scores: list[SchoolchildrenScores] | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=SchoolchildrenScores
+    ).extended_query(
+        _select=[
+            SchoolchildrenScores.guid,
+            SchoolchildrenScores.factor_id,
+            Factors.name,
+            Factors.weight_factor,
+            Factors.amount_of_points,
+            SchoolchildrenScores.estimation,
+            SchoolchildrenScores.datetime_estimation_update,
+        ],
+        _join=[
+            [Factors, Factors.id == SchoolchildrenScores.factor_id]
+        ],
+        _where=[
+            SchoolchildrenScores.schoolchildren_class_guid == current_schoolchildren_class.guid,
+            Factors.for_the_teacher == True
+        ],
+        _all=True
+    )
+
+    missing_scores = [f"'{score.name}'" for score in current_schoolchildren_scores if score.estimation is None]
+    if missing_scores:
+        factors_list = missing_scores[0] if len(missing_scores) == 1 else ', '.join(missing_scores[:-1]) + (
+            ' и ' + missing_scores[-1] if len(missing_scores) > 1 else ''
+        )
         raise HTTPException(
             status_code=409,
             detail={
                 'result': False,
-                'message': f'Извините, но у данного школьника не проставлена оценка за успеваемость в этом классе, '
-                           f'и по этой причине мы не можем продолжать формировать для него/нее рекомендацию!',
+                'message': f'Извините, но у данного школьника не проставлены оценки по следующим факторам: '
+                           f'{factors_list}. По этой причине мы не можем продолжать формировать для него/нее '
+                           f'рекомендацию!',
                 'data': {}
             }
         )
@@ -207,25 +233,46 @@ async def generated_recommendation_schoolchildren(
     )
 
     def calculate_recommendation(
-            schoolchildren_class: SchoolchildrenClasses,
+            schoolchildren_scores: list[SchoolchildrenScores],
             answers_test: list[AnswersTests]
     ) -> float:
         def normalize(value: int, min_value: int, max_value: int):
             return (value - min_value) / (max_value - min_value)
 
-        normalized_grade = normalize(int(schoolchildren_class.estimation), 2, 5) * 0.1
-        normalized_interest = normalize(7, 1, 10) * 0.15
-        normalized_motivation = normalize(8, 1, 10) * 0.1
+        normalized_grade = normalize(
+            int(schoolchildren_scores[0].estimation), 2, int(schoolchildren_scores[0].amount_of_points)
+        ) * schoolchildren_scores[0].weight_factor
+
+        normalized_interest = normalize(
+            int(schoolchildren_scores[1].estimation), 1, int(schoolchildren_scores[1].amount_of_points)
+        ) * schoolchildren_scores[1].weight_factor
+
+        normalized_motivation = normalize(
+            int(schoolchildren_scores[2].estimation), 1, int(schoolchildren_scores[2].amount_of_points)
+        ) * schoolchildren_scores[2].weight_factor
+
         normalized_definiteness = normalize(int(answers_test[0].score), 1, 10) * 0.05
+
         normalized_comfort = normalize(int(answers_test[1].score), 1, 5) * 0.05
+
         normalized_financial = normalize(int(answers_test[2].score), 1, 5) * 0.05
-        normalized_relationships = normalize(8, 1, 5) * 0.05
+
+        normalized_relationships = normalize(
+            int(schoolchildren_scores[3].estimation), 1, int(schoolchildren_scores[3].amount_of_points)
+        ) * schoolchildren_scores[3].weight_factor
+
         normalized_teaching_quality = normalize(int(answers_test[3].score), 1, 10) * 0.05
+
         normalized_methodical_quality = normalize(int(answers_test[4].score), 1, 10) * 0.05
+
         normalized_material_quality = normalize(int(answers_test[5].score), 1, 5) * 0.05
+
         normalized_prestige = normalize(int(answers_test[6].score), 1, 5) * 0.05
+
         normalized_extracurricular = normalize(int(answers_test[7].score), 1, 10) * 0.1
+
         normalized_personal_capabilities = normalize(int(answers_test[8].score), 1, 10) * 0.1
+
         normalized_goals = normalize(int(answers_test[9].score), 1, 5) * 0.05
 
         target_function = (
@@ -273,7 +320,7 @@ async def generated_recommendation_schoolchildren(
             user_guid=current_schoolchildren_class.user_guid,
             description=generate_recommendation_text(
                 target_function=calculate_recommendation(
-                    schoolchildren_class=current_schoolchildren_class,
+                    schoolchildren_scores=current_schoolchildren_scores,
                     answers_test=current_answers_test
                 )
             ),
