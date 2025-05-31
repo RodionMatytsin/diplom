@@ -109,6 +109,7 @@ def upgrade() -> None:
         sa.Column('id', sa.SmallInteger(), nullable=False),
         sa.Column('name', sa.String(length=255), nullable=False),
         sa.Column('weight_factor', sa.Float(), nullable=False),
+        sa.Column('amount_of_points', sa.SmallInteger(), server_default=sa.text('1'), nullable=False),
         sa.Column(
             'datetime_create',
             sa.DateTime(),
@@ -119,20 +120,20 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint('id')
     )
 
-    op.execute('insert into factors (name, weight_factor) values (\'Успеваемость школьника\', 0.1)')
-    op.execute('insert into factors (name, weight_factor) values (\'Интерес школьника\', 0.15)')
-    op.execute('insert into factors (name, weight_factor) values (\'Внутренняя мотивация в работе\', 0.1)')
-    op.execute('insert into factors (name, weight_factor) values (\'Определенность\', 0.05)')
-    op.execute('insert into factors (name, weight_factor) values (\'Качество комфорта\', 0.05)')
-    op.execute('insert into factors (name, weight_factor) values (\'Финансовые возможности\', 0.05)')
-    op.execute('insert into factors (name, weight_factor) values (\'Взаимоотношения\', 0.05)')
-    op.execute('insert into factors (name, weight_factor) values (\'Качество преподавания\', 0.05)')
-    op.execute('insert into factors (name, weight_factor) values (\'Качество методического обеспечения занятий\', 0.05)')
-    op.execute('insert into factors (name, weight_factor) values (\'Качество материально-технического обеспечения\', 0.05)')
-    op.execute('insert into factors (name, weight_factor) values (\'Престиж\', 0.05)')
-    op.execute('insert into factors (name, weight_factor) values (\'Дополнительные занятия и кружки\', 0.1)')
-    op.execute('insert into factors (name, weight_factor) values (\'Персональные возможности\', 0.1)')
-    op.execute('insert into factors (name, weight_factor) values (\'Цели и планы школьника\', 0.05)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Успеваемость школьника\', 0.1, 5)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Интерес школьника\', 0.15, 10)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Внутренняя мотивация в работе\', 0.1, 10)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Определенность\', 0.05, 10)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Качество комфорта\', 0.05, 5)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Финансовые возможности\', 0.05, 5)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Взаимоотношения\', 0.05, 5)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Качество преподавания\', 0.05, 10)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Качество методического обеспечения занятий\', 0.05, 10)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Качество материально-технического обеспечения\', 0.05, 5)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Престиж\', 0.05, 5)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Дополнительные занятия и кружки\', 0.1, 10)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Персональные возможности\', 0.1, 10)')
+    op.execute('insert into factors (name, weight_factor, amount_of_points) values (\'Цели и планы школьника\', 0.05, 5)')
 
     op.create_table(
         'users',
@@ -201,7 +202,6 @@ def upgrade() -> None:
         sa.Column('id', sa.SmallInteger(), nullable=False),
         sa.Column('factor_id', sa.SmallInteger(), nullable=False),
         sa.Column('name', sa.String(length=255), nullable=False),
-        sa.Column('amount_of_points', sa.SmallInteger(), server_default=sa.text('1'), nullable=False),
         sa.Column(
             'datetime_create',
             sa.DateTime(),
@@ -213,35 +213,35 @@ def upgrade() -> None:
     )
 
     op.execute(
-        'insert into questions (factor_id, name, amount_of_points) values (4, \'Насколько вы уверены в своих учебных целях и планах на будущее? '
-        'Оцените свою определенность по шкале от 1 до 10.\', 10)')
+        'insert into questions (factor_id, name) values (4, \'Насколько вы уверены в своих учебных целях и планах на будущее? '
+        'Оцените свою определенность по шкале от 1 до 10.\')')
     op.execute(
-        'insert into questions (factor_id, name, amount_of_points) values (5, \'Как вы оцениваете условия, в которых учитесь? Оцените качество '
-        'комфорта в учебной среде по шкале от 1 до 5.\', 5)')
+        'insert into questions (factor_id, name) values (5, \'Как вы оцениваете условия, в которых учитесь? Оцените качество '
+        'комфорта в учебной среде по шкале от 1 до 5.\')')
     op.execute(
-        'insert into questions (factor_id, name, amount_of_points) values (6, \'Как вы оцениваете свои финансовые возможности для дополнительных '
-        'занятий и кружков? Оцените по шкале от 1 до 5, где 1 — очень ограниченные возможности.\', 5)')
+        'insert into questions (factor_id, name) values (6, \'Как вы оцениваете свои финансовые возможности для дополнительных '
+        'занятий и кружков? Оцените по шкале от 1 до 5, где 1 — очень ограниченные возможности.\')')
     op.execute(
-        'insert into questions (factor_id, name, amount_of_points) values (8, \'Как вы оцениваете качество преподавания в вашей школе? Оцените по шкале '
-        'от 1 до 10, где 1 — очень плохо, 10 — отлично.\', 10)')
+        'insert into questions (factor_id, name) values (8, \'Как вы оцениваете качество преподавания в вашей школе? Оцените по шкале '
+        'от 1 до 10, где 1 — очень плохо, 10 — отлично.\')')
     op.execute(
-        'insert into questions (factor_id, name, amount_of_points) values (9, \'Как вы оцениваете качество учебных материалов и методик, используемых '
-        'в школе? Оцените по шкале от 1 до 10.\', 10)')
+        'insert into questions (factor_id, name) values (9, \'Как вы оцениваете качество учебных материалов и методик, используемых '
+        'в школе? Оцените по шкале от 1 до 10.\')')
     op.execute(
-        'insert into questions (factor_id, name, amount_of_points) values (10, \'Как вы оцениваете наличие необходимого оборудования и материалов для '
-        'обучения? Оцените по шкале от 1 до 5.\', 5)')
+        'insert into questions (factor_id, name) values (10, \'Как вы оцениваете наличие необходимого оборудования и материалов для '
+        'обучения? Оцените по шкале от 1 до 5.\')')
     op.execute(
-        'insert into questions (factor_id, name, amount_of_points) values (11, \'Как вы оцениваете престиж вашей школы или учебной программы? '
-        'Оцените по шкале от 1 до 5, где 1 — низкий престиж.\', 5)')
+        'insert into questions (factor_id, name) values (11, \'Как вы оцениваете престиж вашей школы или учебной программы? '
+        'Оцените по шкале от 1 до 5, где 1 — низкий престиж.\')')
     op.execute(
-        'insert into questions (factor_id, name, amount_of_points) values (12, \'Как вы оцениваете свои возможности участия в дополнительных занятиях '
-        'или кружках? Оцените по шкале от 1 до 10.\', 10)')
+        'insert into questions (factor_id, name) values (12, \'Как вы оцениваете свои возможности участия в дополнительных занятиях '
+        'или кружках? Оцените по шкале от 1 до 10.\')')
     op.execute(
-        'insert into questions (factor_id, name, amount_of_points) values (13, \'Как вы оцениваете свои личные таланты и способности? '
-        'Оцените по шкале от 1 до 10, где 1 — низкие способности.\', 10)')
+        'insert into questions (factor_id, name) values (13, \'Как вы оцениваете свои личные таланты и способности? '
+        'Оцените по шкале от 1 до 10, где 1 — низкие способности.\')')
     op.execute(
-        'insert into questions (factor_id, name, amount_of_points) values (14, \'Как вы оцениваете свои цели и планы на будущее? Оцените по шкале '
-        'от 1 до 5, где 1 — нет четких целей.\', 5)')
+        'insert into questions (factor_id, name) values (14, \'Как вы оцениваете свои цели и планы на будущее? Оцените по шкале '
+        'от 1 до 5, где 1 — нет четких целей.\')')
 
     op.create_table(
         'recommendations',

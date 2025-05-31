@@ -68,6 +68,7 @@ class Factors(Base):
     id = Column(SmallInteger, primary_key=True)
     name = Column(String(length=255), nullable=False)
     weight_factor = Column(Float, nullable=False)
+    amount_of_points = Column(SmallInteger, default=1, nullable=False, server_default=text('1'))
     datetime_create = Column(
         DateTime,
         default=func.now(),
@@ -179,7 +180,6 @@ class Questions(Base):
     id = Column(SmallInteger, primary_key=True)
     factor_id = Column(SmallInteger, ForeignKey(Factors.id), nullable=False)
     name = Column(String(length=255), nullable=False)
-    amount_of_points = Column(SmallInteger, default=1, nullable=False, server_default=text('1'))
     datetime_create = Column(
         DateTime,
         default=func.now(),

@@ -7,12 +7,12 @@ def serialize_question(question: Questions) -> QuestionRegular:
     return QuestionRegular(
         question_id=question.id,
         name=question.name,
-        amount_of_points=question.amount_of_points
+        amount_of_points=question.factor_amount_of_points
     )
 
 
 async def get_questions() -> tuple[QuestionRegular] | tuple:
-    from main.models import engine, CRUD, SessionHandler
+    from main.models import engine, CRUD, Factors, SessionHandler
 
     questions: tuple[Questions] | object | None = await CRUD(
         session=SessionHandler.create(engine=engine), model=Questions
@@ -20,9 +20,11 @@ async def get_questions() -> tuple[QuestionRegular] | tuple:
         _select=[
             Questions.id,
             Questions.name,
-            Questions.amount_of_points
+            Factors.amount_of_points.label('factor_amount_of_points')
         ],
-        _join=[],
+        _join=[
+            [Factors, Factors.id == Questions.factor_id]
+        ],
         _where=[],
         _group_by=[],
         _order_by=[Questions.id, Questions.datetime_create],
@@ -35,12 +37,12 @@ async def get_questions() -> tuple[QuestionRegular] | tuple:
 
 
 async def get_tests(user_guid: UUID | str) -> tuple[TestRegular] | tuple:
-    from main.models import engine, Tests, AnswersTests, Questions, CRUD, SessionHandler
+    from main.models import engine, Tests, AnswersTests, Questions, Factors, CRUD, SessionHandler
     from main.schemas.tests import TestDetails
     from sqlalchemy import desc
 
     tests: tuple[Tests] | object | None = await CRUD(
-        session=SessionHandler.create(engine=engine), model=Questions
+        session=SessionHandler.create(engine=engine), model=Tests
     ).extended_query(
         _select=[
             Tests.guid,
@@ -69,13 +71,14 @@ async def get_tests(user_guid: UUID | str) -> tuple[TestRegular] | tuple:
             _select=[
                 AnswersTests.question_id,
                 Questions.name.label('question_name'),
-                Questions.amount_of_points.label('question_amount_of_points'),
+                Factors.amount_of_points.label('factor_amount_of_points'),
                 AnswersTests.score,
                 AnswersTests.comment
             ],
             _join=[
                 [Tests, AnswersTests.test_guid == Tests.guid],
-                [Questions, AnswersTests.question_id == Questions.id]
+                [Questions, AnswersTests.question_id == Questions.id],
+                [Factors, Factors.id == Questions.factor_id]
             ],
             _where=[
                 AnswersTests.test_guid == test.guid
@@ -96,7 +99,7 @@ async def get_tests(user_guid: UUID | str) -> tuple[TestRegular] | tuple:
                         question=QuestionRegular(
                             question_id=test_detail.question_id,
                             name=test_detail.question_name,
-                            amount_of_points=test_detail.question_amount_of_points
+                            amount_of_points=test_detail.factor_amount_of_points
                         ),
                         score=test_detail.score,
                         comment=test_detail.comment
