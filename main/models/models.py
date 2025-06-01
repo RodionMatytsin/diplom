@@ -158,7 +158,8 @@ class SchoolchildrenClasses(Base):
     is_deleted = Column(Boolean, default=False, nullable=False, server_default=text('False'))
 
 
-# Таблица в которой хранятся баллы школьника по таким факторам как:
+# Таблица в которой хранятся баллы школьника по таким факторам как: успеваемость школьника, интерес школьника,
+# внутренняя мотивация в работе и взаимоотношения
 class SchoolchildrenScores(Base):
     __tablename__ = 'schoolchildren_scores'
     guid = Column(

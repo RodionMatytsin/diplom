@@ -162,13 +162,10 @@ async def generated_recommendation_schoolchildren(
         session=SessionHandler.create(engine=engine), model=SchoolchildrenScores
     ).extended_query(
         _select=[
-            SchoolchildrenScores.guid,
-            SchoolchildrenScores.factor_id,
             Factors.name,
             Factors.weight_factor,
             Factors.amount_of_points,
-            SchoolchildrenScores.estimation,
-            SchoolchildrenScores.datetime_estimation_update,
+            SchoolchildrenScores.estimation
         ],
         _join=[
             [Factors, Factors.id == SchoolchildrenScores.factor_id]
@@ -216,16 +213,20 @@ async def generated_recommendation_schoolchildren(
         session=SessionHandler.create(engine=engine), model=AnswersTests
     ).extended_query(
         _select=[
-            Questions.id.label('question_id'),
-            Questions.name.label('question_name'),
+            Factors.name,
+            Factors.weight_factor,
+            Factors.amount_of_points,
+            Questions.name,
             AnswersTests.score,
             AnswersTests.comment
         ],
         _join=[
-            [Questions, AnswersTests.question_id == Questions.id]
+            [Questions, AnswersTests.question_id == Questions.id],
+            [Factors, Factors.id == Questions.factor_id]
         ],
         _where=[
-            AnswersTests.test_guid == current_test.guid
+            AnswersTests.test_guid == current_test.guid,
+            Factors.for_the_teacher == False
         ],
         _group_by=[],
         _order_by=[],
@@ -240,40 +241,88 @@ async def generated_recommendation_schoolchildren(
             return (value - min_value) / (max_value - min_value)
 
         normalized_grade = normalize(
-            int(schoolchildren_scores[0].estimation), 2, int(schoolchildren_scores[0].amount_of_points)
+            value=int(schoolchildren_scores[0].estimation),
+            min_value=2,
+            max_value=int(schoolchildren_scores[0].amount_of_points)
         ) * schoolchildren_scores[0].weight_factor
 
         normalized_interest = normalize(
-            int(schoolchildren_scores[1].estimation), 1, int(schoolchildren_scores[1].amount_of_points)
+            value=int(schoolchildren_scores[1].estimation),
+            min_value=1,
+            max_value=int(schoolchildren_scores[1].amount_of_points)
         ) * schoolchildren_scores[1].weight_factor
 
         normalized_motivation = normalize(
-            int(schoolchildren_scores[2].estimation), 1, int(schoolchildren_scores[2].amount_of_points)
+            value=int(schoolchildren_scores[2].estimation),
+            min_value=1,
+            max_value=int(schoolchildren_scores[2].amount_of_points)
         ) * schoolchildren_scores[2].weight_factor
 
-        normalized_definiteness = normalize(int(answers_test[0].score), 1, 10) * 0.05
+        normalized_definiteness = normalize(
+            value=int(answers_test[0].score),
+            min_value=1,
+            max_value=int(answers_test[0].amount_of_points)
+        ) * answers_test[0].weight_factor
 
-        normalized_comfort = normalize(int(answers_test[1].score), 1, 5) * 0.05
+        normalized_comfort = normalize(
+            value=int(answers_test[1].score),
+            min_value=1,
+            max_value=int(answers_test[1].amount_of_points)
+        ) * answers_test[1].weight_factor
 
-        normalized_financial = normalize(int(answers_test[2].score), 1, 5) * 0.05
+        normalized_financial = normalize(
+            value=int(answers_test[2].score),
+            min_value=1,
+            max_value=int(answers_test[2].amount_of_points)
+        ) * answers_test[2].weight_factor
 
         normalized_relationships = normalize(
-            int(schoolchildren_scores[3].estimation), 1, int(schoolchildren_scores[3].amount_of_points)
+            value=int(schoolchildren_scores[3].estimation),
+            min_value=1,
+            max_value=int(schoolchildren_scores[3].amount_of_points)
         ) * schoolchildren_scores[3].weight_factor
 
-        normalized_teaching_quality = normalize(int(answers_test[3].score), 1, 10) * 0.05
+        normalized_teaching_quality = normalize(
+            value=int(answers_test[3].score),
+            min_value=1,
+            max_value=int(answers_test[3].amount_of_points)
+        ) * answers_test[3].weight_factor
 
-        normalized_methodical_quality = normalize(int(answers_test[4].score), 1, 10) * 0.05
+        normalized_methodical_quality = normalize(
+            value=int(answers_test[4].score),
+            min_value=1,
+            max_value=int(answers_test[4].amount_of_points)
+        ) * answers_test[4].weight_factor
 
-        normalized_material_quality = normalize(int(answers_test[5].score), 1, 5) * 0.05
+        normalized_material_quality = normalize(
+            value=int(answers_test[5].score),
+            min_value=1,
+            max_value=int(answers_test[5].amount_of_points)
+        ) * answers_test[5].weight_factor
 
-        normalized_prestige = normalize(int(answers_test[6].score), 1, 5) * 0.05
+        normalized_prestige = normalize(
+            value=int(answers_test[6].score),
+            min_value=1,
+            max_value=int(answers_test[6].amount_of_points)
+        ) * answers_test[6].weight_factor
 
-        normalized_extracurricular = normalize(int(answers_test[7].score), 1, 10) * 0.1
+        normalized_extracurricular = normalize(
+            value=int(answers_test[7].score),
+            min_value=1,
+            max_value=int(answers_test[7].amount_of_points)
+        ) * answers_test[7].weight_factor
 
-        normalized_personal_capabilities = normalize(int(answers_test[8].score), 1, 10) * 0.1
+        normalized_personal_capabilities = normalize(
+            value=int(answers_test[8].score),
+            min_value=1,
+            max_value=int(answers_test[8].amount_of_points)
+        ) * answers_test[8].weight_factor
 
-        normalized_goals = normalize(int(answers_test[9].score), 1, 5) * 0.05
+        normalized_goals = normalize(
+            value=int(answers_test[9].score),
+            min_value=1,
+            max_value=int(answers_test[9].amount_of_points)
+        ) * answers_test[9].weight_factor
 
         target_function = (
                 normalized_grade + normalized_interest + normalized_motivation - normalized_definiteness +
