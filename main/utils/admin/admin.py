@@ -524,7 +524,7 @@ async def set_factors(factors: FactorUpdate) -> str:
                 _values=dict(weight_factor=i.weight_factor / 100)
             )
 
-    return "Вы успешно отредактировали веса существующих факторов!"
+    return "Вы успешно отредактировали весовые коэффициенты существующих факторов!"
 
 
 async def get_factors() -> tuple[FactorRegular] | tuple:
