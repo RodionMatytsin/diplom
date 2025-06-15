@@ -4,6 +4,7 @@ from main.schemas.responses import DefaultResponse
 from main.schemas.admin.admin import (ClassAdd, ClassDefault, SchoolchildrenDetailsAdminDefault,
                                       UserRegularAdminDefault, UsersToClassAdminDefault)
 from main.schemas.teacher_classes import TeacherClassWithSchoolchildrenDefault
+from main.schemas.factors import FactorDefault, FactorUpdate
 from main.utils.admin.admin import need_key
 from uuid import UUID
 
@@ -228,3 +229,21 @@ async def api_get_schoolchildren_by_user_guid_for_admin(
             schoolchildren_class_guid=schoolchildren_class_guid
         )
     )
+
+
+@main.get('/api/admin/factors', status_code=200, tags=["Admin"], response_model=FactorDefault)
+async def api_get_factors(key: str = Depends(need_key)):
+    """
+        Этот метод предназначен для админа, с помощью которого можно получить существующие факторы и их веса.
+    """
+    from main.utils.admin.admin import get_factors
+    return FactorDefault(data=await get_factors())
+
+
+@main.patch('/api/admin/factors', status_code=200, tags=["Admin"], response_model=DefaultResponse)
+async def api_set_factors(factors: FactorUpdate, key: str = Depends(need_key)):
+    """
+        Этот метод предназначен для админа, с помощью которого можно отредактировать веса существующих факторов.
+    """
+    from main.utils.admin.admin import set_factors
+    return DefaultResponse(message=await set_factors(factors=factors))

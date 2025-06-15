@@ -1,6 +1,7 @@
 from main.models import Classes, Users
 from main.schemas.teacher_classes import TeacherClassWithSchoolchildrenRegular
 from main.schemas.admin.admin import ClassRegular, SchoolchildrenDetailsAdmin, UsersToClassAdmin, UserRegularAdmin
+from main.schemas.factors import FactorRegular, FactorUpdate
 from uuid import UUID
 
 
@@ -500,4 +501,56 @@ async def get_schoolchildren_by_user_guid_for_admin(
         pending_achievements=await get_achievements(user_guid=current_user.guid, is_accepted=False),
         recommendations=await get_recommendations(user_guid=current_user.guid, is_accepted=True),
         tests=await get_tests(user_guid=current_user.guid)
+    )
+
+
+async def set_factors(factors: FactorUpdate) -> str:
+    from main.models import engine, CRUD, Factors, SessionHandler
+
+    for i in factors.details:
+
+        factor: Factors | object | None = await CRUD(
+            session=SessionHandler.create(engine=engine), model=Factors
+        ).read(
+            _where=[Factors.id == i.factor_id], _all=False
+        )
+
+        if (i.weight_factor / 100) != factor.weight_factor:
+
+            await CRUD(
+                session=SessionHandler.create(engine=engine), model=Factors
+            ).update(
+                _where=[Factors.id == factor.id],
+                _values=dict(weight_factor=i.weight_factor / 100)
+            )
+
+    return "Вы успешно отредактировали веса существующих факторов!"
+
+
+async def get_factors() -> tuple[FactorRegular] | tuple:
+    from main.models import engine, CRUD, Factors, SessionHandler
+
+    factors: tuple[Factors] | object | None = await CRUD(
+        session=SessionHandler.create(engine=engine), model=Factors
+    ).extended_query(
+        _select=[
+            Factors.id,
+            Factors.name,
+            Factors.weight_factor
+        ],
+        _join=[],
+        _where=[],
+        _order_by=[Factors.id, Factors.datetime_create],
+        _all=True
+    )
+
+    if factors is None or factors == []:
+        return tuple()
+
+    return tuple(
+        FactorRegular(
+            factor_id=factor.id,
+            name=factor.name,
+            weight_factor=factor.weight_factor * 100
+        ) for factor in factors
     )
