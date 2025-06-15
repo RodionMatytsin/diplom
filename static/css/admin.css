@@ -278,6 +278,10 @@ header{
     gap: 1%;
 }
 
+.factors__list .factor_item:nth-child(even) {
+    background: #ebebeb;
+}
+
 .factor_number,
 .factor_name {
     font-size: 1rem;
