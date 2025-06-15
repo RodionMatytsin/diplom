@@ -94,6 +94,7 @@
                     <button class="btn_header btn_active" id="main">Главная</button>
                     <button class="btn_header" id="schoolchildren">Школьники</button>
                     <button class="btn_header" id="teachers">Преподаватели</button>
+                    <button class="btn_header" id="factors">Факторы</button>
                 </div>
             </div>
         </header>
@@ -124,6 +125,15 @@
         <!--Раздел "Преподаватели"-->
         <div class="teachers__wrapper hiden" id="teachers__wrapper">
             <div class="teachers_list" id="teachers_list"></div>
+        </div>
+
+        <!--Раздел "Факторы"-->
+        <div class="factors__wrapper hiden" id="factors__wrapper">
+            <div class="main__wrapper__factors__list" id="main__wrapper__factors__list">
+                <div class="weights_factors">Факторы и их веса</div>
+                <div class="factors__list" id="factors__list"></div>
+                <button class="button" onclick="set_factors();" style="width: 95.5%; margin: 0.5% 0 1% 0; padding: 1.5%; border-radius: 1.2rem; font-size: 1.3rem;" >Отредактировать весовые коэффициенты</button>
+            </div>
         </div>
 
         <script src="../static/js/main.js"></script>

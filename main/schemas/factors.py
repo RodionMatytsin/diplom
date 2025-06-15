@@ -7,6 +7,15 @@ class FactorUpdateDetail(BaseModel):
     factor_id: int
     weight_factor: int
 
+    @field_validator("weight_factor")
+    def check_weight_factor_(cls, weight_factor_):
+        if weight_factor_ == 0:
+            raise HTTPException(
+                status_code=400,
+                detail={'result': False, 'message': 'Каждый фактор должен иметь весовой коэффициент!', 'data': {}}
+            )
+        return weight_factor_
+
 
 class FactorUpdate(BaseModel):
     details: list[FactorUpdateDetail]

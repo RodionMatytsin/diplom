@@ -2,18 +2,22 @@ const key = "kAlu7NqZwoWx7MaRwoXv9Qc4woZnAp==";
 const main = document.getElementById("main");
 const _schoolchildren = document.getElementById("schoolchildren");
 const _teachers = document.getElementById("teachers");
+const _factors = document.getElementById("factors");
 const main__wrapper = document.getElementById("main__wrapper");
 const schoolchildren__wrapper = document.getElementById("schoolchildren__wrapper");
 const teachers__wrapper = document.getElementById("teachers__wrapper");
+const factors__wrapper = document.getElementById("factors__wrapper");
 let name_class = document.getElementById('name_class');
 
 main.addEventListener('click', () => {
     main.classList.add("btn_active");
     _schoolchildren.classList.remove("btn_active");
     _teachers.classList.remove("btn_active");
+    _factors.classList.remove("btn_active");
     main__wrapper.style.display = 'flex';
     schoolchildren__wrapper.style.display = 'none';
     teachers__wrapper.style.display = 'none';
+    factors__wrapper.style.display = 'none';
     get_classes();
 });
 
@@ -21,9 +25,11 @@ _schoolchildren.addEventListener('click', () => {
     main.classList.remove("btn_active");
     _schoolchildren.classList.add("btn_active");
     _teachers.classList.remove("btn_active");
+    _factors.classList.remove("btn_active");
     main__wrapper.style.display = 'none';
     schoolchildren__wrapper.style.display = 'flex';
     teachers__wrapper.style.display = 'none';
+    factors__wrapper.style.display = 'none';
     get_schoolchildren();
 });
 
@@ -31,10 +37,24 @@ _teachers.addEventListener('click', () => {
     main.classList.remove("btn_active");
     _schoolchildren.classList.remove("btn_active");
     _teachers.classList.add("btn_active");
+    _factors.classList.remove("btn_active");
     main__wrapper.style.display = 'none';
     schoolchildren__wrapper.style.display = 'none';
     teachers__wrapper.style.display = 'flex';
+    factors__wrapper.style.display = 'none';
     get_teachers();
+});
+
+_factors.addEventListener('click', () => {
+    main.classList.remove("btn_active");
+    _schoolchildren.classList.remove("btn_active");
+    _teachers.classList.remove("btn_active");
+    _factors.classList.add("btn_active");
+    main__wrapper.style.display = 'none';
+    schoolchildren__wrapper.style.display = 'none';
+    teachers__wrapper.style.display = 'none';
+    factors__wrapper.style.display = 'flex';
+    get_factors();
 });
 
 name_class.addEventListener('input', function() {
@@ -76,6 +96,86 @@ document.getElementById("btn_for_admin_del_teacher").addEventListener('click', (
         document.getElementById("notification_content").style.display = 'none';
     };
 });
+
+function get_factors() {
+    sendRequest(
+        'GET',
+        `/api/admin/factors?key=${key}`,
+        true,
+        null,
+        function (data) {
+            console.log(data);
+            create_factors_for_dom(data.data);
+        },
+        function (data) {
+            console.log(data);
+        }
+    );
+}
+
+function create_factors_for_dom(data) {
+    let factors__list = document.getElementById('factors__list');
+    factors__list.innerHTML = '';
+
+    data.forEach((item) => {
+        const factorContainer = document.createElement('div');
+        factorContainer.classList.add('factor_item');
+
+        const factorNumber = document.createElement('div');
+        factorNumber.id = item.factor_id;
+        factorNumber.classList.add('factor_number');
+        factorNumber.textContent = `№${item.factor_id}`;
+
+        const factorName = document.createElement('div');
+        factorName.classList.add('factor_name');
+        factorName.textContent = item.name;
+
+        const factorWeight = document.createElement('input');
+        factorWeight.classList.add('factor_weight');
+        factorWeight.setAttribute('maxlength', '3');
+        factorWeight.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0123456789]/g, '');
+        });
+        factorWeight.value = item.weight_factor;
+
+        factorContainer.appendChild(factorNumber);
+        factorContainer.appendChild(factorName);
+        factorContainer.appendChild(factorWeight);
+
+        factors__list.appendChild(factorContainer);
+    });
+}
+
+function set_factors() {
+    const details_factors = [];
+    const factors_items = document.querySelectorAll('.factor_item');
+
+    factors_items.forEach(item => {
+        const factorNumber = item.querySelector('.factor_number').id;
+        const factorWeight = item.querySelector('.factor_weight').value || 0;
+        details_factors.push({
+            factor_id: parseInt(factorNumber),
+            weight_factor: parseInt(factorWeight)
+        });
+    });
+
+    sendRequest(
+        'PATCH',
+        `/api/admin/factors?key=${key}`,
+        true,
+        {
+            "details": details_factors,
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Уведомление');
+        },
+        function (data) {
+            console.log(data);
+            show_error(data.message, 'Уведомление');
+        }
+    );
+}
 
 function add_class() {
     sendRequest(
